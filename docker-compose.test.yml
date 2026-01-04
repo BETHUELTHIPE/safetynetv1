@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  test_web:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    ports:
+      - "8000:8000"

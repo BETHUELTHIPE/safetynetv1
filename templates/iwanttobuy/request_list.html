@@ -1,0 +1,274 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-4 align-items-center">
+        <div class="col-lg-6">
+            <h1 class="mb-1 fw-bold display-5">I Want to Buy</h1>
+            <p class="lead text-muted">Browse buy requests or post your own buying needs</p>
+        </div>
+        <div class="col-lg-6 text-lg-end">
+            {% if user.is_authenticated %}
+                <a href="{% url 'iwanttobuy:create_request' %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-plus-circle me-2"></i> Post a Buy Request
+                </a>
+                <a href="{% url 'iwanttobuy:my_requests' %}" class="btn btn-outline-secondary ms-2">
+                    <i class="fas fa-list me-2"></i> My Requests
+                </a>
+                <a href="{% url 'iwanttobuy:my_responses' %}" class="btn btn-outline-secondary ms-2">
+                    <i class="fas fa-reply-all me-2"></i> My Responses
+                </a>
+            {% else %}
+                <a href="{% url 'login' %}?next={% url 'iwanttobuy:create_request' %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-plus-circle me-2"></i> Login to Post
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Search and Filter Card -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <form method="get" action="{% url 'iwanttobuy:request_list' %}" class="row g-3">
+                <div class="col-lg-5">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control" placeholder="Search buy requests..." value="{{ query|default:'' }}">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3">
+                    <select name="category" class="form-select" onchange="this.form.submit()">
+                        <option value="">All Categories</option>
+                        {% for category in categories %}
+                            {% if category %}
+                                <option value="{{ category }}" {% if selected_category == category %}selected{% endif %}>
+                                    {{ category }}
+                                </option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="col-lg-2">
+                    <select name="urgency" class="form-select" onchange="this.form.submit()">
+                        <option value="">All Urgency Levels</option>
+                        {% for code, name in urgency_choices %}
+                            <option value="{{ code }}" {% if selected_urgency == code %}selected{% endif %}>
+                                {{ name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="col-lg-2">
+                    <select name="sort" class="form-select">
+                        <option value="newest" {% if sort == 'newest' %}selected{% endif %}>Newest First</option>
+                        <option value="oldest" {% if sort == 'oldest' %}selected{% endif %}>Oldest First</option>
+                        <option value="urgency" {% if sort == 'urgency' %}selected{% endif %}>Most Urgent</option>
+                    </select>
+                </div>
+                
+                <div class="col-12 d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="fas fa-filter me-1"></i> Apply Filters
+                    </button>
+                    {% if query or selected_category or selected_urgency %}
+                        <a href="{% url 'iwanttobuy:request_list' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times me-1"></i> Clear Filters
+                        </a>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Buy Requests Grid -->
+    <div class="row">
+        {% if page_obj %}
+            {% for buy_request in page_obj %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 request-card border-0 shadow-sm">
+                        {% if buy_request.is_new %}
+                            <div class="badge bg-success position-absolute top-0 start-0 m-2">NEW</div>
+                        {% endif %}
+                        
+                        <div class="card-header {% if buy_request.urgency == 'URGENT' %}bg-danger text-white{% elif buy_request.urgency == 'HIGH' %}bg-warning{% elif buy_request.urgency == 'MEDIUM' %}bg-info text-white{% else %}bg-light{% endif %}">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-fire-alt me-1"></i> {{ buy_request.get_urgency_display }} Priority</span>
+                                <span class="small">{{ buy_request.created_at|date:"j M Y" }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-body">
+                            <h5 class="card-title">{{ buy_request.title }}</h5>
+                            <p class="text-muted mb-2 small">
+                                <i class="fas fa-map-marker-alt me-1"></i> {{ buy_request.location }}
+                            </p>
+                            
+                            <p class="card-text text-truncate-3">{{ buy_request.description }}</p>
+                            
+                            {% if buy_request.price_range_min and buy_request.price_range_max %}
+                                <div class="price-range mb-3">
+                                    <span class="badge bg-light text-dark">
+                                        <i class="fas fa-tag me-1"></i> Budget: R{{ buy_request.price_range_min }} - R{{ buy_request.price_range_max }}
+                                    </span>
+                                </div>
+                            {% elif buy_request.price_range_min %}
+                                <div class="price-range mb-3">
+                                    <span class="badge bg-light text-dark">
+                                        <i class="fas fa-tag me-1"></i> Budget: from R{{ buy_request.price_range_min }}
+                                    </span>
+                                </div>
+                            {% elif buy_request.price_range_max %}
+                                <div class="price-range mb-3">
+                                    <span class="badge bg-light text-dark">
+                                        <i class="fas fa-tag me-1"></i> Budget: up to R{{ buy_request.price_range_max }}
+                                    </span>
+                                </div>
+                            {% endif %}
+                            
+                            {% if buy_request.reference_image %}
+                                <div class="mb-2">
+                                    <span class="badge bg-secondary">
+                                        <i class="fas fa-image me-1"></i> Image Attached
+                                    </span>
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="card-footer bg-white pt-0 border-top-0">
+                            <div class="d-grid">
+                                <a href="{% url 'iwanttobuy:request_detail' pk=buy_request.pk %}" class="btn btn-outline-primary stretched-link">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-info-circle fa-2x me-3"></i>
+                        <div>
+                            <h5 class="mb-1">No Buy Requests Found</h5>
+                            <p class="mb-0">
+                                {% if query or selected_category or selected_urgency %}
+                                    No requests match your search criteria. Try adjusting your filters or search terms.
+                                {% else %}
+                                    There are currently no buy requests. Be the first to post one!
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if selected_urgency %}&urgency={{ selected_urgency }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" aria-label="First">
+                            <span aria-hidden="true">&laquo;&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if selected_urgency %}&urgency={{ selected_urgency }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">&laquo;&laquo;</span>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link">&laquo;</span>
+                    </li>
+                {% endif %}
+                
+                {% for i in page_obj.paginator.page_range %}
+                    {% if page_obj.number == i %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ i }}</span>
+                        </li>
+                    {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ i }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if selected_urgency %}&urgency={{ selected_urgency }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}">{{ i }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if selected_urgency %}&urgency={{ selected_urgency }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if selected_urgency %}&urgency={{ selected_urgency }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" aria-label="Last">
+                            <span aria-hidden="true">&raquo;&raquo;</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">&raquo;</span>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link">&raquo;&raquo;</span>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+    
+    <!-- Post a Buy Request Banner -->
+    <div class="card mt-5 border-0 bg-gradient-primary text-white shadow">
+        <div class="card-body p-4 p-md-5 text-center">
+            <h2 class="mb-3 fw-bold">Looking for something specific?</h2>
+            <p class="lead mb-4">Let the community know what you're looking to buy.</p>
+            {% if user.is_authenticated %}
+                <a href="{% url 'iwanttobuy:create_request' %}" class="btn btn-light btn-lg px-5 fw-bold">
+                    <i class="fas fa-shopping-cart me-2"></i> Post a Buy Request
+                </a>
+            {% else %}
+                <a href="{% url 'login' %}?next={% url 'iwanttobuy:create_request' %}" class="btn btn-light btn-lg px-5 fw-bold">
+                    <i class="fas fa-sign-in-alt me-2"></i> Login to Post a Request
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .text-truncate-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        min-height: 4.5rem;
+    }
+    
+    .request-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .request-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, var(--kingsapark-navy) 0%, var(--kingsapark-green) 100%);
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,391 @@
+{% extends 'base.html' %}
+{% block title %}Report a Crime - Kings Park CPF{% endblock %}
+
+{% load static %}
+
+{% block extra_css %}
+<style>
+    .report-hero {
+        background: linear-gradient(135deg, var(--kingsapark-navy) 0%, var(--kingsapark-light-blue) 100%);
+        color: white;
+        padding: 4rem 0;
+        margin-bottom: 3rem;
+    }
+    
+    .report-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+    
+    .report-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+    
+    .emergency-banner {
+        background: linear-gradient(135deg, #dc143c 0%, #ff0000 100%);
+        color: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+    }
+    
+    .quick-report-btn {
+        background: linear-gradient(135deg, var(--kingsapark-green) 0%, var(--kingsapark-yellow) 100%);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+        font-weight: bold;
+        border-radius: 50px;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+        margin: 0.5rem;
+    }
+    
+    .quick-report-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        color: white;
+    }
+    
+    .category-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        font-size: 2rem;
+        color: white;
+    }
+    
+    .theft-icon { background: linear-gradient(135deg, #ff6f00, #ff8f00); }
+    .assault-icon { background: linear-gradient(135deg, #dc143c, #ff0000); }
+    .vandalism-icon { background: linear-gradient(135deg, #795548, #a1887f); }
+    .fraud-icon { background: linear-gradient(135deg, #607d8b, #90a4ae); }
+    .traffic-icon { background: linear-gradient(135deg, #ff5722, #ff7043); }
+    .other-icon { background: linear-gradient(135deg, #9c27b0, #ba68c8); }
+    
+    .recent-reports {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+    
+    .report-item {
+        border-left: 4px solid var(--kingsapark-green);
+        padding: 1rem;
+        margin-bottom: 1rem;
+        background: #f8f9fa;
+        border-radius: 0 8px 8px 0;
+    }
+    
+    .report-item.high-priority {
+        border-left-color: #dc143c;
+    }
+    
+    .report-item.medium-priority {
+        border-left-color: #ff6f00;
+    }
+    
+    .stats-card {
+        background: white;
+        border-radius: 10px;
+        padding: 1.5rem;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .stats-number {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--kingsapark-navy);
+    }
+    
+    @media (max-width: 768px) {
+        .category-icon {
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+        }
+        
+        .quick-report-btn {
+            font-size: 1rem;
+            padding: 0.8rem 1.5rem;
+            margin: 0.3rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="report-hero">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3">Report a Crime</h1>
+        <p class="lead mb-4">Help keep Kings Park safe by reporting incidents quickly and confidentially</p>
+        <div class="d-flex justify-content-center flex-wrap">
+            {% if user.is_authenticated %}
+            <a href="{% url 'reports:create_report' %}" class="quick-report-btn">
+                <i class="fas fa-plus-circle me-2"></i>Quick Report
+            </a>
+            {% else %}
+            <a href="{% url 'accounts:login' %}?next={% url 'reports:create_report' %}" class="quick-report-btn">
+                <i class="fas fa-sign-in-alt me-2"></i>Login to Report
+            </a>
+            {% endif %}
+            <a href="{% url 'reports:report_list' %}" class="quick-report-btn" style="background: linear-gradient(135deg, var(--kingsapark-navy), var(--kingsapark-light-blue));">
+                <i class="fas fa-list me-2"></i>View Reports
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Emergency Notice -->
+    <div class="emergency-banner text-center">
+        <h4 class="fw-bold mb-2">
+            <i class="fas fa-exclamation-triangle me-2"></i>Emergency?
+        </h4>
+        <p class="mb-2">For crimes in progress or life-threatening situations, call police immediately:</p>
+        <div class="d-flex justify-content-center flex-wrap">
+            <a href="tel:10111" class="btn btn-light btn-lg me-2 mb-2">
+                <i class="fas fa-phone-alt me-2"></i>10111 (Police)
+            </a>
+            <a href="tel:112" class="btn btn-light btn-lg mb-2">
+                <i class="fas fa-globe-africa me-2"></i>112 (Mobile)
+            </a>
+        </div>
+    </div>
+
+    <!-- Quick Reporting Categories -->
+    <div class="row mb-5">
+        <div class="col-12 text-center mb-4">
+            <h2 class="fw-bold" style="color: var(--kingsapark-navy);">Report by Category</h2>
+            <p class="text-muted">Choose the category that best describes your incident</p>
+        </div>
+        
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="report-card">
+                <div class="card-body text-center p-4">
+                    <div class="category-icon theft-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h4 class="card-title fw-bold mb-3">Theft & Robbery</h4>
+                    <p class="text-muted">Report stolen items, shoplifting, or robbery incidents</p>
+                    <a href="{% url 'reports:create_report' %}?category=theft" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>Report Theft
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="report-card">
+                <div class="card-body text-center p-4">
+                    <div class="category-icon assault-icon">
+                        <i class="fas fa-fist-raised"></i>
+                    </div>
+                    <h4 class="card-title fw-bold mb-3">Assault & Violence</h4>
+                    <p class="text-muted">Report physical attacks, threats, or violent behavior</p>
+                    <a href="{% url 'reports:create_report' %}?category=assault" class="btn btn-danger">
+                        <i class="fas fa-plus me-2"></i>Report Assault
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="report-card">
+                <div class="card-body text-center p-4">
+                    <div class="category-icon vandalism-icon">
+                        <i class="fas fa-hammer"></i>
+                    </div>
+                    <h4 class="card-title fw-bold mb-3">Vandalism & Damage</h4>
+                    <p class="text-muted">Report property damage, graffiti, or destruction</p>
+                    <a href="{% url 'reports:create_report' %}?category=vandalism" class="btn btn-warning">
+                        <i class="fas fa-plus me-2"></i>Report Vandalism
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="report-card">
+                <div class="card-body text-center p-4">
+                    <div class="category-icon fraud-icon">
+                        <i class="fas fa-user-secret"></i>
+                    </div>
+                    <h4 class="card-title fw-bold mb-3">Fraud & Scams</h4>
+                    <p class="text-muted">Report fraudulent activities, scams, or financial crimes</p>
+                    <a href="{% url 'reports:create_report' %}?category=fraud" class="btn btn-info">
+                        <i class="fas fa-plus me-2"></i>Report Fraud
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="report-card">
+                <div class="card-body text-center p-4">
+                    <div class="category-icon traffic-icon">
+                        <i class="fas fa-car-crash"></i>
+                    </div>
+                    <h4 class="card-title fw-bold mb-3">Traffic Incidents</h4>
+                    <p class="text-muted">Report accidents, reckless driving, or traffic violations</p>
+                    <a href="{% url 'reports:create_report' %}?category=traffic" class="btn btn-secondary">
+                        <i class="fas fa-plus me-2"></i>Report Traffic
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="report-card">
+                <div class="card-body text-center p-4">
+                    <div class="category-icon other-icon">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </div>
+                    <h4 class="card-title fw-bold mb-3">Other Incidents</h4>
+                    <p class="text-muted">Report any other type of incident or concern</p>
+                    <a href="{% url 'reports:create_report' %}" class="btn btn-outline-primary">
+                        <i class="fas fa-plus me-2"></i>Other Report
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Community Statistics -->
+    <div class="row mb-5">
+        <div class="col-12 text-center mb-4">
+            <h2 class="fw-bold" style="color: var(--kingsapark-navy);">Community Safety Overview</h2>
+            <p class="text-muted">Recent activity in Kings Park area</p>
+        </div>
+        
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="stats-card">
+                <div class="stats-number">24</div>
+                <div class="text-muted">Reports This Week</div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="stats-card">
+                <div class="stats-number text-success">18</div>
+                <div class="text-muted">Resolved This Week</div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="stats-card">
+                <div class="stats-number text-warning">6</div>
+                <div class="text-muted">Pending Response</div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="stats-card">
+                <div class="stats-number text-info">75%</div>
+                <div class="text-muted">Response Rate</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Reports -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-white py-3">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h5 class="mb-0 fw-bold">Recent Community Reports</h5>
+                        <a href="{% url 'reports:report_list' %}" class="btn btn-sm btn-outline-primary">View All</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="recent-reports">
+                        <div class="report-item high-priority">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">Vehicle Break-in - Main Street</h6>
+                                    <p class="text-muted small mb-0">Car window smashed, items stolen. Reported 2 hours ago</p>
+                                </div>
+                                <span class="badge bg-danger">High</span>
+                            </div>
+                        </div>
+                        
+                        <div class="report-item medium-priority">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">Suspicious Activity - Park Area</h6>
+                                    <p class="text-muted small mb-0">Group of individuals loitering after hours. Reported 5 hours ago</p>
+                                </div>
+                                <span class="badge bg-warning">Medium</span>
+                            </div>
+                        </div>
+                        
+                        <div class="report-item">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">Vandalism - Community Center</h6>
+                                    <p class="text-muted small mb-0">Graffiti on building wall. Reported yesterday</p>
+                                </div>
+                                <span class="badge bg-info">Low</span>
+                            </div>
+                        </div>
+                        
+                        <div class="report-item">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">Street Light Out - Oak Avenue</h6>
+                                    <p class="text-muted small mb-0">Dark area causing safety concerns. Reported 2 days ago</p>
+                                </div>
+                                <span class="badge bg-secondary">Resolved</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0 fw-bold">Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'reports:create_report' %}" class="btn btn-primary">
+                            <i class="fas fa-plus-circle me-2"></i>New Report
+                        </a>
+                        <a href="{% url 'reports:report_list' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-list me-2"></i>My Reports
+                        </a>
+                        <a href="{% url 'community_alerts:alert_list' %}" class="btn btn-outline-info">
+                            <i class="fas fa-bell me-2"></i>View Alerts
+                        </a>
+                        <a href="{% url 'contact' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-phone me-2"></i>Emergency Contacts
+                        </a>
+                    </div>
+                    
+                    <hr class="my-3">
+                    
+                    <div class="text-center">
+                        <h6 class="fw-bold mb-2">Need Help?</h6>
+                        <p class="small text-muted mb-3">Contact Kings Park CPF for assistance</p>
+                        <a href="tel:0825903149" class="btn btn-sm btn-success">
+                            <i class="fas fa-phone-alt me-2"></i>Call CPF
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

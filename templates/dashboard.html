@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard - Kingsapark Community{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h2 class="text-center mb-4">Crime Dashboard</h2>
+    
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <h3 class="h5 mb-0">Real-time Crime Alerts</h3>
+        </div>
+        <div class="card-body">
+            <ul id="alerts-list" class="list-group list-group-flush"></ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    const alertsList = document.getElementById('alerts-list');
+    const crimeAlertSocket = new WebSocket(
+        'ws://'
+        + window.location.host.split(':')[0] + ':8001'  // Connect to Daphne port 8001
+        + '/ws/crime_alerts/'
+    );
+
+    crimeAlertSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        const message = data.message;
+
+        const listItem = document.createElement('li');
+        listItem.classList.add('list-group-item');
+        listItem.textContent = message;
+        alertsList.prepend(listItem); // Add new alerts to the top
+    };
+
+    crimeAlertSocket.onclose = function(e) {
+        console.error('Crime alert socket closed unexpectedly');
+    };
+
+</script>
+{% endblock %}

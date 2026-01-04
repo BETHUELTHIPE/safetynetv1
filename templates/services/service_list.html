@@ -1,0 +1,411 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-4 align-items-center">
+        <div class="col-lg-6">
+            <h1 class="mb-1 fw-bold display-5">I Provide Services</h1>
+            <p class="lead text-muted">Find service providers or list your professional services</p>
+        </div>
+        <div class="col-lg-6 text-lg-end">
+            {% if user.is_authenticated %}
+                <a href="{% url 'services:create_service' %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-plus-circle me-2"></i> List Your Service
+                </a>
+                <a href="{% url 'services:my_services' %}" class="btn btn-outline-secondary ms-2">
+                    <i class="fas fa-list me-2"></i> My Services
+                </a>
+                <a href="{% url 'services:my_inquiries' %}" class="btn btn-outline-secondary ms-2">
+                    <i class="fas fa-envelope me-2"></i> My Inquiries
+                </a>
+            {% else %}
+                <a href="{% url 'login' %}?next={% url 'services:create_service' %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-plus-circle me-2"></i> Login to List Service
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Categories Carousel -->
+    <div class="service-categories mb-4">
+        <div class="d-flex overflow-auto pb-2 category-scroll">
+            <a href="{% url 'services:service_list' %}" class="category-item {% if not selected_category %}active{% endif %}">
+                <div class="category-icon">
+                    <i class="fas fa-th"></i>
+                </div>
+                <div class="category-name">All</div>
+            </a>
+            
+            {% for category in categories %}
+                <a href="{% url 'services:category_services' category_id=category.id %}" class="category-item {% if selected_category == category.id|stringformat:'i' %}active{% endif %}">
+                    <div class="category-icon">
+                        <i class="{% if category.icon %}{{ category.icon }}{% else %}fas fa-tools{% endif %}"></i>
+                    </div>
+                    <div class="category-name">{{ category.name }}</div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- Search and Filter Card -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <form method="get" action="{% url 'services:service_list' %}" class="row g-3">
+                <div class="col-lg-6">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control" placeholder="Search services..." value="{{ query|default:'' }}">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3">
+                    <select name="category" class="form-select" onchange="this.form.submit()">
+                        <option value="">All Categories</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}" {% if selected_category == category.id|stringformat:'i' %}selected{% endif %}>
+                                {{ category.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="col-lg-3">
+                    <select name="sort" class="form-select">
+                        <option value="featured" {% if sort == 'featured' %}selected{% endif %}>Featured First</option>
+                        <option value="newest" {% if sort == 'newest' %}selected{% endif %}>Newest First</option>
+                        <option value="rating" {% if sort == 'rating' %}selected{% endif %}>Highest Rated</option>
+                    </select>
+                </div>
+                
+                <div class="col-12 d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="fas fa-filter me-1"></i> Apply Filters
+                    </button>
+                    {% if query or selected_category %}
+                        <a href="{% url 'services:service_list' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times me-1"></i> Clear Filters
+                        </a>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Services Grid -->
+    <div class="row">
+        {% if page_obj %}
+            {% for service in page_obj %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 service-card border-0 shadow-sm">
+                        {% if service.featured %}
+                            <div class="badge bg-warning position-absolute top-0 start-0 m-2">FEATURED</div>
+                        {% elif service.is_new %}
+                            <div class="badge bg-success position-absolute top-0 start-0 m-2">NEW</div>
+                        {% endif %}
+                        
+                        {% if service.verified %}
+                            <div class="badge bg-primary position-absolute top-0 end-0 m-2" title="Verified Provider">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        {% endif %}
+                        
+                        <!-- Service Image -->
+                        <div class="service-image-container">
+                            {% if service.profile_image %}
+                                <img src="{{ service.profile_image.url }}" class="card-img-top service-image" alt="{{ service.title }}">
+                            {% else %}
+                                <div class="service-placeholder">
+                                    <i class="fas fa-tools"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="card-body">
+                            <h5 class="card-title">{{ service.title }}</h5>
+                            
+                            <div class="service-meta mb-2">
+                                <div class="rating">
+                                    {% with avg_rating=service.reviews.all|avg_rating %}
+                                        {% if avg_rating %}
+                                            <span class="stars">
+                                                {% for i in "12345"|make_list %}
+                                                    {% if forloop.counter <= avg_rating|floatformat:"0"|add:"0" %}
+                                                        <i class="fas fa-star text-warning"></i>
+                                                    {% elif forloop.counter <= avg_rating|floatformat:"0"|add:"0"|add:"0.5" %}
+                                                        <i class="fas fa-star-half-alt text-warning"></i>
+                                                    {% else %}
+                                                        <i class="far fa-star text-warning"></i>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </span>
+                                            <span class="rating-count">({{ service.reviews.count }})</span>
+                                        {% else %}
+                                            <span class="text-muted small">No ratings yet</span>
+                                        {% endif %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+                            
+                            <p class="text-muted mb-2 small">
+                                <i class="fas fa-map-marker-alt me-1"></i> {{ service.service_areas }}
+                            </p>
+                            
+                            <p class="card-text text-truncate-3">{{ service.description }}</p>
+                            
+                            <!-- Price Info -->
+                            <div class="service-price mb-2">
+                                {% if service.price_type == 'FIXED' %}
+                                    <span class="badge bg-success">R{{ service.price_amount }}</span>
+                                    <span class="text-muted small">Fixed Price</span>
+                                {% elif service.price_type == 'HOURLY' %}
+                                    <span class="badge bg-info">R{{ service.price_amount }}/hr</span>
+                                    <span class="text-muted small">Hourly Rate</span>
+                                {% elif service.price_type == 'VARIABLE' %}
+                                    <span class="badge bg-secondary">Variable</span>
+                                    <span class="text-muted small">Quote Based</span>
+                                {% elif service.price_type == 'FREE' %}
+                                    <span class="badge bg-primary">Free</span>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Provider Info -->
+                            <div class="provider-info d-flex align-items-center mb-3">
+                                <div class="provider-avatar me-2">
+                                    {% if service.provider.profile.profile_image %}
+                                        <img src="{{ service.provider.profile.profile_image.url }}" alt="{{ service.provider.username }}" class="rounded-circle" width="32" height="32">
+                                    {% else %}
+                                        <div class="avatar-placeholder">{{ service.provider.username|first|upper }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="provider-name">
+                                    {{ service.provider.get_full_name|default:service.provider.username }}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-footer bg-white pt-0 border-top-0">
+                            <div class="d-grid">
+                                <a href="{% url 'services:service_detail' pk=service.pk %}" class="btn btn-outline-primary stretched-link">
+                                    View Service
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-info-circle fa-2x me-3"></i>
+                        <div>
+                            <h5 class="mb-1">No Services Found</h5>
+                            <p class="mb-0">
+                                {% if query or selected_category %}
+                                    No services match your search criteria. Try adjusting your filters or search terms.
+                                {% else %}
+                                    There are currently no services listed. Be the first to list your service!
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" aria-label="First">
+                            <span aria-hidden="true">&laquo;&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">&laquo;&laquo;</span>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link">&laquo;</span>
+                    </li>
+                {% endif %}
+                
+                {% for i in page_obj.paginator.page_range %}
+                    {% if page_obj.number == i %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ i }}</span>
+                        </li>
+                    {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ i }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}">{{ i }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" aria-label="Last">
+                            <span aria-hidden="true">&raquo;&raquo;</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">&raquo;</span>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link">&raquo;&raquo;</span>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+    
+    <!-- Offer Your Services Banner -->
+    <div class="card mt-5 border-0 bg-gradient-primary text-white shadow">
+        <div class="card-body p-4 p-md-5 text-center">
+            <h2 class="mb-3 fw-bold">Do you offer professional services?</h2>
+            <p class="lead mb-4">List your services and reach potential customers in your community.</p>
+            {% if user.is_authenticated %}
+                <a href="{% url 'services:create_service' %}" class="btn btn-light btn-lg px-5 fw-bold">
+                    <i class="fas fa-tools me-2"></i> List Your Service
+                </a>
+            {% else %}
+                <a href="{% url 'login' %}?next={% url 'services:create_service' %}" class="btn btn-light btn-lg px-5 fw-bold">
+                    <i class="fas fa-sign-in-alt me-2"></i> Login to List Your Service
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Service Categories Styling */
+    .service-categories {
+        padding: 10px 0;
+    }
+    
+    .category-scroll {
+        scrollbar-width: thin;
+        scrollbar-color: #ccc transparent;
+        padding-bottom: 10px;
+        gap: 15px;
+    }
+    
+    .category-scroll::-webkit-scrollbar {
+        height: 6px;
+    }
+    
+    .category-scroll::-webkit-scrollbar-thumb {
+        background-color: #ccc;
+        border-radius: 10px;
+    }
+    
+    .category-item {
+        min-width: 80px;
+        text-align: center;
+        padding: 10px;
+        border-radius: 10px;
+        text-decoration: none;
+        color: var(--bs-body-color);
+        transition: all 0.3s ease;
+    }
+    
+    .category-item:hover,
+    .category-item.active {
+        background-color: var(--kingsapark-navy);
+        color: white;
+        transform: translateY(-3px);
+    }
+    
+    .category-icon {
+        font-size: 1.5rem;
+        margin-bottom: 5px;
+    }
+    
+    .category-name {
+        font-size: 0.8rem;
+        white-space: nowrap;
+    }
+    
+    /* Service Cards Styling */
+    .service-image-container {
+        height: 180px;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .service-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+    
+    .service-placeholder {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8f9fa;
+        color: #adb5bd;
+        font-size: 3rem;
+    }
+    
+    .service-card:hover .service-image {
+        transform: scale(1.05);
+    }
+    
+    .text-truncate-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        min-height: 4.5rem;
+    }
+    
+    .avatar-placeholder {
+        width: 32px;
+        height: 32px;
+        background-color: var(--kingsapark-navy);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+    }
+    
+    .service-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .service-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, var(--kingsapark-navy) 0%, var(--kingsapark-green) 100%);
+    }
+</style>
+
+<!-- Template filter for average rating -->
+{% load templatetags %}
+{% endblock %}

@@ -1,0 +1,374 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'isell:item_list' %}">I Sell</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ button_text }}</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-lg rounded-3 overflow-hidden">
+                <div class="card-header bg-gradient-primary text-white">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-tag fa-2x me-3"></i>
+                        <div>
+                            <h2 class="mb-0 fw-bold">{{ title }}</h2>
+                            <p class="mb-0 fw-light">Complete the form below to list your item</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-body p-4 p-md-5">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-4" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <!-- Item Information Section -->
+                        <div class="mb-4">
+                            <h4 class="border-start border-3 border-primary ps-2 mb-3">Item Information</h4>
+                            
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <label for="{{ form.title.id_for_label }}" class="form-label">Title*</label>
+                                    {{ form.title }}
+                                    {% if form.title.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.title.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-12 mb-3">
+                                    <label for="{{ form.description.id_for_label }}" class="form-label">Description*</label>
+                                    {{ form.description }}
+                                    {% if form.description.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.description.errors.0 }}</div>
+                                    {% endif %}
+                                    <div class="form-text">Provide a detailed description of the item including condition, features, and any relevant information for buyers.</div>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.price.id_for_label }}" class="form-label">Price (ZAR)*</label>
+                                    {{ form.price }}
+                                    {% if form.price.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.price.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-check mt-4">
+                                        {{ form.negotiable }}
+                                        <label class="form-check-label" for="{{ form.negotiable.id_for_label }}">
+                                            Price is negotiable
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.location.id_for_label }}" class="form-label">Location*</label>
+                                    {{ form.location }}
+                                    {% if form.location.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.location.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.category.id_for_label }}" class="form-label">Category*</label>
+                                    {{ form.category }}
+                                    {% if form.category.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.category.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-12 mb-3">
+                                    <label for="{{ form.tags.id_for_label }}" class="form-label">Tags</label>
+                                    {{ form.tags }}
+                                    {% if form.tags.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.tags.errors.0 }}</div>
+                                    {% endif %}
+                                    <div class="form-text">Add tags separated by commas to help buyers find your item.</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Contact Information Section -->
+                        <div class="mb-4">
+                            <h4 class="border-start border-3 border-primary ps-2 mb-3">Contact Information</h4>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.contact_number.id_for_label }}" class="form-label">Contact Number*</label>
+                                    {{ form.contact_number }}
+                                    {% if form.contact_number.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.contact_number.errors.0 }}</div>
+                                    {% endif %}
+                                    <div class="form-text">Format: +27812345678</div>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.whatsapp_number.id_for_label }}" class="form-label">WhatsApp Number (Optional)</label>
+                                    {{ form.whatsapp_number }}
+                                    {% if form.whatsapp_number.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.whatsapp_number.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-12 mb-3">
+                                    <div class="form-check">
+                                        {{ form.show_email }}
+                                        <label class="form-check-label" for="{{ form.show_email.id_for_label }}">
+                                            Show my email to potential buyers
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Media Uploads Section -->
+                        <div class="mb-4">
+                            <h4 class="border-start border-3 border-primary ps-2 mb-3">Media Uploads</h4>
+                            
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <label for="{{ form.main_image.id_for_label }}" class="form-label">Main Image*</label>
+                                    {{ form.main_image }}
+                                    {% if form.main_image.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.main_image.errors.0 }}</div>
+                                    {% endif %}
+                                    <div class="form-text">Upload a clear photo of your item (max 5MB)</div>
+                                    
+                                    {% if is_edit and form.instance.main_image %}
+                                        <div class="mt-2">
+                                            <p class="mb-1">Current main image:</p>
+                                            <img src="{{ form.instance.main_image.url }}" alt="Current main image" class="img-thumbnail" style="max-height: 100px;">
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.additional_image1.id_for_label }}" class="form-label">Additional Image 1</label>
+                                    {{ form.additional_image1 }}
+                                    {% if form.additional_image1.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.additional_image1.errors.0 }}</div>
+                                    {% endif %}
+                                    
+                                    {% if is_edit and form.instance.additional_image1 %}
+                                        <div class="mt-2">
+                                            <img src="{{ form.instance.additional_image1.url }}" alt="Additional image 1" class="img-thumbnail" style="max-height: 100px;">
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.additional_image2.id_for_label }}" class="form-label">Additional Image 2</label>
+                                    {{ form.additional_image2 }}
+                                    {% if form.additional_image2.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.additional_image2.errors.0 }}</div>
+                                    {% endif %}
+                                    
+                                    {% if is_edit and form.instance.additional_image2 %}
+                                        <div class="mt-2">
+                                            <img src="{{ form.instance.additional_image2.url }}" alt="Additional image 2" class="img-thumbnail" style="max-height: 100px;">
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.video.id_for_label }}" class="form-label">Video (Optional)</label>
+                                    {{ form.video }}
+                                    {% if form.video.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.video.errors.0 }}</div>
+                                    {% endif %}
+                                    <div class="form-text">Upload a video of your item (max 50MB)</div>
+                                    
+                                    {% if is_edit and form.instance.video %}
+                                        <div class="mt-2">
+                                            <p>Current video: <a href="{{ form.instance.video.url }}" target="_blank">View</a></p>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.pdf_document.id_for_label }}" class="form-label">PDF Document (Optional)</label>
+                                    {{ form.pdf_document }}
+                                    {% if form.pdf_document.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.pdf_document.errors.0 }}</div>
+                                    {% endif %}
+                                    <div class="form-text">Upload a PDF with additional details (max 10MB)</div>
+                                    
+                                    {% if is_edit and form.instance.pdf_document %}
+                                        <div class="mt-2">
+                                            <p>Current PDF: <a href="{{ form.instance.pdf_document.url }}" target="_blank">View</a></p>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Guidelines and Submit -->
+                        <div class="alert alert-info mb-4">
+                            <div class="d-flex">
+                                <i class="fas fa-info-circle fa-lg me-3 mt-1"></i>
+                                <div>
+                                    <h5 class="mb-1">Listing Guidelines</h5>
+                                    <ul class="mb-0">
+                                        <li>Be accurate and honest about the item's condition</li>
+                                        <li>Include clear photos from multiple angles</li>
+                                        <li>Set a fair price based on the item's value</li>
+                                        <li>Respond promptly to inquiries from potential buyers</li>
+                                        <li>Meet in safe, public places for item handover</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'isell:item_list' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-1"></i> Back to Listings
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg px-4">
+                                {{ button_text }}
+                                <i class="fas fa-paper-plane ms-2"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, var(--kingsapark-navy) 0%, var(--kingsapark-green) 100%);
+    }
+    
+    .border-primary {
+        border-color: var(--kingsapark-yellow) !important;
+    }
+    
+    h4 {
+        color: var(--kingsapark-navy);
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Form validation
+        const form = document.querySelector('.needs-validation');
+        
+        form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            
+            form.classList.add('was-validated');
+        });
+        
+        // Image preview for new uploads
+        const mainImageInput = document.getElementById('{{ form.main_image.id_for_label }}');
+        const addImage1Input = document.getElementById('{{ form.additional_image1.id_for_label }}');
+        const addImage2Input = document.getElementById('{{ form.additional_image2.id_for_label }}');
+        
+        function setupImagePreview(input) {
+            if (!input) return;
+            
+            input.addEventListener('change', function() {
+                // Remove any existing preview
+                const oldPreview = input.parentNode.querySelector('.preview-container');
+                if (oldPreview) {
+                    oldPreview.remove();
+                }
+                
+                // Create preview if file selected
+                if (input.files && input.files[0]) {
+                    const reader = new FileReader();
+                    const previewContainer = document.createElement('div');
+                    previewContainer.className = 'preview-container mt-2';
+                    
+                    reader.onload = function(e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.className = 'img-thumbnail preview-image';
+                        img.style.maxHeight = '100px';
+                        previewContainer.appendChild(img);
+                    }
+                    
+                    reader.readAsDataURL(input.files[0]);
+                    input.parentNode.appendChild(previewContainer);
+                }
+            });
+        }
+        
+        // Set up previews
+        setupImagePreview(mainImageInput);
+        setupImagePreview(addImage1Input);
+        setupImagePreview(addImage2Input);
+        
+        // File validation
+        function validateFileSize(input, maxSizeMB) {
+            if (input && input.files && input.files[0]) {
+                const fileSize = input.files[0].size / (1024 * 1024);
+                if (fileSize > maxSizeMB) {
+                    const errorMsg = `File size exceeds ${maxSizeMB}MB limit`;
+                    alert(errorMsg);
+                    input.value = '';
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        // Add event listeners for file size validation
+        if (mainImageInput) {
+            mainImageInput.addEventListener('change', function() {
+                validateFileSize(this, 5);
+            });
+        }
+        
+        if (addImage1Input) {
+            addImage1Input.addEventListener('change', function() {
+                validateFileSize(this, 5);
+            });
+        }
+        
+        if (addImage2Input) {
+            addImage2Input.addEventListener('change', function() {
+                validateFileSize(this, 5);
+            });
+        }
+        
+        const videoInput = document.getElementById('{{ form.video.id_for_label }}');
+        if (videoInput) {
+            videoInput.addEventListener('change', function() {
+                validateFileSize(this, 50);
+            });
+        }
+        
+        const pdfInput = document.getElementById('{{ form.pdf_document.id_for_label }}');
+        if (pdfInput) {
+            pdfInput.addEventListener('change', function() {
+                validateFileSize(this, 10);
+                
+                // Check if file is a PDF
+                if (this.files && this.files[0] && !this.files[0].name.toLowerCase().endsWith('.pdf')) {
+                    alert('Only PDF files are allowed');
+                    this.value = '';
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

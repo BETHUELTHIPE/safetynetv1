@@ -1,0 +1,458 @@
+{% extends 'base.html' %}
+
+{% block title %}Emergency Contacts - Kings Park Community Police Forum{% endblock %}
+
+{% load static %}
+
+{% block extra_css %}
+<style>
+    .emergency-header {
+        background: linear-gradient(135deg, #dc143c 0%, #ff0000 100%);
+        color: white;
+        padding: 3rem 0;
+        margin-bottom: 2rem;
+    }
+    
+    .emergency-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+    
+    .emergency-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+    
+    .emergency-number {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #dc143c;
+        text-decoration: none;
+        display: block;
+        transition: all 0.3s ease;
+    }
+    
+    .emergency-number:hover {
+        color: #ff0000;
+        transform: scale(1.05);
+    }
+    
+    .service-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        font-size: 2rem;
+    }
+    
+    .police-icon { background: linear-gradient(135deg, #1a237e, #3949ab); color: white; }
+    .medical-icon { background: linear-gradient(135deg, #f44336, #e91e63); color: white; }
+    .fire-icon { background: linear-gradient(135deg, #ff6f00, #ff8f00); color: white; }
+    .child-icon { background: linear-gradient(135deg, #4caf50, #8bc34a); color: white; }
+    .women-icon { background: linear-gradient(135deg, #e91e63, #f06292); color: white; }
+    .mental-icon { background: linear-gradient(135deg, #9c27b0, #ba68c8); color: white; }
+    .disaster-icon { background: linear-gradient(135deg, #607d8b, #90a4ae); color: white; }
+    .traffic-icon { background: linear-gradient(135deg, #ff5722, #ff7043); color: white; }
+    .crime-icon { background: linear-gradient(135deg, #795548, #a1887f); color: white; }
+    .poison-icon { background: linear-gradient(135deg, #009688, #4db6ac); color: white; }
+    .water-icon { background: linear-gradient(135deg, #2196f3, #64b5f6); color: white; }
+    .electricity-icon { background: linear-gradient(135deg, #ffc107, #ffca28); color: #333; }
+    
+    .category-title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: var(--kingsapark-navy);
+        margin-bottom: 2rem;
+        text-align: center;
+        position: relative;
+    }
+    
+    .category-title::after {
+        content: '';
+        display: block;
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(135deg, var(--kingsapark-yellow), var(--kingsapark-green));
+        margin: 1rem auto;
+        border-radius: 2px;
+    }
+    
+    .quick-dial-section {
+        background: linear-gradient(135deg, rgba(220, 20, 60, 0.05) 0%, rgba(255, 0, 0, 0.05) 100%);
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 3rem;
+        border: 2px solid rgba(220, 20, 60, 0.2);
+    }
+    
+    .quick-dial-btn {
+        background: linear-gradient(135deg, #dc143c, #ff0000);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        font-size: 1.2rem;
+        font-weight: bold;
+        border-radius: 50px;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+        margin: 0.5rem;
+    }
+    
+    .quick-dial-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(220, 20, 60, 0.3);
+        color: white;
+    }
+    
+    .note-alert {
+        background: linear-gradient(135deg, rgba(255, 193, 7, 0.1) 0%, rgba(255, 152, 0, 0.1) 100%);
+        border-left: 5px solid #ffc107;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin: 2rem 0;
+    }
+    
+    @media (max-width: 768px) {
+        .emergency-number {
+            font-size: 2rem;
+        }
+        
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Emergency Header -->
+<div class="emergency-header text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-3">
+            <i class="fas fa-phone-alt me-3"></i>Emergency Contacts
+        </h1>
+        <p class="lead mb-0">South African Emergency Services Directory - Save These Numbers!</p>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Quick Dial Section -->
+    <div class="quick-dial-section text-center">
+        <h2 class="mb-4 fw-bold" style="color: #dc143c;">
+            <i class="fas fa-exclamation-triangle me-2"></i>Critical Emergency Numbers
+        </h2>
+        <div class="row justify-content-center">
+            <div class="col-md-4 col-sm-6 mb-3">
+                <a href="tel:10111" class="quick-dial-btn w-100">
+                    <i class="fas fa-police-badge me-2"></i>Police: 10111
+                </a>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-3">
+                <a href="tel:10177" class="quick-dial-btn w-100">
+                    <i class="fas fa-ambulance me-2"></i>Ambulance: 10177
+                </a>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-3">
+                <a href="tel:10177" class="quick-dial-btn w-100">
+                    <i class="fas fa-fire me-2"></i>Fire: 10177
+                </a>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-3">
+            <div class="col-md-6">
+                <a href="tel:112" class="quick-dial-btn w-100" style="background: linear-gradient(135deg, #ff6b6b, #ff8787);">
+                    <i class="fas fa-globe-africa me-2"></i>Universal Emergency: 112 (Mobile)
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Emergency Services -->
+    <section class="mb-5">
+        <h2 class="category-title">Emergency Services</h2>
+        <div class="row g-4">
+            <!-- South African Police Service -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card emergency-card">
+                    <div class="card-body text-center p-4">
+                        <div class="service-icon police-icon">
+                            <i class="fas fa-police-badge"></i>
+                        </div>
+                        <h4 class="card-title fw-bold mb-3">South African Police Service</h4>
+                        <a href="tel:10111" class="emergency-number">10111</a>
+                        <p class="text-muted mt-3">For all police emergencies and crimes in progress</p>
+                        <div class="mt-3">
+                            <small class="text-muted d-block">24/7 Emergency Response</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Medical Emergency Services -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card emergency-card">
+                    <div class="card-body text-center p-4">
+                        <div class="service-icon medical-icon">
+                            <i class="fas fa-ambulance"></i>
+                        </div>
+                        <h4 class="card-title fw-bold mb-3">Medical Emergency</h4>
+                        <a href="tel:10177" class="emergency-number">10177</a>
+                        <p class="text-muted mt-3">For medical emergencies and ambulance services</p>
+                        <div class="mt-3">
+                            <small class="text-muted d-block">24/7 Emergency Response</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fire Brigade -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card emergency-card">
+                    <div class="card-body text-center p-4">
+                        <div class="service-icon fire-icon">
+                            <i class="fas fa-fire-extinguisher"></i>
+                        </div>
+                        <h4 class="card-title fw-bold mb-3">Fire Brigade</h4>
+                        <a href="tel:10177" class="emergency-number">10177</a>
+                        <p class="text-muted mt-3">For fire emergencies and rescue services</p>
+                        <div class="mt-3">
+                            <small class="text-muted d-block">24/7 Emergency Response</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Specialized Emergency Services -->
+    <section class="mb-5">
+        <h2 class="category-title">Specialized Emergency Services</h2>
+        <div class="row g-4">
+            <!-- Childline -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card emergency-card">
+                    <div class="card-body text-center p-4">
+                        <div class="service-icon child-icon">
+                            <i class="fas fa-child"></i>
+                        </div>
+                        <h4 class="card-title fw-bold mb-3">Childline South Africa</h4>
+                        <a href="tel:0800055555" class="emergency-number">08000 555 55</a>
+                        <p class="text-muted mt-3">24-hour toll-free child helpline</p>
+                        <div class="mt-3">
+                            <small class="text-muted d-block">Child Protection Services</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gender-Based Violence -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card emergency-card">
+                    <div class="card-body text-center p-4">
+                        <div class="service-icon women-icon">
+                            <i class="fas fa-hands-helping"></i>
+                        </div>
+                        <h4 class="card-title fw-bold mb-3">GBV Command Centre</h4>
+                        <a href="tel:0800428428" class="emergency-number">0800 428 428</a>
+                        <p class="text-muted mt-3">Gender-Based Violence Emergency Line</p>
+                        <div class="mt-3">
+                            <small class="text-muted d-block">24/7 Support Available</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mental Health Crisis -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card emergency-card">
+                    <div class="card-body text-center p-4">
+                        <div class="service-icon mental-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h4 class="card-title fw-bold mb-3">South African Depression & Anxiety Group</h4>
+                        <a href="tel:0800212223" class="emergency-number">0800 21 22 23</a>
+                        <p class="text-muted mt-3">24-hour mental health crisis line</p>
+                        <div class="mt-3">
+                            <small class="text-muted d-block">Mental Health Support</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Disaster Management -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card emergency-card">
+                    <div class="card-body text-center p-4">
+                        <div class="service-icon disaster-icon">
+                            <i class="fas fa-hurricane"></i>
+                        </div>
+                        <h4 class="card-title fw-bold mb-3">Disaster Management</h4>
+                        <a href="tel:0800622440" class="emergency-number">0800 622 440</a>
+                        <p class="text-muted mt-3">National disaster management center</p>
+                        <div class="mt-3">
+                            <small class="text-muted d-block">24/7 Emergency Response</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Traffic Emergency -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card emergency-card">
+                    <div class="card-body text-center p-4">
+                        <div class="service-icon traffic-icon">
+                            <i class="fas fa-car-crash"></i>
+                        </div>
+                        <h4 class="card-title fw-bold mb-3">Traffic Emergency</h4>
+                        <a href="tel:0126656157" class="emergency-number">012 665 6157</a>
+                        <p class="text-muted mt-3">National traffic emergency call center</p>
+                        <div class="mt-3">
+                            <small class="text-muted d-block">24/7 Traffic Emergencies</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Crime Stop -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card emergency-card">
+                    <div class="card-body text-center p-4">
+                        <div class="service-icon crime-icon">
+                            <i class="fas fa-user-secret"></i>
+                        </div>
+                        <h4 class="card-title fw-bold mb-3">Crime Stop</h4>
+                        <a href="tel:0860011011" class="emergency-number">08600 11011</a>
+                        <p class="text-muted mt-3">Anonymous crime reporting service</p>
+                        <div class="mt-3">
+                            <small class="text-muted d-block">24/7 Confidential Reporting</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Utility Emergency Services -->
+    <section class="mb-5">
+        <h2 class="category-title">Utility Emergency Services</h2>
+        <div class="row g-4">
+            <!-- Poison Emergency -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card emergency-card">
+                    <div class="card-body text-center p-4">
+                        <div class="service-icon poison-icon">
+                            <i class="fas fa-flask"></i>
+                        </div>
+                        <h4 class="card-title fw-bold mb-3">Poison Information Centre</h4>
+                        <a href="tel:0861555777" class="emergency-number">0861 555 777</a>
+                        <p class="text-muted mt-3">24-hour poison emergency helpline</p>
+                        <div class="mt-3">
+                            <small class="text-muted d-block">Medical Toxicology Advice</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Water Emergency -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card emergency-card">
+                    <div class="card-body text-center p-4">
+                        <div class="service-icon water-icon">
+                            <i class="fas fa-tint"></i>
+                        </div>
+                        <h4 class="card-title fw-bold mb-3">Water Emergency</h4>
+                        <a href="tel:0800200200" class="emergency-number">0800 200 200</a>
+                        <p class="text-muted mt-3">Water supply emergencies and leaks</p>
+                        <div class="mt-3">
+                            <small class="text-muted d-block">24/7 Water Services</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Electricity Emergency -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card emergency-card">
+                    <div class="card-body text-center p-4">
+                        <div class="service-icon electricity-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h4 class="card-title fw-bold mb-3">Electricity Emergency</h4>
+                        <a href="tel:0860037566" class="emergency-number">0860 037 566</a>
+                        <p class="text-muted mt-3">Power outages and electrical emergencies</p>
+                        <div class="mt-3">
+                            <small class="text-muted d-block">24/7 Eskom Emergency</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Important Notes -->
+    <section class="mb-5">
+        <div class="note-alert">
+            <h4 class="fw-bold mb-3" style="color: #f57c00;">
+                <i class="fas fa-info-circle me-2"></i>Important Notes
+            </h4>
+            <ul class="mb-0">
+                <li><strong>112</strong> is the universal emergency number that works from mobile phones even without airtime or signal</li>
+                <li><strong>10111</strong> is the national police emergency number for all serious crimes</li>
+                <li><strong>10177</strong> connects you to both ambulance and fire services</li>
+                <li>Save these emergency numbers in your phone contacts for quick access</li>
+                <li>Teach children these important emergency numbers</li>
+                <li>In case of emergency, stay calm and clearly state your location and the nature of the emergency</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Kings Park CPF Contacts -->
+    <section class="mb-5">
+        <h2 class="category-title">Kings Park CPF Contacts</h2>
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card emergency-card">
+                    <div class="card-body text-center p-4">
+                        <div class="service-icon" style="background: linear-gradient(135deg, var(--kingsapark-green), var(--kingsapark-yellow)); color: white;">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4 class="card-title fw-bold mb-3">Kings Park CPF Secretary</h4>
+                        <a href="tel:0825903149" class="emergency-number" style="color: var(--kingsapark-green);">082 590 3149</a>
+                        <p class="text-muted mt-3">For CPF-related matters and community safety concerns</p>
+                        <div class="mt-3">
+                            <small class="text-muted d-block">Available during CPF operating hours</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="card emergency-card">
+                    <div class="card-body text-center p-4">
+                        <div class="service-icon" style="background: linear-gradient(135deg, var(--kingsapark-navy), var(--kingsapark-light-blue)); color: white;">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h4 class="card-title fw-bold mb-3">Email Contact</h4>
+                        <p class="emergency-number" style="color: var(--kingsapark-navy); font-size: 1.2rem;">
+                            inquiries@cpfkingspark.co.za
+                        </p>
+                        <p class="text-muted mt-3">For non-urgent inquiries and information</p>
+                        <div class="mt-3">
+                            <small class="text-muted d-block">Response within 24-48 hours</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

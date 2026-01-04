@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /accounts/login/
+Disallow: /accounts/register/
+Disallow: /dashboard/
+Sitemap: https://kingsparkcommunityforum.org/sitemap.xml

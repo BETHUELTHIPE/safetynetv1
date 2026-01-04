@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Offline - Kings Park, Kwamhlanga Community Police Forum{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <img src="{% static 'images/kingsapark_logo_official.png' %}" alt="Kings Park CPF Logo" class="mb-4" style="height: 100px; width: auto;">
+            <h1 class="display-4 mb-4">You're Offline</h1>
+            <div class="card shadow">
+                <div class="card-body py-5">
+                    <i class="fas fa-wifi text-muted mb-3" style="font-size: 3rem;"></i>
+                    <h2>No Internet Connection</h2>
+                    <p class="lead mb-4">It seems you're not connected to the internet. Some features may be limited.</p>
+                    
+                    <div class="alert alert-info">
+                        <h5><i class="fas fa-info-circle me-2"></i>Good News!</h5>
+                        <p class="mb-0">You can still access previously visited pages and submit crime reports even when offline.</p>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <h5>Available Offline:</h5>
+                        <ul class="list-group list-group-flush mb-4">
+                            <li class="list-group-item">Report a crime (will be sent when you're back online)</li>
+                            <li class="list-group-item">View previously visited pages</li>
+                            <li class="list-group-item">Access emergency contact information</li>
+                        </ul>
+                        
+                        <h5>Need Immediate Help?</h5>
+                        <p>Call emergency services:</p>
+                        <div class="d-flex justify-content-center gap-3 mb-4">
+                            <a href="tel:10111" class="btn btn-danger">
+                                <i class="fas fa-phone me-2"></i>Police: 10111
+                            </a>
+                            <a href="tel:082 590 3149" class="btn btn-primary">
+                                <i class="fas fa-phone me-2"></i>CPF: 082 590 3149
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <button onclick="window.location.reload()" class="btn btn-lg btn-outline-primary mt-3">
+                        <i class="fas fa-sync-alt me-2"></i>Try Again
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

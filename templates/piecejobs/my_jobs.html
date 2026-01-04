@@ -1,0 +1,265 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="mb-0 fw-bold">My Piece Jobs</h1>
+            <p class="lead text-muted">Manage your job postings</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <a href="{% url 'piecejobs:create_job' %}" class="btn btn-primary">
+                <i class="fas fa-plus me-1"></i> Post a New Job
+            </a>
+        </div>
+    </div>
+    
+    <!-- Job listings -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <ul class="nav nav-tabs mb-4" id="jobTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="open-tab" data-bs-toggle="tab" data-bs-target="#open" type="button" role="tab" aria-controls="open" aria-selected="true">
+                        <i class="fas fa-unlock me-1"></i> Open
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="progress-tab" data-bs-toggle="tab" data-bs-target="#progress" type="button" role="tab" aria-controls="progress" aria-selected="false">
+                        <i class="fas fa-spinner me-1"></i> In Progress
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab" aria-controls="completed" aria-selected="false">
+                        <i class="fas fa-check-circle me-1"></i> Completed
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="cancelled-tab" data-bs-toggle="tab" data-bs-target="#cancelled" type="button" role="tab" aria-controls="cancelled" aria-selected="false">
+                        <i class="fas fa-ban me-1"></i> Cancelled
+                    </button>
+                </li>
+            </ul>
+            
+            <div class="tab-content" id="jobTabsContent">
+                <!-- Open Jobs Tab -->
+                <div class="tab-pane fade show active" id="open" role="tabpanel" aria-labelledby="open-tab">
+                    {% with jobs_filtered=jobs|dictsortreversed:"created_at"|filter_status:"OPEN" %}
+                        {% if jobs_filtered %}
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Job Title</th>
+                                            <th>Posted</th>
+                                            <th>Location</th>
+                                            <th>Applications</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for job in jobs_filtered %}
+                                            <tr>
+                                                <td>
+                                                    <a href="{% url 'piecejobs:job_detail' pk=job.pk %}" class="text-decoration-none">
+                                                        {{ job.title }}
+                                                    </a>
+                                                </td>
+                                                <td>{{ job.created_at|date:"j M Y" }}</td>
+                                                <td>{{ job.location }}</td>
+                                                <td>
+                                                    <a href="{% url 'piecejobs:job_applications' pk=job.pk %}" class="btn btn-sm btn-outline-primary">
+                                                        {{ job.applications.count }} Applications
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <div class="btn-group btn-group-sm">
+                                                        <a href="{% url 'piecejobs:edit_job' pk=job.pk %}" class="btn btn-outline-secondary">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+                                                        <a href="{% url 'piecejobs:delete_job' pk=job.pk %}" class="btn btn-outline-danger">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-info">
+                                <p class="mb-0">You don't have any open job postings yet.</p>
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+                
+                <!-- In Progress Jobs Tab -->
+                <div class="tab-pane fade" id="progress" role="tabpanel" aria-labelledby="progress-tab">
+                    {% with jobs_filtered=jobs|dictsortreversed:"created_at"|filter_status:"IN_PROGRESS" %}
+                        {% if jobs_filtered %}
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Job Title</th>
+                                            <th>Posted</th>
+                                            <th>Location</th>
+                                            <th>Applications</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for job in jobs_filtered %}
+                                            <tr>
+                                                <td>
+                                                    <a href="{% url 'piecejobs:job_detail' pk=job.pk %}" class="text-decoration-none">
+                                                        {{ job.title }}
+                                                    </a>
+                                                </td>
+                                                <td>{{ job.created_at|date:"j M Y" }}</td>
+                                                <td>{{ job.location }}</td>
+                                                <td>
+                                                    <a href="{% url 'piecejobs:job_applications' pk=job.pk %}" class="btn btn-sm btn-outline-primary">
+                                                        {{ job.applications.count }} Applications
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <div class="btn-group btn-group-sm">
+                                                        <a href="{% url 'piecejobs:edit_job' pk=job.pk %}" class="btn btn-outline-secondary">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+                                                        <a href="{% url 'piecejobs:delete_job' pk=job.pk %}" class="btn btn-outline-danger">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-info">
+                                <p class="mb-0">You don't have any in-progress job postings.</p>
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+                
+                <!-- Completed Jobs Tab -->
+                <div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="completed-tab">
+                    {% with jobs_filtered=jobs|dictsortreversed:"created_at"|filter_status:"COMPLETED" %}
+                        {% if jobs_filtered %}
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Job Title</th>
+                                            <th>Posted</th>
+                                            <th>Location</th>
+                                            <th>Applications</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for job in jobs_filtered %}
+                                            <tr>
+                                                <td>
+                                                    <a href="{% url 'piecejobs:job_detail' pk=job.pk %}" class="text-decoration-none">
+                                                        {{ job.title }}
+                                                    </a>
+                                                </td>
+                                                <td>{{ job.created_at|date:"j M Y" }}</td>
+                                                <td>{{ job.location }}</td>
+                                                <td>
+                                                    <a href="{% url 'piecejobs:job_applications' pk=job.pk %}" class="btn btn-sm btn-outline-primary">
+                                                        {{ job.applications.count }} Applications
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="{% url 'piecejobs:job_detail' pk=job.pk %}" class="btn btn-sm btn-outline-secondary">
+                                                        <i class="fas fa-eye"></i> View
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-info">
+                                <p class="mb-0">You don't have any completed job postings.</p>
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+                
+                <!-- Cancelled Jobs Tab -->
+                <div class="tab-pane fade" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab">
+                    {% with jobs_filtered=jobs|dictsortreversed:"created_at"|filter_status:"CANCELLED" %}
+                        {% if jobs_filtered %}
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Job Title</th>
+                                            <th>Posted</th>
+                                            <th>Location</th>
+                                            <th>Applications</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for job in jobs_filtered %}
+                                            <tr>
+                                                <td>
+                                                    <a href="{% url 'piecejobs:job_detail' pk=job.pk %}" class="text-decoration-none">
+                                                        {{ job.title }}
+                                                    </a>
+                                                </td>
+                                                <td>{{ job.created_at|date:"j M Y" }}</td>
+                                                <td>{{ job.location }}</td>
+                                                <td>
+                                                    <a href="{% url 'piecejobs:job_applications' pk=job.pk %}" class="btn btn-sm btn-outline-primary">
+                                                        {{ job.applications.count }} Applications
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="{% url 'piecejobs:job_detail' pk=job.pk %}" class="btn btn-sm btn-outline-secondary">
+                                                        <i class="fas fa-eye"></i> View
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-info">
+                                <p class="mb-0">You don't have any cancelled job postings.</p>
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="text-center">
+        <a href="{% url 'piecejobs:job_list' %}" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left me-1"></i> Back to All Jobs
+        </a>
+    </div>
+</div>
+
+<!-- Custom filter to filter jobs by status -->
+{% load templatetags %}
+
+<style>
+    .table td, .table th {
+        vertical-align: middle;
+    }
+</style>
+{% endblock %}

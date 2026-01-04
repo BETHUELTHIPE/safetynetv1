@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <!-- Login Card -->
+            <div class="card border-0 shadow-lg rounded-3 overflow-hidden">
+                <!-- Card Header -->
+                <div class="card-header bg-gradient-primary text-white text-center py-4">
+                    <h2 class="mb-0 fw-bold">Welcome Back</h2>
+                    <p class="mb-0 fw-light">Sign in to your Kings Park CPF account</p>
+                </div>
+                
+                <!-- Community Motto -->
+                <div class="motto-banner text-center py-3" style="background: linear-gradient(to right, #f8f9fa, #e9ecef, #f8f9fa); border-bottom: 1px solid #dee2e6;">
+                    <p class="h5 mb-0 fw-bold" style="color: var(--kingsapark-navy);">Stand Up, Speak Out Against Crime!</p>
+                    <p class="fw-medium" style="color: var(--kingsapark-green);">We Crush Crime With Unity.</p>
+                </div>
+                
+                <!-- Card Body with Form -->
+                <div class="card-body p-4 p-md-5">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-exclamation-triangle me-3"></i>
+                                <div>
+                                    <strong>Login failed.</strong>
+                                    <p class="mb-0">Please check your username and password and try again.</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        <!-- Username Field -->
+                        <div class="mb-4">
+                            <label for="{{ form.username.id_for_label }}" class="form-label d-flex align-items-center">
+                                <i class="fas fa-user text-muted me-2"></i>
+                                {{ form.username.label }}
+                            </label>
+                            {{ form.username }}
+                            {% if form.username.errors %}
+                                <div class="invalid-feedback d-block">{{ form.username.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Password Field -->
+                        <div class="mb-4">
+                            <label for="{{ form.password.id_for_label }}" class="form-label d-flex align-items-center">
+                                <i class="fas fa-lock text-muted me-2"></i>
+                                {{ form.password.label }}
+                            </label>
+                            <div class="input-group">
+                                {{ form.password }}
+                                <button type="button" class="btn btn-outline-secondary toggle-password" tabindex="-1">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            {% if form.password.errors %}
+                                <div class="invalid-feedback d-block">{{ form.password.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Remember Me and Forgot Password -->
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="rememberMe" name="remember_me">
+                                <label class="form-check-label" for="rememberMe">Remember me</label>
+                            </div>
+                            <div>
+                                <a href="{% url 'password_reset' %}" class="text-primary">Forgot password?</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg py-2">
+                                {{ button_text }}
+                                <i class="fas fa-sign-in-alt ms-2"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Next URL (if provided) -->
+                        {% if request.GET.next %}
+                            <input type="hidden" name="next" value="{{ request.GET.next }}">
+                        {% endif %}
+                    </form>
+                    
+                    <!-- Security Info -->
+                    <div class="text-center mt-4">
+                        <p class="text-muted small">
+                            <i class="fas fa-shield-alt me-1"></i> This site is protected by advanced security measures.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Card Footer with Registration Link -->
+                <div class="card-footer py-3 text-center">
+                    <p class="mb-0">Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toggle Password Visibility Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const togglePasswordButton = document.querySelector('.toggle-password');
+        const passwordField = document.getElementById('{{ form.password.id_for_label }}');
+        
+        if (togglePasswordButton && passwordField) {
+            togglePasswordButton.addEventListener('click', function() {
+                const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordField.setAttribute('type', type);
+                
+                // Toggle icon
+                const icon = this.querySelector('i');
+                if (type === 'password') {
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                } else {
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                }
+            });
+        }
+        
+        // Add login attempt tracking
+        const loginForm = document.querySelector('form');
+        if (loginForm) {
+            let loginAttempts = parseInt(localStorage.getItem('loginAttempts') || '0');
+            
+            loginForm.addEventListener('submit', function(event) {
+                // Increment attempts counter
+                loginAttempts++;
+                localStorage.setItem('loginAttempts', loginAttempts);
+                
+                // Add a small delay for security (prevents brute forcing)
+                if (loginAttempts > 3) {
+                    event.preventDefault();
+                    const delaySeconds = Math.min(loginAttempts - 3, 5); // Max 5 seconds delay
+                    
+                    const submitButton = this.querySelector('button[type="submit"]');
+                    submitButton.disabled = true;
+                    submitButton.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Processing...`;
+                    
+                    setTimeout(() => {
+                        this.submit();
+                    }, delaySeconds * 1000);
+                }
+            });
+        }
+    });
+</script>
+
+<style>
+    /* Login Form Styling */
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, var(--kingsapark-navy) 0%, var(--kingsapark-green) 100%);
+    }
+    
+    .input-group .form-control {
+        border-right: none;
+    }
+    
+    .toggle-password {
+        z-index: 10;
+    }
+    
+    .toggle-password:focus {
+        box-shadow: none;
+    }
+    
+    .form-control:focus + .toggle-password {
+        border-color: #86b7fe;
+        outline: 0;
+    }
+    
+    /* Add subtle animation */
+    .card {
+        animation: fadeIn 0.6s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+{% endblock %}

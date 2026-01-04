@@ -1,0 +1,524 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Home - Kingsapark Community Crime Reporting System{% endblock %}
+
+{% block content %}
+<section class="hero position-relative d-flex align-items-center justify-content-center">
+    <div class="hero-bg-gradient"></div>
+    <canvas id="hero-3d-canvas"></canvas> <!-- 3D Canvas for particles/effects -->
+    
+    <!-- Centered text content directly on gradient background -->
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="hero-text-content text-center">
+                    <h1 class="hero-title">
+                        <div class="hero-title-secondary text-highlight mx-auto">Crime</div>
+                        <div class="hero-title-secondary text-highlight mx-auto">Reporting</div>
+                        <div class="hero-title-secondary text-highlight mx-auto">System</div>
+                    </h1>
+                    
+                    <p class="hero-description lead text-white mt-4 mb-5">Your platform for reporting and analyzing crime data to create a safer Kingsapark Community.</p>
+                    
+                    <div class="hero-buttons">
+                        <a href="{% url 'reports:submit_report' %}" class="btn btn-primary btn-lg shadow-lg px-4 py-2 fw-bold btn-report">
+                            <i class="fas fa-exclamation-triangle me-2"></i>Report an Incident
+                        </a>
+                    </div>
+                    
+                    <!-- Badge below the button -->
+                    <div class="hero-badge mt-5">
+                        <div class="badge saps-badge px-4 py-3 rounded-pill shadow-lg">
+                            <span class="fs-5"><i class="fas fa-shield-alt me-2"></i>Officially Endorsed by SAPS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Kings Park Photo Showcase Section -->
+<section class="photo-showcase-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="section-header text-center mb-5">
+                    <h2 class="section-title fw-bold mb-3">Explore <span class="text-primary">Kings Park, Kwamhlanga</span></h2>
+                    <div class="section-subtitle">
+                        <p class="text-muted fs-5 mb-0">Take a visual tour of our vibrant and growing community</p>
+                    </div>
+                    <div class="section-divider mx-auto my-3"></div>
+                </div>
+                
+                <!-- Photo Carousel with RTL direction -->
+                <div id="kingspark-carousel" class="carousel slide" data-bs-ride="carousel" dir="rtl">
+                    <!-- Carousel indicators -->
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#kingspark-carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#kingspark-carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#kingspark-carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        <button type="button" data-bs-target="#kingspark-carousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                        <button type="button" data-bs-target="#kingspark-carousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
+                    </div>
+                    
+                    <!-- Carousel slides with enhanced captions -->
+                    <div class="carousel-inner rounded shadow-lg">
+                        <div class="carousel-item active">
+                            <div class="carousel-image-container">
+                                <img src="{% static 'images/cpf_community_1.png' %}" class="d-block w-100 carousel-img" alt="SAPS Community Event">
+                                <div class="carousel-overlay"></div>
+                            </div>
+                            <div class="carousel-caption d-block">
+                                <span class="caption-badge mb-2">OUTREACH</span>
+                                <h3 class="fw-bold">Crime Prevention Workshop</h3>
+                                <p class="d-none d-md-block">Community members participate in crime awareness and prevention training with SAPS officers</p>
+                                <div class="photo-credit d-none d-sm-block">
+                                    <small><i class="fas fa-camera me-1"></i> Kings Park CPF, 2025</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="carousel-image-container">
+                                <img src="{% static 'images/cpf_community_2.png' %}" class="d-block w-100 carousel-img" alt="CPF and Police Officers">
+                                <div class="carousel-overlay"></div>
+                            </div>
+                            <div class="carousel-caption d-block">
+                                <span class="caption-badge mb-2">COLLABORATION</span>
+                                <h3 class="fw-bold">CPF and Police Partnership</h3>
+                                <p class="d-none d-md-block">Working together with local police to ensure community safety and crime prevention</p>
+                                <div class="photo-credit d-none d-sm-block">
+                                    <small><i class="fas fa-camera me-1"></i> Kings Park CPF, 2025</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="carousel-image-container">
+                                <img src="{% static 'images/cpf_community_3.png' %}" class="d-block w-100 carousel-img" alt="Community Patrol Volunteers">
+                                <div class="carousel-overlay"></div>
+                            </div>
+                            <div class="carousel-caption d-block">
+                                <span class="caption-badge mb-2">VOLUNTEERS</span>
+                                <h3 class="fw-bold">Patrol Volunteers</h3>
+                                <p class="d-none d-md-block">Dedicated volunteers keeping our streets safe through regular community patrols</p>
+                                <div class="photo-credit d-none d-sm-block">
+                                    <small><i class="fas fa-camera me-1"></i> Kings Park CPF, 2025</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="carousel-image-container">
+                                <img src="{% static 'images/cpf_community_4.png' %}" class="d-block w-100 carousel-img" alt="Patrol Team Members">
+                                <div class="carousel-overlay"></div>
+                            </div>
+                            <div class="carousel-caption d-block">
+                                <span class="caption-badge mb-2">TEAM</span>
+                                <h3 class="fw-bold">Community Safety Team</h3>
+                                <p class="d-none d-md-block">Our vigilant team members working together to monitor and safeguard Kings Park</p>
+                                <div class="photo-credit d-none d-sm-block">
+                                    <small><i class="fas fa-camera me-1"></i> Kings Park CPF, 2025</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="carousel-image-container">
+                                <img src="{% static 'images/cpf_community_5.png' %}" class="d-block w-100 carousel-img" alt="Safety Patrol Members">
+                                <div class="carousel-overlay"></div>
+                            </div>
+                            <div class="carousel-caption d-block">
+                                <span class="caption-badge mb-2">SAFETY</span>
+                                <h3 class="fw-bold">Neighborhood Safety Patrol</h3>
+                                <p class="d-none d-md-block">Ensuring the safety of our Kings Park community through dedicated patrol efforts</p>
+                                <div class="photo-credit d-none d-sm-block">
+                                    <small><i class="fas fa-camera me-1"></i> Kings Park CPF, 2025</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Carousel controls -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#kingspark-carousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#kingspark-carousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <a href="{% url 'about' %}" class="btn btn-outline-primary">Learn More About Kings Park</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Mission Section -->
+<section class="mission-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center mb-5">
+                <div class="section-header">
+                    <span class="section-subtitle-badge d-inline-block mb-2">OUR PURPOSE</span>
+                    <h2 class="section-title display-5 fw-bold text-primary mb-4">Our Mission</h2>
+                    <div class="section-divider mx-auto mb-4"></div>
+                    <p class="lead fw-normal">
+                        Our primary role is to act as a bridge between the community and the South African Police Services
+                        to improve transparency, accountability and the delivery of policing services in our Community of Kings Park.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Crime Prevention -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card h-100 border-0 shadow mission-card rounded-lg">
+                    <div class="card-body text-center p-4">
+                        <div class="mission-icon-wrapper mb-4">
+                            <div class="mission-icon-bg bg-success-soft rounded-circle mx-auto d-flex align-items-center justify-content-center">
+                                <i class="fas fa-shield-alt fa-2x text-success"></i>
+                            </div>
+                        </div>
+                        <h4 class="card-title fw-bold mb-3" style="color: var(--kingsapark-green);">Crime Prevention</h4>
+                        <p class="card-text text-muted">
+                            Organizing community-based crime prevention projects, including neighborhood watch programs,
+                            crime awareness campaigns, and youth engagement initiatives.
+                        </p>
+                        <div class="mt-auto pt-3">
+                            <a href="#" class="btn btn-sm btn-outline-success">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Crime Reporting -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card h-100 border-0 shadow mission-card rounded-lg">
+                    <div class="card-body text-center p-4">
+                        <div class="mission-icon-wrapper mb-4">
+                            <div class="mission-icon-bg bg-info-soft rounded-circle mx-auto d-flex align-items-center justify-content-center">
+                                <i class="fas fa-chart-line fa-2x text-info"></i>
+                            </div>
+                        </div>
+                        <h4 class="card-title fw-bold mb-3" style="color: var(--kingsapark-light-blue);">Crime Analysis</h4>
+                        <p class="card-text text-muted">
+                            Collecting and sharing information on crime patterns, trends, and specific issues
+                            within the community with police for better resource deployment.
+                        </p>
+                        <div class="mt-auto pt-3">
+                            <a href="#" class="btn btn-sm btn-outline-info">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Victim Support -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card h-100 border-0 shadow mission-card rounded-lg">
+                    <div class="card-body text-center p-4">
+                        <div class="mission-icon-wrapper mb-4">
+                            <div class="mission-icon-bg bg-warning-soft rounded-circle mx-auto d-flex align-items-center justify-content-center">
+                                <i class="fas fa-hands-helping fa-2x text-warning"></i>
+                            </div>
+                        </div>
+                        <h4 class="card-title fw-bold mb-3" style="color: var(--kingsapark-red);">Victim Support</h4>
+                        <p class="card-text text-muted">
+                            Assisting victims of crime by referring them to support services and helping them
+                            navigate the criminal justice process.
+                        </p>
+                        <div class="mt-auto pt-3">
+                            <a href="#" class="btn btn-sm btn-outline-warning">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Communication -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card h-100 border-0 shadow mission-card rounded-lg">
+                    <div class="card-body text-center p-4">
+                        <div class="mission-icon-wrapper mb-4">
+                            <div class="mission-icon-bg bg-primary-soft rounded-circle mx-auto d-flex align-items-center justify-content-center">
+                                <i class="fas fa-comments fa-2x text-primary"></i>
+                            </div>
+                        </div>
+                        <h4 class="card-title fw-bold mb-3" style="color: var(--kingsapark-yellow);">Communication Bridge</h4>
+                        <p class="card-text text-muted">
+                            Maintaining clear and open channels of communication between police and residents
+                            to build public trust and confidence.
+                        </p>
+                        <div class="mt-auto pt-3">
+                            <a href="#" class="btn btn-sm btn-outline-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Partnership Section -->
+<section class="partnership-section py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <div class="section-header mb-4">
+                    <span class="section-subtitle-badge d-inline-block mb-2">COLLABORATION</span>
+                    <h2 class="section-title fw-bold text-primary mb-3">Partnership with Tribal Office</h2>
+                    <div class="section-divider mb-4"></div>
+                </div>
+                <p class="lead fw-normal mb-4">
+                    We believe that a partnership with the Tribal Office of Kings Park creates mutually beneficial outcomes,
+                    aligning with your role of development and service delivery to our community.
+                </p>
+                <div class="partnership-content">
+                    <div class="partnership-feature d-flex align-items-start mb-3">
+                        <div class="partnership-icon-wrapper me-3">
+                            <div class="partnership-icon-bg rounded-circle d-flex align-items-center justify-content-center bg-primary-soft">
+                                <i class="fas fa-landmark text-primary"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold mb-2">Cultural Authority</h5>
+                            <p class="text-muted">Custodians of culture and traditions, promoting social cohesion within Kings Park.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="partnership-feature d-flex align-items-start mb-3">
+                        <div class="partnership-icon-wrapper me-3">
+                            <div class="partnership-icon-bg rounded-circle d-flex align-items-center justify-content-center bg-primary-soft">
+                                <i class="fas fa-balance-scale text-primary"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold mb-2">Governance Support</h5>
+                            <p class="text-muted">Symbol of authority on community matters and administrators of Kings Park communal land.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4 d-flex flex-wrap">
+                    <a href="#" class="btn btn-primary me-3 mb-2 shadow-sm">Contact Tribal Office</a>
+                    <div class="partnership-badge rounded-pill bg-light border d-inline-flex align-items-center px-3 py-2 mb-2">
+                        <i class="fas fa-handshake text-primary me-2"></i>
+                        <span class="fw-bold">Building Stronger Communities Together</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="partnership-image-container position-relative rounded overflow-hidden shadow">
+                    <div class="partnership-overlay"></div>
+                    <div class="partnership-content-overlay p-4 d-flex flex-column h-100 justify-content-end">
+                        <h4 class="text-white fw-bold mb-3">Join Our Community Efforts</h4>
+                        <p class="text-white mb-4">Together we can create a safer, more connected community for all residents of Kings Park.</p>
+                        <div class="partnership-stats d-flex">
+                            <div class="partnership-stat me-4">
+                                <div class="h2 text-white fw-bold mb-1">25+</div>
+                                <div class="text-white-50">Community Events</div>
+                            </div>
+                            <div class="partnership-stat me-4">
+                                <div class="h2 text-white fw-bold mb-1">12</div>
+                                <div class="text-white-50">Joint Initiatives</div>
+                            </div>
+                            <div class="partnership-stat">
+                                <div class="h2 text-white fw-bold mb-1">3,000+</div>
+                                <div class="text-white-50">Residents Served</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CPF Community Activities Section -->
+<section class="community-activities-section py-5">
+    <div class="container">
+        <div class="row justify-content-center text-center mb-5">
+            <div class="col-lg-8">
+                <span class="community-badge-top bg-light-blue text-primary rounded-pill py-1 px-3 small fw-bold">OUR COMMUNITY</span>
+                <h2 class="section-title fw-bold mb-3 mt-3">CPF <span class="text-primary">Community Activities</span></h2>
+                <p class="text-muted">Our dedicated members working together to make Kings Park, Kwamhlanga safer</p>
+                <div class="section-divider mx-auto my-3"></div>
+            </div>
+        </div>
+        
+        <div class="row mb-4">
+            <!-- Large SAPS Event Placeholder -->
+            <div class="col-md-8 mb-3">
+                <div class="community-placeholder bg-secondary rounded p-3 d-flex align-items-center justify-content-center" style="height: 200px;">
+                    <img src="{% static 'images/cpf_community_1.png' %}" alt="SAPS Community Event" 
+                         class="img-fluid w-100 h-100 object-fit-cover d-none" 
+                         onload="this.classList.remove('d-none'); this.parentElement.classList.remove('bg-secondary'); this.parentElement.classList.remove('d-flex');"
+                         onerror="this.classList.add('d-none'); this.parentElement.textContent='SAPS Event Placeholder';">
+                    <span class="text-white">SAPS Event Placeholder</span>
+                </div>
+            </div>
+            
+            <!-- CPF and Police Partnership Placeholder -->
+            <div class="col-md-4 mb-3">
+                <div class="community-placeholder bg-secondary rounded p-3 d-flex align-items-center justify-content-center" style="height: 200px;">
+                    <img src="{% static 'images/cpf_community_2.png' %}" alt="CPF and Police Officers" 
+                         class="img-fluid w-100 h-100 object-fit-cover d-none" 
+                         onload="this.classList.remove('d-none'); this.parentElement.classList.remove('bg-secondary'); this.parentElement.classList.remove('d-flex');"
+                         onerror="this.classList.add('d-none'); this.parentElement.textContent='CPF and Police Officers Placeholder';">
+                    <span class="text-white">CPF and Police Officers Placeholder</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mb-4">
+            <!-- Patrol Volunteers Placeholder -->
+            <div class="col-md-4 mb-3">
+                <div class="community-placeholder bg-secondary rounded p-3 d-flex align-items-center justify-content-center" style="height: 150px;">
+                    <img src="{% static 'images/cpf_community_3.png' %}" alt="Community Patrol Volunteers" 
+                         class="img-fluid w-100 h-100 object-fit-cover d-none" 
+                         onload="this.classList.remove('d-none'); this.parentElement.classList.remove('bg-secondary'); this.parentElement.classList.remove('d-flex');"
+                         onerror="this.classList.add('d-none'); this.parentElement.textContent='Patrol Volunteers Placeholder';">
+                    <span class="text-white">Patrol Volunteers Placeholder</span>
+                </div>
+            </div>
+            
+            <!-- Patrol Team Placeholder -->
+            <div class="col-md-4 mb-3">
+                <div class="community-placeholder bg-secondary rounded p-3 d-flex align-items-center justify-content-center" style="height: 150px;">
+                    <img src="{% static 'images/cpf_community_4.png' %}" alt="Patrol Team Members" 
+                         class="img-fluid w-100 h-100 object-fit-cover d-none" 
+                         onload="this.classList.remove('d-none'); this.parentElement.classList.remove('bg-secondary'); this.parentElement.classList.remove('d-flex');"
+                         onerror="this.classList.add('d-none'); this.parentElement.textContent='Patrol Team Placeholder';">
+                    <span class="text-white">Patrol Team Placeholder</span>
+                </div>
+            </div>
+            
+            <!-- Safety Patrol Placeholder -->
+            <div class="col-md-4 mb-3">
+                <div class="community-placeholder bg-secondary rounded p-3 d-flex align-items-center justify-content-center" style="height: 150px;">
+                    <img src="{% static 'images/cpf_community_5.png' %}" alt="Safety Patrol Members" 
+                         class="img-fluid w-100 h-100 object-fit-cover d-none" 
+                         onload="this.classList.remove('d-none'); this.parentElement.classList.remove('bg-secondary'); this.parentElement.classList.remove('d-flex');"
+                         onerror="this.classList.add('d-none'); this.parentElement.textContent='Safety Patrol Placeholder';">
+                    <span class="text-white">Safety Patrol Placeholder</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4 text-center">
+            <div class="col-12">
+                <a href="{% url 'about' %}" class="btn btn-outline-primary">Learn More About Our Community Activities</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Three.js Scene Setup
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('hero-3d-canvas'), alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight); // Set initial size
+    renderer.setPixelRatio(window.devicePixelRatio); // Handle retina displays
+
+    // Position the canvas container absolute so it doesn't push down content
+    const heroSection = document.querySelector('.hero');
+    renderer.domElement.style.position = 'absolute';
+    renderer.domElement.style.top = '0';
+    renderer.domElement.style.left = '0';
+    renderer.domElement.style.width = '100%';
+    renderer.domElement.style.height = '100%';
+
+    // Create a geometric shape (e.g., a dodecahedron)
+    const geometry = new THREE.DodecahedronGeometry(1.5, 0);
+    const material = new THREE.MeshPhongMaterial({ color: 0xFFD700, flatShading: true });
+    const shape = new THREE.Mesh(geometry, material);
+    scene.add(shape);
+
+    // Add some lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    directionalLight.position.set(1, 1, 1).normalize();
+    scene.add(directionalLight);
+
+    camera.position.z = 5;
+
+    // Animation loop
+    function animate() {
+        requestAnimationFrame(animate);
+
+        shape.rotation.x += 0.005;
+        shape.rotation.y += 0.005;
+
+        renderer.render(scene, camera);
+    }
+
+    // Handle window resizing
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    animate();
+</script>
+
+<section class="features py-5 bg-light">
+    <div class="container">
+        <div class="row justify-content-center text-center mb-5">
+            <div class="col-lg-8">
+                <h2 class="section-title fw-bold mb-3">Key Platform <span class="text-primary">Features</span></h2>
+                <p class="text-muted fs-5">Our comprehensive system provides everything you need to help keep your community safe.</p>
+            </div>
+        </div>
+        
+        <div class="row justify-content-center g-4">
+            <div class="col-md-4">
+                <div class="feature-card h-100 p-4 bg-white rounded shadow-sm">
+                    <div class="feature-icon-wrapper mb-4 d-flex align-items-center justify-content-center">
+                        <div class="feature-icon-bg rounded-circle d-flex align-items-center justify-content-center">
+                            <i class="fas fa-file-alt fa-2x text-primary"></i>
+                        </div>
+                    </div>
+                    <h3 class="fw-bold mb-3">Easy Reporting</h3>
+                    <p class="text-muted mb-0">Submit crime reports quickly and efficiently with our user-friendly interface. Follow simple steps to document incidents accurately.</p>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="feature-card h-100 p-4 bg-white rounded shadow-sm">
+                    <div class="feature-icon-wrapper mb-4 d-flex align-items-center justify-content-center">
+                        <div class="feature-icon-bg rounded-circle d-flex align-items-center justify-content-center">
+                            <i class="fas fa-chart-bar fa-2x text-primary"></i>
+                        </div>
+                    </div>
+                    <h3 class="fw-bold mb-3">Data Analytics</h3>
+                    <p class="text-muted mb-0">Gain valuable insights from comprehensive crime statistics. Visualize trends, hotspots, and patterns to inform community safety initiatives.</p>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="feature-card h-100 p-4 bg-white rounded shadow-sm">
+                    <div class="feature-icon-wrapper mb-4 d-flex align-items-center justify-content-center">
+                        <div class="feature-icon-bg rounded-circle d-flex align-items-center justify-content-center">
+                            <i class="fas fa-shield-alt fa-2x text-primary"></i>
+                        </div>
+                    </div>
+                    <h3 class="fw-bold mb-3">Secure & Reliable</h3>
+                    <p class="text-muted mb-0">Your data is protected with enterprise-grade security. Access the platform anytime, anywhere with our robust and reliable infrastructure.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-5 pt-3 justify-content-center text-center">
+            <div class="col-md-8">
+                <a href="{% url 'about' %}" class="btn btn-outline-primary btn-lg px-5">Learn About All Features</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

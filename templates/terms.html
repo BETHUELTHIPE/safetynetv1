@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% block title %}Terms and Conditions{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10">
+            <div class="card border-0 shadow-lg rounded-3 overflow-hidden">
+                <div class="card-header bg-gradient-primary text-white">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-file-contract fa-2x me-3"></i>
+                        <div>
+                            <h2 class="mb-0 fw-bold">Terms and Conditions</h2>
+                            <p class="mb-0 fw-light">Last Updated: December 9, 2023</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-body p-4 p-md-5">
+                    <div class="mb-5">
+                        <h3>1. Introduction</h3>
+                        <p>Welcome to Kings Park, Kwamhlanga Community Police Forum (CPF) Crime Reporting System. These Terms and Conditions govern your use of our website and services.</p>
+                        <p>By accessing or using our platform, you agree to comply with and be bound by these Terms. If you do not agree to these Terms, please do not use our platform.</p>
+                    </div>
+                    
+                    <div class="mb-5">
+                        <h3>2. Definitions</h3>
+                        <ul>
+                            <li><strong>"CPF"</strong> refers to the Kings Park, Kwamhlanga Community Police Forum.</li>
+                            <li><strong>"Platform"</strong> refers to the CPF Crime Reporting System website and services.</li>
+                            <li><strong>"User"</strong> refers to any individual who accesses or uses the Platform.</li>
+                            <li><strong>"Content"</strong> refers to any information, data, text, images, or other materials uploaded, posted, or otherwise made available through the Platform.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="mb-5">
+                        <h3>3. Account Registration</h3>
+                        <p>To access certain features of the Platform, you may need to register for an account. When registering, you agree to provide accurate, current, and complete information about yourself.</p>
+                        <p>You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. You agree to notify us immediately of any unauthorized use of your account.</p>
+                        <p>The CPF reserves the right to suspend or terminate your account if any information provided during registration or thereafter proves to be inaccurate, false, or incomplete.</p>
+                    </div>
+                    
+                    <div class="mb-5">
+                        <h3>4. User Responsibilities</h3>
+                        <p>When using our Platform, you agree to:</p>
+                        <ul>
+                            <li>Provide accurate and truthful information when reporting crimes or incidents</li>
+                            <li>Not use the Platform to make false reports or allegations</li>
+                            <li>Not use the Platform to harass, intimidate, or defame others</li>
+                            <li>Respect the privacy and rights of others in the community</li>
+                            <li>Not attempt to interfere with or compromise the system integrity or security</li>
+                            <li>Not use the Platform for any illegal purposes</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="mb-5">
+                        <h3>5. Content Submission</h3>
+                        <p>By submitting Content to the Platform, you grant the CPF a worldwide, non-exclusive, royalty-free license to use, reproduce, modify, adapt, publish, and display such Content for the purpose of providing and improving the Platform's services.</p>
+                        <p>You represent and warrant that you own or have the necessary rights, licenses, consents, and permissions to grant the rights and licenses to the Content as described above.</p>
+                    </div>
+                    
+                    <div class="mb-5">
+                        <h3>6. Privacy</h3>
+                        <p>Your privacy is important to us. Please review our <a href="{% url 'privacy_policy' %}">Privacy Policy</a>, which explains how we collect, use, and disclose information that pertains to your privacy.</p>
+                    </div>
+                    
+                    <div class="mb-5">
+                        <h3>7. Limitation of Liability</h3>
+                        <p>To the maximum extent permitted by applicable law, the CPF and its officers, employees, and volunteers shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenue, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses, resulting from:</p>
+                        <ul>
+                            <li>Your access to or use of or inability to access or use the Platform</li>
+                            <li>Any conduct or content of any third party on the Platform</li>
+                            <li>Any content obtained from the Platform</li>
+                            <li>Unauthorized access, use, or alteration of your transmissions or content</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="mb-5">
+                        <h3>8. Indemnification</h3>
+                        <p>You agree to defend, indemnify, and hold harmless the CPF and its officers, employees, and volunteers from and against any claims, liabilities, damages, losses, and expenses, including without limitation reasonable attorney's fees and costs, arising out of or in any way connected with your access to or use of the Platform or your violation of these Terms.</p>
+                    </div>
+                    
+                    <div class="mb-5">
+                        <h3>9. Changes to Terms</h3>
+                        <p>The CPF reserves the right to modify these Terms at any time. We will provide notice of any material changes by posting the new Terms on the Platform and updating the "Last Updated" date at the top of this page.</p>
+                        <p>Your continued use of the Platform following the posting of revised Terms means that you accept and agree to the changes.</p>
+                    </div>
+                    
+                    <div class="mb-5">
+                        <h3>10. Contact Information</h3>
+                        <p>If you have any questions about these Terms, please contact us at:</p>
+                        <address class="ms-3">
+                            <strong>Kings Park, Kwamhlanga Community Police Forum</strong><br>
+                            B107 Kings Park Village,<br>
+                            KwaMhlanga, 1022<br>
+                            <i class="fas fa-phone me-2"></i> 082 590 3149<br>
+                            <i class="fas fa-envelope me-2"></i> inquiries@cpfkingspark.co.za
+                        </address>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <div class="d-flex">
+                            <i class="fas fa-info-circle fa-2x me-3"></i>
+                            <div>
+                                <h5>Please Read Carefully</h5>
+                                <p class="mb-0">By using the Kings Park, Kwamhlanga CPF Crime Reporting System, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-footer py-3 text-center">
+                    <a href="{% url 'register' %}" class="btn btn-primary me-2">
+                        <i class="fas fa-user-plus me-1"></i> Register
+                    </a>
+                    <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-home me-1"></i> Return to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, var(--kingsapark-navy) 0%, var(--kingsapark-green) 100%);
+    }
+    
+    .card h3 {
+        color: var(--kingsapark-navy);
+        border-bottom: 2px solid var(--kingsapark-yellow);
+        padding-bottom: 0.5rem;
+        margin-bottom: 1rem;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,545 @@
+/* Professional Homepage Styles */
+
+/* Hero Section - Professional Split Layout */
+.hero {
+    height: 100vh;
+    min-height: 600px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 0;
+    background-color: #1a237e; /* Fallback color */
+}
+
+.hero-bg-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(135deg, rgba(20, 30, 70, 0.95), rgba(60, 160, 210, 0.9));
+    z-index: 0;
+}
+
+.hero {
+    min-height: 100vh;
+    position: relative;
+}
+
+.hero-text-content {
+    position: relative;
+    z-index: 2;
+    padding: 4rem 3rem;
+    max-width: 700px;
+    margin: 0 auto;
+    background-color: rgba(0, 0, 0, 0.25);
+    border-radius: 12px;
+    backdrop-filter: blur(6px);
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Add subtle text shadow for better readability on gradient background */
+.hero-title-main,
+.hero-title-secondary,
+.hero-description {
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.hero-title {
+    margin-bottom: 0;
+    line-height: 1.1;
+    text-align: center;
+    width: 100%;
+}
+
+.hero-title-main {
+    display: block;
+    color: #ffffff;
+    font-size: 2.5rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin: 0 auto 0.2rem;
+    line-height: 1.1;
+    max-width: 80%;
+}
+
+.hero-title-secondary {
+    display: block;
+    font-size: 3.5rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    margin: 0 auto 0.2rem;
+    max-width: 80%;
+}
+
+.text-highlight {
+    color: #ffcc00;
+    position: relative;
+    display: inline-block;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.hero-description {
+    font-size: 1.25rem;
+    font-weight: 300;
+    margin-bottom: 2rem;
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 0.9;
+}
+
+.hero-badge {
+    text-align: center;
+    margin-top: 2rem;
+    z-index: 3;
+}
+
+.saps-badge {
+    background-color: #ffcc00;
+    color: #000;
+    font-weight: 600;
+    display: inline-block;
+    transform: translateY(0);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border: none;
+}
+
+.hero-description {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.6;
+    margin: 2rem auto;
+    max-width: 90%;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.btn-report {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: none;
+    background-color: #2196f3;
+    font-weight: 500;
+    padding: 0.75rem 2rem;
+    border-radius: 4px;
+    letter-spacing: 0.02em;
+    box-shadow: 0 4px 10px rgba(33, 150, 243, 0.4);
+}
+
+.btn-report:hover {
+    background-color: #1976d2;
+    box-shadow: 0 6px 15px rgba(33, 150, 243, 0.5);
+}
+
+.btn-report:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 5px rgba(33, 150, 243, 0.4);
+}
+
+.btn-report i {
+    font-size: 1rem;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+    }
+    20% {
+        transform: scale(25, 25);
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(40, 40);
+    }
+}
+
+.btn-view {
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+}
+
+.btn-view:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px);
+}
+
+/* Section Styles */
+.section-title {
+    position: relative;
+    display: inline-block;
+}
+
+.section-subtitle-badge {
+    background-color: rgba(26, 35, 126, 0.1);
+    color: var(--kingsapark-navy);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 5px 15px;
+    border-radius: 50px;
+}
+
+.section-divider {
+    height: 4px;
+    width: 60px;
+    background: linear-gradient(90deg, var(--kingsapark-navy), var(--kingsapark-light-blue));
+    border-radius: 2px;
+}
+
+/* Feature Cards */
+.feature-icon-bg {
+    width: 80px;
+    height: 80px;
+    background-color: rgba(26, 35, 126, 0.1);
+}
+
+.feature-card {
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+/* Carousel Enhancements */
+.photo-showcase-section {
+    background-color: #f8f9fa;
+    padding: 60px 0;
+}
+
+.carousel-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.7) 100%);
+    z-index: 1;
+}
+
+.carousel-image-container {
+    position: relative;
+    height: 400px;
+    overflow: hidden;
+}
+
+.carousel-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+@media (max-width: 768px) {
+    .carousel-image-container {
+        height: 300px;
+    }
+}
+
+@media (max-width: 576px) {
+    .carousel-image-container {
+        height: 250px;
+    }
+}
+
+.carousel-caption {
+    z-index: 2;
+    bottom: 40px;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    margin: 0 auto;
+    transition: all 0.3s ease;
+}
+
+.carousel-item:hover .carousel-caption {
+    background: rgba(0, 0, 0, 0.65);
+    transform: translateY(-5px);
+}
+
+.photo-credit {
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.carousel-item:hover .photo-credit {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.caption-badge {
+    background-color: var(--kingsapark-yellow);
+    color: #000;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 4px 12px;
+    border-radius: 50px;
+    display: inline-block;
+}
+
+/* Mission Cards */
+.mission-section {
+    background-color: #ffffff;
+    padding: 80px 0;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.mission-icon-bg {
+    width: 70px;
+    height: 70px;
+}
+
+.bg-success-soft {
+    background-color: rgba(40, 167, 69, 0.1);
+}
+
+.bg-info-soft {
+    background-color: rgba(23, 162, 184, 0.1);
+}
+
+.bg-warning-soft {
+    background-color: rgba(255, 193, 7, 0.1);
+}
+
+.bg-primary-soft {
+    background-color: rgba(26, 35, 126, 0.1);
+}
+
+/* Partnership Section */
+.partnership-section {
+    background: linear-gradient(135deg, rgba(248, 249, 250, 1) 0%, rgba(255, 255, 255, 1) 100%);
+    padding: 80px 0;
+}
+
+.partnership-icon-bg {
+    width: 50px;
+    height: 50px;
+}
+
+.partnership-image-container {
+    height: 400px;
+    background-image: url('../images/kingspark-tribal-office.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.partnership-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%);
+}
+
+.partnership-content-overlay {
+    position: relative;
+    z-index: 1;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 991px) {
+    .hero {
+        min-height: 500px;
+        height: auto;
+    }
+    
+    .hero-content-wrapper {
+        flex-direction: column;
+        height: auto;
+    }
+    
+    .hero-left-side {
+        display: none;
+    }
+    
+    .hero-content-box {
+        width: 100%;
+        min-height: 600px;
+        box-shadow: none;
+    }
+    
+    .hero-text-container {
+        padding: 4rem 2rem;
+    }
+    
+    .section-divider {
+        margin: 0 auto;
+    }
+    
+    .partnership-image-container {
+        height: 350px;
+        margin-top: 30px;
+    }
+}
+
+@media (max-width: 767px) {
+    .hero {
+        min-height: 450px;
+    }
+    
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+    
+    .partnership-stats {
+        flex-wrap: wrap;
+    }
+    
+    .partnership-stat {
+        margin-bottom: 15px;
+        margin-right: 15px;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+    
+    .hero-overlay {
+        padding: 25px !important;
+    }
+    
+    .feature-icon-bg, .mission-icon-bg {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+/* Community Activities Section Styling */
+.community-activities-section {
+    padding: 4rem 0;
+    background-color: #f8f9fa;
+}
+
+.community-badge-top {
+    display: inline-block;
+    padding: 5px 15px;
+    background-color: rgba(33, 150, 243, 0.1);
+    color: #2196f3;
+    font-weight: 600;
+    border-radius: 30px;
+}
+
+.community-placeholder {
+    background-color: #6c757d;
+    color: white;
+    text-align: center;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.community-placeholder img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.community-card {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    height: 300px;
+}
+
+.community-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.community-image {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    transition: all 0.5s ease;
+}
+
+.community-card:hover .community-image {
+    transform: scale(1.05);
+}
+
+.community-card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.community-card:hover .community-card-overlay {
+    background: linear-gradient(to top, rgba(0, 10, 40, 0.85), rgba(0, 0, 0, 0.4));
+}
+
+.community-badge {
+    display: inline-block;
+    background-color: var(--kingsapark-yellow);
+    color: var(--kingsapark-navy);
+    font-weight: 600;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 30px;
+    letter-spacing: 0.5px;
+    transform: translateY(0);
+    transition: all 0.3s ease;
+}
+
+.community-card:hover .community-badge {
+    transform: translateY(-3px);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Image Loading Styles */
+.image-loading-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #f0f0f0;
+}
+
+.image-loading-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left: 4px solid var(--kingsapark-navy);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    z-index: 1;
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.community-image {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.community-image.loaded {
+    opacity: 1;
+}

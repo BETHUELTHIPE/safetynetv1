@@ -1,0 +1,372 @@
+{% extends 'base.html' %}
+{% block title %}Community Dashboard - Kings Park CPF{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col-lg-8 mx-auto text-center">
+            <h1 class="h2 mb-3">Community Safety Dashboard</h1>
+            <p class="lead text-muted">Real-time insights into our community's safety and engagement</p>
+        </div>
+    </div>
+
+    <!-- Safety Score -->
+    <div class="row mb-4">
+        <div class="col-lg-8 mx-auto">
+            <div class="card border-0 shadow">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-4 text-center">
+                            <div class="safety-gauge mb-3">
+                                <div class="gauge-container position-relative">
+                                    <!-- SVG Circle with progress -->
+                                    <svg width="180" height="180" viewBox="0 0 200 200">
+                                        <circle cx="100" cy="100" r="80" fill="none" stroke="#e6e6e6" stroke-width="20" />
+                                        <circle cx="100" cy="100" r="80" fill="none" stroke="var(--bs-{{ safety_color }})" stroke-width="20"
+                                            stroke-dasharray="502.4" stroke-dashoffset="{{ 502.4 - (safety_score / 100 * 502.4)|floatformat:1 }}"
+                                            transform="rotate(-90 100 100)" />
+                                    </svg>
+                                    <div class="gauge-value position-absolute top-50 start-50 translate-middle">
+                                        <div class="h1 mb-0 fw-bold">{{ safety_score }}</div>
+                                        <div class="small">Safety Score</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="score-change">
+                                {% if thirty_day_change > 0 %}
+                                    <span class="text-danger">
+                                        <i class="fas fa-arrow-up me-1"></i>{{ thirty_day_change }}%
+                                    </span>
+                                    <div class="small text-muted">Increase in reported incidents</div>
+                                {% elif thirty_day_change < 0 %}
+                                    <span class="text-success">
+                                        <i class="fas fa-arrow-down me-1"></i>{{ thirty_day_change|abs }}%
+                                    </span>
+                                    <div class="small text-muted">Decrease in reported incidents</div>
+                                {% else %}
+                                    <span class="text-secondary">
+                                        <i class="fas fa-minus me-1"></i>0%
+                                    </span>
+                                    <div class="small text-muted">No change in reported incidents</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-8">
+                            <div class="safety-assessment p-3 rounded-3 mb-3 bg-light">
+                                <h5 class="mb-2">Community Safety Assessment</h5>
+                                
+                                <p class="mb-3">
+                                    {% if safety_score >= 80 %}
+                                        Our community currently has a high safety rating. The majority of reported incidents have been resolved successfully by our security partners.
+                                    {% elif safety_score >= 60 %}
+                                        Our community has a moderate safety rating. Progress is being made on resolving reported incidents.
+                                    {% elif safety_score >= 40 %}
+                                        Our community safety needs improvement. A significant number of reported incidents remain unresolved.
+                                    {% else %}
+                                        Our community safety requires urgent attention. Most reported incidents are still pending resolution.
+                                    {% endif %}
+                                </p>
+                                
+                                <div class="resolution-rate">
+                                    <div class="progress mb-2" style="height: 8px;">
+                                        <div class="progress-bar bg-success" role="progressbar" 
+                                            style="width: {% if total_reports > 0 %}{{ resolved_reports|floatformat:0 / total_reports * 100 }}{% else %}0{% endif %}%;" 
+                                            aria-valuenow="{% if total_reports > 0 %}{{ resolved_reports|floatformat:0 / total_reports * 100 }}{% else %}0{% endif %}" 
+                                            aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <small>Resolution Rate</small>
+                                        <small>{{ resolved_reports }} of {{ total_reports }} incidents resolved</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row g-3">
+                                <div class="col-sm-6">
+                                    <div class="card h-100 border-0 shadow-sm">
+                                        <div class="card-body text-center">
+                                            <div class="display-5 mb-2 text-primary">{{ total_reports }}</div>
+                                            <div class="text-muted">Total Reported Incidents</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card h-100 border-0 shadow-sm">
+                                        <div class="card-body text-center">
+                                            <div class="display-5 mb-2 text-info">{{ recent_reports }}</div>
+                                            <div class="text-muted">Incidents in Last 30 Days</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row g-4">
+        <!-- Left Column -->
+        <div class="col-lg-6">
+            <!-- Active Alerts -->
+            <div class="card border-0 shadow mb-4">
+                <div class="card-header bg-white py-3">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h5 class="mb-0 fw-bold">Active Community Alerts</h5>
+                        <a href="{% url 'community_alerts:alert_list' %}" class="btn btn-sm btn-outline-primary">View All</a>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    {% if active_alerts %}
+                        <div class="list-group list-group-flush">
+                            {% for alert in active_alerts %}
+                                <a href="{% url 'community_alerts:alert_detail' alert.id %}" class="list-group-item list-group-item-action">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <span class="badge 
+                                            {% if alert.severity == 'CRITICAL' %}bg-danger
+                                            {% elif alert.severity == 'HIGH' %}bg-warning text-dark
+                                            {% elif alert.severity == 'MEDIUM' %}bg-info text-dark
+                                            {% else %}bg-secondary{% endif %} me-2">
+                                                {{ alert.get_severity_display }}
+                                            </span>
+                                            <h6 class="mb-1">{{ alert.title }}</h6>
+                                            <p class="text-muted small mb-0">{{ alert.created_at|date:"M d, Y" }}</p>
+                                        </div>
+                                        <i class="fas fa-chevron-right text-muted"></i>
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <div class="text-muted mb-2"><i class="fas fa-bell-slash fa-2x"></i></div>
+                            <p>No active alerts at this time.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Crime Categories -->
+            <div class="card border-0 shadow mb-4">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0 fw-bold">Incident Types</h5>
+                </div>
+                <div class="card-body">
+                    {% if reports_by_category %}
+                        <div class="incidents-chart mb-3">
+                            <div class="incident-bars">
+                                {% for category in reports_by_category %}
+                                    <div class="incident-category mb-3">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <div>{{ category.category }}</div>
+                                            <div>{{ category.count }}</div>
+                                        </div>
+                                        <div class="progress" style="height: 10px;">
+                                            <div class="progress-bar bg-primary" style="width: {{ category.count / reports_by_category.0.count * 100 }}%"></div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-3">
+                            <p class="text-muted">No incident data available.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Column -->
+        <div class="col-lg-6">
+            <!-- Community Engagement -->
+            <div class="card border-0 shadow mb-4">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0 fw-bold">Community Engagement</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3 text-center">
+                        <div class="col-md-4">
+                            <div class="engagement-stat">
+                                <div class="icon-circle bg-primary text-white mb-2 mx-auto">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="h3 mb-0">{{ active_users }}</div>
+                                <div class="text-muted small">Community Members</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="engagement-stat">
+                                <div class="icon-circle bg-success text-white mb-2 mx-auto">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
+                                <div class="h3 mb-0">{{ upcoming_events }}</div>
+                                <div class="text-muted small">Upcoming Events</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="engagement-stat">
+                                <div class="icon-circle bg-info text-white mb-2 mx-auto">
+                                    <i class="fas fa-comments"></i>
+                                </div>
+                                <div class="h3 mb-0">{{ chat_messages }}</div>
+                                <div class="text-muted small">Recent Messages</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Upcoming Events -->
+            <div class="card border-0 shadow mb-4">
+                <div class="card-header bg-white py-3">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h5 class="mb-0 fw-bold">Featured Community Events</h5>
+                        <a href="{% url 'kingspark_events:event_list' %}" class="btn btn-sm btn-outline-primary">View All</a>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    {% if featured_events %}
+                        <div class="list-group list-group-flush">
+                            {% for event in featured_events %}
+                                <a href="{% url 'kingspark_events:event_detail' event.id %}" class="list-group-item list-group-item-action">
+                                    <div class="d-flex">
+                                        <div class="event-date text-center me-3">
+                                            <div class="event-month text-uppercase small">{{ event.start_date|date:"M" }}</div>
+                                            <div class="event-day h4 mb-0">{{ event.start_date|date:"d" }}</div>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1">{{ event.title }}</h6>
+                                            <p class="text-muted small mb-0">
+                                                <i class="fas fa-map-marker-alt me-1"></i>{{ event.venue }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <div class="text-muted mb-2"><i class="fas fa-calendar-times fa-2x"></i></div>
+                            <p>No featured events at this time.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Resource Links -->
+            <div class="card border-0 shadow">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0 fw-bold">Safety Resources</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <div class="resource-link p-3 bg-light rounded text-center">
+                                <div class="icon-circle bg-danger text-white mb-2 mx-auto">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <h6 class="mb-1">Emergency Contacts</h6>
+                                <p class="small mb-0">Important contact numbers</p>
+                                <a href="#" class="stretched-link"></a>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="resource-link p-3 bg-light rounded text-center">
+                                <div class="icon-circle bg-info text-white mb-2 mx-auto">
+                                    <i class="fas fa-file-alt"></i>
+                                </div>
+                                <h6 class="mb-1">Safety Guides</h6>
+                                <p class="small mb-0">Tips to stay safe</p>
+                                <a href="#" class="stretched-link"></a>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="resource-link p-3 bg-light rounded text-center">
+                                <div class="icon-circle bg-warning text-dark mb-2 mx-auto">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <h6 class="mb-1">Join Neighborhood Watch</h6>
+                                <p class="small mb-0">Help keep our community safe</p>
+                                <a href="#" class="stretched-link"></a>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="resource-link p-3 bg-light rounded text-center">
+                                <div class="icon-circle bg-success text-white mb-2 mx-auto">
+                                    <i class="fas fa-hands-helping"></i>
+                                </div>
+                                <h6 class="mb-1">Volunteer Opportunities</h6>
+                                <p class="small mb-0">Make a difference today</p>
+                                <a href="#" class="stretched-link"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .gauge-container {
+        width: 180px;
+        height: 180px;
+        margin: 0 auto;
+    }
+    
+    .icon-circle {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .event-date {
+        background-color: #f8f9fa;
+        padding: 5px 10px;
+        border-radius: 5px;
+        min-width: 50px;
+    }
+    
+    .event-month {
+        color: var(--kingsapark-navy);
+    }
+    
+    .event-day {
+        color: var(--kingsapark-green);
+    }
+    
+    .resource-link {
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+    
+    .resource-link:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .safety-gauge circle {
+        transition: stroke-dashoffset 1s ease;
+    }
+    
+    @media (max-width: 767.98px) {
+        .gauge-container {
+            width: 150px;
+            height: 150px;
+        }
+        
+        .gauge-container svg {
+            width: 150px;
+            height: 150px;
+        }
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block title %}Kings Park, Kwamhlanga Community Police Forum{% endblock %}</title>
+    {% load static %}
+
+    <!-- Meta tags for better mobile and SEO experience -->
+    <meta name="theme-color" content="#1A237E">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="Kings Park, Kwamhlanga Community Police Forum - Building safer communities through partnership, transparency, and accountability">
+    <meta name="keywords" content="community policing, crime reporting, Kings Park, Kwamhlanga, police forum, crime prevention">
+    <meta name="author" content="Kings Park Community Police Forum">
+    <meta name="robots" content="index, follow">
+
+    <!-- Performance optimization: Resource hints -->
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+
+    <!-- Preload critical assets -->
+    <link rel="preload" href="{% static 'css/style.css' %}" as="style">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" as="style">
+    
+    <!-- Critical CSS loaded first -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/optimize.css' %}">
+    <link rel="stylesheet" href="{% static 'css/carousel.css' %}">
+    <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+
+    <!-- Non-critical CSS deferred -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" media="print" onload="this.media='all'">
+
+    <!-- Fallback for disabled JavaScript -->
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
+    </noscript>
+    
+    <!-- Load theme script early to prevent flash of unstyled content -->
+    <script src="{% static 'js/theme.js' %}"></script>
+    
+    <!-- Load non-essential JavaScript asynchronously -->
+    <script src="{% static 'js/performance.js' %}" defer></script>
+    <script src="{% static 'js/main.js' %}" defer></script>
+    <script src="{% static 'js/sw-register.js' %}" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" defer></script>
+    
+    <!-- Add PWA support -->
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'images/apple-touch-icon.png' %}">
+</head>
+<body>
+    <header style="background: linear-gradient(135deg, #0a1a5c 0%, #123776 100%); box-shadow: 0 4px 20px rgba(0,0,0,0.15);">
+        <div style="padding: 10px 15px;" class="d-flex align-items-center">
+            <div class="me-3">
+                <img src="{% static 'images/kingspark logo.jpg' %}" alt="Kings Park, Kwamhlanga CPF Logo" style="height: 70px; width: auto; border-radius: 50%;" class="header-logo">
+            </div>
+            <div>
+                <h1 class="mb-0 fw-bold text-white" style="font-size: 1.5rem; line-height: 1.2;">Kings Park, Kwamhlanga CPF</h1>
+                <p class="text-white mb-0" style="font-size: 1rem;">Crime Reporting System</p>
+            </div>
+        </div>
+        
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <!-- 1. Home -->
+                        <li class="nav-item"><a class="nav-link hover-effect preload" href="{% url 'home' %}"><i class="fas fa-home me-1"></i>Home</a></li>
+                        
+                        <!-- 2. Register with us -->
+                        <li class="nav-item"><a class="nav-link hover-effect" href="{% url 'register' %}"><i class="fas fa-user-plus me-1"></i>Register with us</a></li>
+                        
+                        <!-- 3. About us -->
+                        <li class="nav-item"><a class="nav-link hover-effect" href="{% url 'about' %}"><i class="fas fa-info-circle me-1"></i>About us</a></li>
+                        
+                        <!-- 4. Emergency contact numbers -->
+                        <li class="nav-item"><a class="nav-link hover-effect" href="{% url 'contact' %}"><i class="fas fa-phone-alt me-1"></i>Emergency contact numbers</a></li>
+                        
+                        <!-- 5. Community Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle hover-effect" href="#" id="communityDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-users me-1"></i>Community
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="communityDropdown">
+                                <li><a class="dropdown-item" href="{% url 'kingspark_events:event_list' %}"><i class="fas fa-calendar-alt me-2"></i>Events</a></li>
+                                <li><a class="dropdown-item" href="{% url 'community_alerts:alert_list' %}"><i class="fas fa-bell me-2"></i>Alerts <span id="unread-alerts-count" class="badge bg-danger rounded-pill ms-1" style="display: none;">0</span></a></li>
+                                <li><a class="dropdown-item" href="{% url 'community_chat:chatboard' %}"><i class="fas fa-comments me-2"></i>Community Chat</a></li>
+                            </ul>
+                        </li>
+                        
+                        <!-- 5. Safety tips -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle hover-effect" href="#" id="safetyTipsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-shield-alt me-1"></i>Safety tips
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="safetyTipsDropdown">
+                                <li><a class="dropdown-item" href="{% url 'safety_tips' %}"><i class="fas fa-lightbulb me-2"></i>Safety Tips</a></li>
+                                <li><a class="dropdown-item" href="{% url 'emergency_contacts' %}"><i class="fas fa-phone-alt me-2"></i>Emergency Contacts</a></li>
+                                <li><a class="dropdown-item" href="{% url 'reports:crime_map' %}"><i class="fas fa-map-marked-alt me-2"></i>Crime Map</a></li>
+                                {% if user.is_authenticated and user.is_staff %}
+                                <li><a class="dropdown-item" href="{% url 'reports:report_list' %}"><i class="fas fa-list me-2"></i>All Reports</a></li>
+                                <li><a class="dropdown-item" href="{% url 'analytics:dashboard' %}"><i class="fas fa-chart-bar me-2"></i>Report Analytics</a></li>
+                                {% endif %}
+                            </ul>
+                        </li>
+                        
+                        <!-- 6. Report Crime -->
+                        <li class="nav-item">
+                            <a class="nav-link hover-effect" href="{% url 'crime_reporting_dashboard' %}">
+                                <i class="fas fa-exclamation-triangle me-1"></i>Report Crime
+                            </a>
+                        </li>
+                        
+                        <!-- 7. Market Place -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle hover-effect" href="#" id="marketplaceDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-store me-1"></i>Market Place
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="marketplaceDropdown">
+                                <li><a class="dropdown-item" href="{% url 'business_services:service_list' %}"><i class="fas fa-briefcase me-2"></i>Business Services</a></li>
+                                <li><a class="dropdown-item" href="{% url 'isell:item_list' %}"><i class="fas fa-tag me-2"></i>I Sell</a></li>
+                                <li><a class="dropdown-item" href="{% url 'iwanttobuy:request_list' %}"><i class="fas fa-shopping-cart me-2"></i>I Want to Buy</a></li>
+                                <li><a class="dropdown-item" href="{% url 'services:service_list' %}"><i class="fas fa-tools me-2"></i>Services</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- 8. Admin -->
+                        {% if user.is_authenticated and user.is_staff %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle hover-effect" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user-shield me-1"></i>Admin
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                                <li><a class="dropdown-item" href="{% url 'admin_dashboard' %}"><i class="fas fa-tachometer-alt me-2"></i>Admin Dashboard</a></li>
+                            </ul>
+                        </li>
+                        {% endif %}
+                    </ul>
+                
+                <!-- Right side - User controls -->
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+                    <li class="nav-item">
+                        <button id="theme-toggle" class="btn theme-toggle nav-link" aria-label="Toggle dark/light mode">
+                            <i class="fas fa-moon dark-icon"></i>
+                            <i class="fas fa-sun light-icon d-none"></i>
+                            <span class="ms-1 d-none d-lg-inline-block theme-text">Dark Mode</span>
+                        </button>
+                    </li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center auth-btn" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="user-avatar-circle me-2 d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <span>{{ user.username }}</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end animate slideIn" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item ms-2">
+                            <a class="auth-btn login-btn" href="{% url 'login' %}">
+                                <i class="fas fa-sign-in-alt me-1"></i>
+                                <span>Login</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ms-2">
+                            <a class="auth-btn register-btn" href="{% url 'register' %}">
+                                <i class="fas fa-user-plus me-1"></i>
+                                <span>Register</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <main class="container my-4 py-4 main-content-container">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="footer mt-5 position-relative overflow-hidden">
+        <!-- Top decorative border with police colors -->
+        <div class="footer-border-top position-absolute top-0 start-0 w-100" style="height: 5px; background: linear-gradient(to right, #1a237e, #0d47a1, #1565c0);"></div>
+        
+        <!-- Footer main section -->
+        <div class="footer-main py-5" style="background: linear-gradient(135deg, #0a1128 0%, #1a2a56 100%); box-shadow: 0 -4px 20px rgba(0,0,0,0.2);">
+            <div class="container position-relative" style="max-width: 1400px;">
+                <!-- Mission statement section -->
+                <div class="row mb-5 justify-content-center">
+                    <div class="col-lg-8 text-center">
+                        <div class="footer-brand d-flex flex-column align-items-center justify-content-center mb-3">
+                            <!-- Organization name -->
+                            <div class="text-center">
+                                <h4 class="mb-0 fw-bold text-white">Kings Park, Kwamhlanga</h4>
+                                <h5 class="mb-2">Community Police Forum</h5>
+                                <hr class="divider mx-auto" style="width: 60%; border-top: 2px solid rgba(255,255,255,0.2); margin-top: 0.5rem; margin-bottom: 1rem;">
+                                <p class="mission-statement mb-3">Building safer communities through partnership, transparency, and accountability</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Official endorsement -->
+                        <div class="official-endorsement d-inline-block py-1 px-3 mb-3" style="border: 1px solid rgba(255,255,255,0.2); border-radius: 5px; background: rgba(255,255,255,0.05);">
+                            <small class="text-white">Officially endorsed by the South African Police Service</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Three column footer layout -->
+                <div class="row g-4">
+                    <!-- Contact information -->
+                    <div class="col-lg-4 mb-4 mb-lg-0">
+                        <div class="footer-section">
+                            <h5 class="footer-heading mb-4 position-relative pb-2">Contact Information
+                                <span class="heading-underline position-absolute" style="bottom: 0; left: 0; height: 2px; width: 50px; background-color: #3f51b5;"></span>
+                            </h5>
+                            <div class="contact-info">
+                                <div class="contact-item mb-3 d-flex align-items-center">
+                                    <div class="contact-icon me-3" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); border-radius: 50%;"><i class="fas fa-phone"></i></div>
+                                    <div>
+                                        <p class="mb-0 fw-bold">Emergency</p>
+                                        <p class="mb-0">10111 / 082 590 3149</p>
+                                    </div>
+                                </div>
+                                <div class="contact-item mb-3 d-flex align-items-center">
+                                    <div class="contact-icon me-3" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); border-radius: 50%;"><i class="fas fa-envelope"></i></div>
+                                    <div>
+                                        <p class="mb-0 fw-bold">Email</p>
+                                        <p class="mb-0">inquiries@cpfkingspark.co.za</p>
+                                    </div>
+                                </div>
+                                <div class="contact-item mb-3 d-flex align-items-center">
+                                    <div class="contact-icon me-3" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); border-radius: 50%;"><i class="fas fa-map-marker-alt"></i></div>
+                                    <div>
+                                        <p class="mb-0 fw-bold">Address</p>
+                                        <p class="mb-0">B107 Kings Park Village,<br>KwaMhlanga, 1022</p>
+                                    </div>
+                                </div>
+                                <div class="contact-item d-flex align-items-center">
+                                    <div class="contact-icon me-3" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); border-radius: 50%;"><i class="fas fa-clock"></i></div>
+                                    <div>
+                                        <p class="mb-0 fw-bold">Office Hours</p>
+                                        <p class="mb-0">Mon-Fri: 8:00AM - 4:30PM</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Resources and links -->
+                    <div class="col-lg-4 mb-4 mb-lg-0">
+                        <div class="footer-section">
+                            <h5 class="footer-heading mb-4 position-relative pb-2">Resources & Services
+                                <span class="heading-underline position-absolute" style="bottom: 0; left: 0; height: 2px; width: 50px; background-color: #3f51b5;"></span>
+                            </h5>
+                            <div class="row">
+                                <div class="col-6">
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="mb-2"><a href="{% url 'reports:submit_report' %}" class="footer-link"><i class="fas fa-exclamation-triangle me-2"></i>Report Crime</a></li>
+                                        <li class="mb-2"><a href="{% url 'reports:crime_map' %}" class="footer-link"><i class="fas fa-map-marked-alt me-2"></i>Crime Map</a></li>
+                                        <li class="mb-2"><a href="{% url 'community_alerts:alert_list' %}" class="footer-link"><i class="fas fa-bell me-2"></i>Alerts</a></li>
+                                        <li class="mb-2"><a href="{% url 'kingspark_events:event_list' %}" class="footer-link"><i class="fas fa-calendar-alt me-2"></i>Events</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-6">
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="mb-2"><a href="{% url 'community_chat:chatboard' %}" class="footer-link"><i class="fas fa-comments me-2"></i>Community Chat</a></li>
+                                        <li class="mb-2"><a href="{% url 'crime_reporting_dashboard' %}" class="footer-link"><i class="fas fa-exclamation-triangle me-2"></i>Report Crime</a></li>
+                                        {% if user.is_authenticated and user.is_staff %}
+                                        <li class="mb-2"><a href="{% url 'admin_dashboard' %}" class="footer-link"><i class="fas fa-tachometer-alt me-2"></i>Admin Dashboard</a></li>
+                                        {% endif %}
+                                        <li class="mb-2"><a href="{% url 'about' %}" class="footer-link"><i class="fas fa-info-circle me-2"></i>About Us</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <!-- Safety tip box -->
+                            <div class="safety-tip mt-4 p-3" style="background: rgba(63, 81, 181, 0.1); border-left: 3px solid #3f51b5; border-radius: 4px;">
+                                <h6 class="mb-1"><i class="fas fa-shield-alt me-2"></i>Safety Tip</h6>
+                                <p class="mb-0 small">Report suspicious activities immediately. Your vigilance helps keep our community safe.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Newsletter and social media -->
+                    <div class="col-lg-4">
+                        <div class="footer-section">
+                            <h5 class="footer-heading mb-4 position-relative pb-2">Stay Connected
+                                <span class="heading-underline position-absolute" style="bottom: 0; left: 0; height: 2px; width: 50px; background-color: #3f51b5;"></span>
+                            </h5>
+                            
+                            <!-- Newsletter subscription -->
+                            <div class="newsletter mb-4">
+                                <p class="mb-2">Subscribe to our newsletter for safety updates</p>
+                                <form class="d-flex" action="#">
+                                    <div class="input-group">
+                                        <input type="email" class="form-control" placeholder="Your email address" aria-label="Email" aria-describedby="newsletter-submit">
+                                        <button class="btn btn-primary" type="submit" id="newsletter-submit">Subscribe</button>
+                                    </div>
+                                </form>
+                            </div>
+                            
+                            <!-- Social media -->
+                            <div class="social-media mb-4">
+                                <p class="mb-2">Follow us on social media</p>
+                                <div class="d-flex">
+                                    <a href="#" class="social-icon" aria-label="Facebook">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                    <a href="#" class="social-icon" aria-label="Twitter">
+                                        <i class="fab fa-twitter"></i>
+                                    </a>
+                                    <a href="#" class="social-icon" aria-label="Instagram">
+                                        <i class="fab fa-instagram"></i>
+                                    </a>
+                                    <a href="#" class="social-icon" aria-label="WhatsApp">
+                                        <i class="fab fa-whatsapp"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <!-- Mobile app promo -->
+                            <div class="app-download p-3" style="background: rgba(255,255,255,0.05); border-radius: 5px;">
+                                <h6 class="mb-2"><i class="fas fa-mobile-alt me-2"></i>Download Our App</h6>
+                                <p class="mb-2 small">Get quick access to emergency services and community alerts.</p>
+                                <div class="d-flex gap-2">
+                                    <a href="#" class="btn btn-sm btn-outline-light"><i class="fab fa-google-play me-1"></i> Google Play</a>
+                                    <a href="#" class="btn btn-sm btn-outline-light"><i class="fab fa-apple me-1"></i> App Store</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- CPF Supporters Section -->
+                <div class="row mt-5">
+                    <div class="col-12 text-center mb-4">
+                        <h5 class="footer-heading text-uppercase fw-bold position-relative d-inline-block mb-4">
+                            CPF Supporters
+                            <div class="heading-underline position-absolute"></div>
+                        </h5>
+                        <p class="text-center mb-4">Main Supporters of our Community Policing Forum</p>
+                    </div>
+                </div>
+                
+                <div class="row g-4 supporters-grid">
+                    <!-- SAPS -->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="supporter-category h-100">
+                            <div class="supporter-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h6 class="supporter-title">South African Police Service</h6>
+                            <ul class="supporter-list">
+                                <li>Station Commander</li>
+                                <li>Sector Managers</li>
+                                <li>Visible Policing Units</li>
+                            </ul>
+                            <p class="supporter-note">Primary supporter - CPF exists to improve police-community communication</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Community Members -->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="supporter-category h-100">
+                            <div class="supporter-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h6 class="supporter-title">Local Community Members</h6>
+                            <ul class="supporter-list">
+                                <li>Residents</li>
+                                <li>Street Committees</li>
+                                <li>Neighborhood Associations</li>
+                            </ul>
+                            <p class="supporter-note">Reporting issues and participating in safety initiatives</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Businesses -->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="supporter-category h-100">
+                            <div class="supporter-icon">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <h6 class="supporter-title">Local Businesses</h6>
+                            <ul class="supporter-list">
+                                <li>Shops & Malls</li>
+                                <li>Taxi Associations</li>
+                                <li>Local Companies</li>
+                            </ul>
+                            <p class="supporter-note">Provide sponsorships and resources to improve safety</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Municipal Government -->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="supporter-category h-100">
+                            <div class="supporter-icon">
+                                <i class="fas fa-landmark"></i>
+                            </div>
+                            <h6 class="supporter-title">Municipal Government</h6>
+                            <ul class="supporter-list">
+                                <li>Ward Councillors</li>
+                                <li>Municipal Safety Departments</li>
+                                <li>Local Government Structures</li>
+                            </ul>
+                            <p class="supporter-note">Help with service delivery issues impacting safety</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional supporters in collapsed section -->
+                    <div class="col-12 text-center mt-3">
+                        <button class="btn btn-sm btn-outline-light" type="button" data-bs-toggle="collapse" data-bs-target="#additionalSupporters" aria-expanded="false" aria-controls="additionalSupporters">
+                            <i class="fas fa-chevron-down me-1"></i> Show More Supporters
+                        </button>
+                    </div>
+                    
+                    <div class="collapse mt-3" id="additionalSupporters">
+                        <div class="row g-4">
+                            <!-- Schools -->
+                            <div class="col-lg-3 col-md-6">
+                                <div class="supporter-category h-100">
+                                    <div class="supporter-icon">
+                                        <i class="fas fa-school"></i>
+                                    </div>
+                                    <h6 class="supporter-title">Educational Institutions</h6>
+                                    <ul class="supporter-list">
+                                        <li>School Governing Bodies</li>
+                                        <li>Principals & Teachers</li>
+                                        <li>Youth Safety Programs</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <!-- NGOs -->
+                            <div class="col-lg-3 col-md-6">
+                                <div class="supporter-category h-100">
+                                    <div class="supporter-icon">
+                                        <i class="fas fa-hands-helping"></i>
+                                    </div>
+                                    <h6 class="supporter-title">NGOs</h6>
+                                    <ul class="supporter-list">
+                                        <li>Safety Organizations</li>
+                                        <li>Substance Abuse Prevention</li>
+                                        <li>Gender-Based Violence Awareness</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <!-- Faith-Based Organizations -->
+                            <div class="col-lg-3 col-md-6">
+                                <div class="supporter-category h-100">
+                                    <div class="supporter-icon">
+                                        <i class="fas fa-place-of-worship"></i>
+                                    </div>
+                                    <h6 class="supporter-title">Faith-Based Organizations</h6>
+                                    <ul class="supporter-list">
+                                        <li>Churches & Mosques</li>
+                                        <li>Community Outreach Groups</li>
+                                        <li>Support Networks</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <!-- Private Security -->
+                            <div class="col-lg-3 col-md-6">
+                                <div class="supporter-category h-100">
+                                    <div class="supporter-icon">
+                                        <i class="fas fa-user-shield"></i>
+                                    </div>
+                                    <h6 class="supporter-title">Private Security Companies</h6>
+                                    <ul class="supporter-list">
+                                        <li>Neighborhood Patrols</li>
+                                        <li>Alarm Response Teams</li>
+                                        <li>SAPS Coordination</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer styling section -->
+        <style>
+            /* Enhanced footer styling */
+            .footer {
+                color: rgba(255, 255, 255, 0.8);
+            }
+            
+            .footer-heading {
+                color: white;
+                font-weight: 600;
+                letter-spacing: 0.5px;
+            }
+            
+            .footer-link {
+                color: rgba(255, 255, 255, 0.7);
+                text-decoration: none;
+                transition: all 0.2s ease;
+                display: inline-block;
+                position: relative;
+            }
+            
+            .footer-link:hover {
+                color: white;
+                transform: translateX(3px);
+            }
+            
+            .footer-link:after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 1px;
+                bottom: -2px;
+                left: 0;
+                background-color: white;
+                transition: width 0.2s ease;
+            }
+            
+            .footer-link:hover:after {
+                width: 100%;
+            }
+            
+            .contact-icon i {
+                color: #3f51b5;
+            }
+            
+            /* Supporters section styling */
+            .supporter-category {
+                background-color: rgba(255, 255, 255, 0.05);
+                border-radius: 10px;
+                padding: 1.5rem;
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            .supporter-category:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+                background-color: rgba(255, 255, 255, 0.08);
+            }
+            
+            .supporter-icon {
+                font-size: 2rem;
+                margin-bottom: 1rem;
+                color: var(--kingsapark-yellow, #ffeb3b);
+            }
+            
+            .supporter-title {
+                font-weight: 600;
+                margin-bottom: 1rem;
+                padding-bottom: 0.5rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            .supporter-list {
+                list-style: none;
+                padding-left: 0;
+                margin-bottom: 1rem;
+            }
+            
+            .supporter-list li {
+                padding: 0.25rem 0;
+                font-size: 0.9rem;
+                position: relative;
+                padding-left: 1.2rem;
+            }
+            
+            .supporter-list li:before {
+                content: '•';
+                position: absolute;
+                left: 0;
+                color: var(--kingsapark-green, #4caf50);
+            }
+            
+            .supporter-note {
+                font-size: 0.8rem;
+                font-style: italic;
+                margin-top: auto;
+                opacity: 0.8;
+            }
+            
+            .heading-underline {
+                bottom: -8px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 80%;
+                height: 2px;
+                background-color: var(--kingsapark-yellow, #ffeb3b);
+            }
+            
+            #additionalSupporters {
+                width: 100%;
+            }
+            
+            /* Responsive adjustments */
+            @media (max-width: 767.98px) {
+                .supporter-category {
+                    padding: 1.2rem;
+                }
+                .supporter-title {
+                    font-size: 1rem;
+                }
+                .footer-logo {
+                    height: 100px !important;
+                }
+            }
+            
+            /* Legal links styling */
+            .legal-links a {
+                color: rgba(255, 255, 255, 0.6);
+                transition: color 0.2s ease;
+            }
+            
+            .legal-links a:hover {
+                color: white;
+            }
+            
+            /* Newsletter form styling */
+            .newsletter .form-control {
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                color: white;
+            }
+            
+            .newsletter .form-control::placeholder {
+                color: rgba(255, 255, 255, 0.5);
+            }
+            
+            .newsletter .form-control:focus {
+                background: rgba(255, 255, 255, 0.15);
+                border-color: rgba(255, 255, 255, 0.3);
+                color: white;
+                box-shadow: 0 0 0 0.25rem rgba(63, 81, 181, 0.25);
+            }
+        </style>
+        
+        <!-- Professional copyright section with legal links -->
+        <div class="footer-bottom py-3" style="background-color: rgba(0,0,0,0.25); border-top: 1px solid rgba(255,255,255,0.1);">
+            <div class="container" style="max-width: 1400px;">
+                <div class="row align-items-center">
+                    <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
+                        <p class="mb-0">&copy; 2025 Kings Park, Kwamhlanga Community Police Forum</p>
+                        <p class="small mb-0"><em>The place of love and respect</em></p>
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <div class="legal-links">
+                            <a href="#" class="text-decoration-none me-3 small">Privacy Policy</a>
+                            <a href="#" class="text-decoration-none me-3 small">Terms of Service</a>
+                            <a href="#" class="text-decoration-none me-3 small">Site Map</a>
+                            <a href="#" class="text-decoration-none small">Contact</a>
+                        </div>
+                        <p class="mt-1 small mb-0">SAPS Registration: #CPF-KP-2021-0283</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <button id="back-to-top" class="btn btn-primary rounded-circle shadow-lg" title="Back to Top">
+        <i class="bi bi-arrow-up"></i>
+    </button>
+
+    <!-- Optimized script loading - Load critical scripts first -->    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
+    <!-- Theme Toggle Functionality with performance optimization -->
+    <script>
+        // Immediately invoke theme setting to prevent FOUC (Flash of Unstyled Content)
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+        
+        // Use requestIdleCallback for non-critical initialization
+        const initThemeToggle = () => {
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const themeText = document.querySelector('.theme-text');
+            
+            if (!themeToggleBtn) return;
+            
+            // Update button text based on current theme
+            const updateThemeText = (theme) => {
+                if (themeText) {
+                    themeText.textContent = theme === 'light' ? 'Dark Mode' : 'Light Mode';
+                }
+                
+                // Update icons
+                const darkIcon = themeToggleBtn.querySelector('.dark-icon');
+                const lightIcon = themeToggleBtn.querySelector('.light-icon');
+                
+                if (darkIcon && lightIcon) {
+                    if (theme === 'dark') {
+                        darkIcon.classList.add('d-none');
+                        lightIcon.classList.remove('d-none');
+                    } else {
+                        darkIcon.classList.remove('d-none');
+                        lightIcon.classList.add('d-none');
+                    }
+                }
+            };
+            
+            // Set initial button state
+            updateThemeText(document.documentElement.getAttribute('data-theme') || 'light');
+            
+            // Toggle theme when button is clicked - using event delegation for better performance
+            themeToggleBtn.addEventListener('click', function() {
+                const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateThemeText(newTheme);
+            });
+        };
+        
+        // Use requestIdleCallback for non-critical initialization or fallback to setTimeout
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(() => {
+                initThemeToggle();
+            });
+        } else {
+            setTimeout(initThemeToggle, 100);
+        }
+    </script>
+
+    <!-- Check for unread alerts -->
+    {% if user.is_authenticated %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const alertCountBadge = document.getElementById('unread-alerts-count');
+            
+            // Function to fetch unread alerts count
+            function checkUnreadAlerts() {
+                fetch('{% url "community_alerts:unread_alerts_count" %}', {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.count > 0) {
+                        alertCountBadge.innerText = data.count;
+                        alertCountBadge.style.display = 'inline-block';
+                    } else {
+                        alertCountBadge.style.display = 'none';
+                    }
+                })
+                .catch(error => console.error('Error checking alerts:', error));
+            }
+            
+            // Check on page load and every 2 minutes
+            checkUnreadAlerts();
+            setInterval(checkUnreadAlerts, 2 * 60 * 1000);
+        });
+    </script>
+    {% endif %}
+
+    <!-- Performance monitoring and error tracking -->
+    <script>
+        // Simple performance monitoring
+        if ('performance' in window && 'PerformanceObserver' in window) {
+            try {
+                // Record navigation timing metrics
+                window.addEventListener('load', () => {
+                    setTimeout(() => {
+                        const navEntry = performance.getEntriesByType('navigation')[0];
+                        const paintEntries = performance.getEntriesByType('paint');
+                        
+                        if (navEntry) {
+                            console.log(`Page load time: ${navEntry.loadEventEnd}ms`);
+                            console.log(`DOM Content Loaded: ${navEntry.domContentLoadedEventEnd}ms`);
+                        }
+                        
+                        // Log paint metrics
+                        paintEntries.forEach(entry => {
+                            console.log(`${entry.name}: ${entry.startTime}ms`);
+                        });
+                    }, 0);
+                });
+            } catch (error) {
+                console.error('Performance monitoring error:', error);
+            }
+        }
+
+        // Basic error tracking
+        window.addEventListener('error', function(event) {
+            console.error('Caught error:', event.message, event.filename, event.lineno);
+            // In production, would send to analytics/monitoring service
+        });
+    </script>
+
+    <!-- Enhanced 3D Animation Scripts for Header and Footer -->
+    <script>
+        // Header 3D Animation - Professional Version
+        function initHeaderAnimation() {
+            const canvas = document.getElementById('header-3d-canvas');
+            if (!canvas) return;
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ 
+                canvas: canvas, 
+                alpha: true, 
+                antialias: true,
+                precision: 'highp'
+            });
+
+            renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            
+            // Create a dynamic background effect with particles
+            const particleCount = 150;
+            const particleGeometry = new THREE.BufferGeometry();
+            const particlePositions = new Float32Array(particleCount * 3);
+            const particleSizes = new Float32Array(particleCount);
+            
+            const themeColors = [
+                new THREE.Color(0xF4D03F), // Primary yellow
+                new THREE.Color(0x006442), // Primary green
+                new THREE.Color(0x4FC3F7), // Light blue
+                new THREE.Color(0xD91E18), // Accent red
+                new THREE.Color(0x1A237E)  // Dark blue/navy
+            ];
+            
+            const particleColors = new Float32Array(particleCount * 3);
+            
+            for (let i = 0; i < particleCount; i++) {
+                // Position particles in a horizontal plane for header
+                particlePositions[i * 3] = (Math.random() - 0.5) * 30;      // x spread wider
+                particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 6;   // y more constrained
+                particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 10 - 5; // z depth
+                
+                // Vary particle sizes
+                particleSizes[i] = Math.random() * 2 + 0.5;
+                
+                // Set particle color
+                const colorIndex = Math.floor(Math.random() * themeColors.length);
+                const color = themeColors[colorIndex];
+                particleColors[i * 3] = color.r;
+                particleColors[i * 3 + 1] = color.g;
+                particleColors[i * 3 + 2] = color.b;
+            }
+            
+            particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+            particleGeometry.setAttribute('color', new THREE.BufferAttribute(particleColors, 3));
+            particleGeometry.setAttribute('size', new THREE.BufferAttribute(particleSizes, 1));
+            
+            // Create particle shader material
+            const particleMaterial = new THREE.ShaderMaterial({
+                uniforms: {
+                    time: { value: 0 },
+                    pixelRatio: { value: renderer.getPixelRatio() }
+                },
+                vertexShader: `
+                    attribute float size;
+                    attribute vec3 color;
+                    uniform float time;
+                    uniform float pixelRatio;
+                    varying vec3 vColor;
+                    
+                    void main() {
+                        vColor = color;
+                        
+                        // Animate particles with waves
+                        vec3 pos = position;
+                        pos.y += sin(time * 0.3 + position.x * 0.5) * 0.3;
+                        pos.x += cos(time * 0.2 + position.y * 0.3) * 0.1;
+                        
+                        vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+                        gl_PointSize = size * pixelRatio * (1.0 / -mvPosition.z);
+                        gl_Position = projectionMatrix * mvPosition;
+                    }
+                `,
+                fragmentShader: `
+                    varying vec3 vColor;
+                    
+                    void main() {
+                        // Create a soft circular particle
+                        float dist = length(gl_PointCoord - vec2(0.5));
+                        if (dist > 0.5) discard;
+                        
+                        // Soften edges
+                        float alpha = 1.0 - smoothstep(0.4, 0.5, dist);
+                        gl_FragColor = vec4(vColor, alpha * 0.7);
+                    }
+                `,
+                transparent: true,
+                vertexColors: true,
+                blending: THREE.AdditiveBlending,
+                depthTest: false
+            });
+            
+            const particles = new THREE.Points(particleGeometry, particleMaterial);
+            scene.add(particles);
+            
+            // Add some premium 3D objects
+            const objects = [];
+            const objectCount = 6;
+            
+            // Create premium shapes
+            for (let i = 0; i < objectCount; i++) {
+                let geometry;
+                
+                // Create more complex geometries for premium feel
+                switch (i % 6) {
+                    case 0:
+                        geometry = new THREE.OctahedronGeometry(0.6, 1); // More subdivisions
+                        break;
+                    case 1:
+                        geometry = new THREE.TorusKnotGeometry(0.4, 0.15, 64, 8, 2, 3);
+                        break;
+                    case 2:
+                        geometry = new THREE.IcosahedronGeometry(0.45, 1);
+                        break;
+                    case 3:
+                        geometry = new THREE.SphereGeometry(0.35, 16, 16);
+                        break;
+                    case 4:
+                        geometry = new THREE.TetrahedronGeometry(0.5, 1);
+                        break;
+                    case 5:
+                        geometry = new THREE.DodecahedronGeometry(0.4, 0);
+                        break;
+                }
+                
+                // Create metallic-like materials with environment mapping for premium look
+                const material = new THREE.MeshStandardMaterial({
+                    color: new THREE.Color(themeColors[i % themeColors.length]),
+                    metalness: 0.7,
+                    roughness: 0.3,
+                    flatShading: false,
+                    transparent: true,
+                    opacity: 0.7
+                });
+                
+                const object = new THREE.Mesh(geometry, material);
+                
+                // Position objects strategically across the header
+                const xPos = (i / (objectCount - 1) * 2 - 1) * 10; // Spread evenly along x-axis
+                object.position.set(
+                    xPos,
+                    (Math.random() - 0.5) * 3,
+                    (Math.random() - 0.5) * 5 - 2
+                );
+                
+                object.rotation.set(
+                    Math.random() * Math.PI,
+                    Math.random() * Math.PI,
+                    Math.random() * Math.PI
+                );
+                
+                object.userData = {
+                    rotationSpeed: {
+                        x: (Math.random() - 0.5) * 0.01,
+                        y: (Math.random() - 0.5) * 0.01,
+                        z: (Math.random() - 0.5) * 0.005
+                    },
+                    initialPosition: object.position.clone(),
+                    movementFrequency: Math.random() * 0.05 + 0.01
+                };
+                
+                objects.push(object);
+                scene.add(object);
+            }
+            
+            // Improved lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(5, 5, 7);
+            scene.add(directionalLight);
+            
+            const backLight = new THREE.DirectionalLight(0xffffff, 0.3);
+            backLight.position.set(-5, -2, -5);
+            scene.add(backLight);
+            
+            camera.position.z = 10;
+            
+            // More sophisticated animation loop
+            let time = 0;
+            function animate() {
+                requestAnimationFrame(animate);
+                time += 0.01;
+                
+                // Update particle shader time
+                particleMaterial.uniforms.time.value = time;
+                
+                // Animate 3D objects with more natural movement
+                objects.forEach(object => {
+                    // Smooth rotation
+                    object.rotation.x += object.userData.rotationSpeed.x;
+                    object.rotation.y += object.userData.rotationSpeed.y;
+                    object.rotation.z += object.userData.rotationSpeed.z;
+                    
+                    // Gentle floating motion
+                    const { initialPosition, movementFrequency } = object.userData;
+                    object.position.y = initialPosition.y + Math.sin(time * movementFrequency) * 0.5;
+                    object.position.x = initialPosition.x + Math.cos(time * movementFrequency * 0.7) * 0.2;
+                });
+                
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+            
+            // Handle resize with debouncing for performance
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    camera.aspect = canvas.clientWidth / canvas.clientHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+                    particleMaterial.uniforms.pixelRatio.value = renderer.getPixelRatio();
+                }, 250);
+            });
+        }
+
+        // Footer 3D Animation - Professional Version
+        function initFooterAnimation() {
+            const canvas = document.getElementById('footer-3d-canvas');
+            if (!canvas) return;
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ 
+                canvas: canvas, 
+                alpha: true, 
+                antialias: true,
+                precision: 'highp'
+            });
+
+            renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            
+            // Create an elegant flowing field effect for footer
+            const flowFieldSize = 50;
+            const flowFieldGeometry = new THREE.BufferGeometry();
+            const flowFieldPositions = new Float32Array(flowFieldSize * flowFieldSize * 3);
+            const flowFieldColors = new Float32Array(flowFieldSize * flowFieldSize * 3);
+            const flowFieldSizes = new Float32Array(flowFieldSize * flowFieldSize);
+            
+            const footerThemeColors = [
+                new THREE.Color(0xF4D03F), // Primary yellow
+                new THREE.Color(0x006442), // Primary green
+                new THREE.Color(0x4FC3F7), // Light blue
+                new THREE.Color(0xD91E18), // Accent red
+                new THREE.Color(0x1A237E)  // Dark blue/navy
+            ];
+            
+            let index = 0;
+            for (let i = 0; i < flowFieldSize; i++) {
+                for (let j = 0; j < flowFieldSize; j++) {
+                    // Create a grid pattern but with some randomness
+                    const x = (i / flowFieldSize * 2 - 1) * 20 + (Math.random() - 0.5) * 2;
+                    const y = (j / flowFieldSize * 2 - 1) * 10 + (Math.random() - 0.5) * 2;
+                    const z = (Math.random() - 0.5) * 5 - 10; // Keep behind the main content
+                    
+                    flowFieldPositions[index * 3] = x;
+                    flowFieldPositions[index * 3 + 1] = y;
+                    flowFieldPositions[index * 3 + 2] = z;
+                    
+                    // Gradient color based on position
+                    const colorIndex = Math.floor((i + j) / (flowFieldSize * 2) * footerThemeColors.length);
+                    const color = footerThemeColors[colorIndex];
+                    flowFieldColors[index * 3] = color.r;
+                    flowFieldColors[index * 3 + 1] = color.g;
+                    flowFieldColors[index * 3 + 2] = color.b;
+                    
+                    // Vary size based on position for depth effect
+                    flowFieldSizes[index] = 1 + Math.cos(i / flowFieldSize * Math.PI) * Math.sin(j / flowFieldSize * Math.PI) * 1.5;
+                    
+                    index++;
+                }
+            }
+            
+            flowFieldGeometry.setAttribute('position', new THREE.BufferAttribute(flowFieldPositions, 3));
+            flowFieldGeometry.setAttribute('color', new THREE.BufferAttribute(flowFieldColors, 3));
+            flowFieldGeometry.setAttribute('size', new THREE.BufferAttribute(flowFieldSizes, 1));
+            
+            // Create advanced shader for flow field particles
+            const flowFieldMaterial = new THREE.ShaderMaterial({
+                uniforms: {
+                    time: { value: 0 },
+                    pixelRatio: { value: renderer.getPixelRatio() }
+                },
+                vertexShader: `
+                    attribute float size;
+                    attribute vec3 color;
+                    uniform float time;
+                    uniform float pixelRatio;
+                    varying vec3 vColor;
+                    varying float vSize;
+                    
+                    // Simplex noise function for organic movement
+                    vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+                    vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+                    vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
+                    vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+                    
+                    float snoise(vec3 v) {
+                        const vec2 C = vec2(1.0/6.0, 1.0/3.0);
+                        const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
+                        
+                        // First corner
+                        vec3 i  = floor(v + dot(v, C.yyy));
+                        vec3 x0 = v - i + dot(i, C.xxx);
+                        
+                        // Other corners
+                        vec3 g = step(x0.yzx, x0.xyz);
+                        vec3 l = 1.0 - g;
+                        vec3 i1 = min(g.xyz, l.zxy);
+                        vec3 i2 = max(g.xyz, l.zxy);
+                        
+                        vec3 x1 = x0 - i1 + C.xxx;
+                        vec3 x2 = x0 - i2 + C.yyy;
+                        vec3 x3 = x0 - D.yyy;
+                        
+                        // Permutations
+                        i = mod289(i); 
+                        vec4 p = permute(permute(permute(
+                                 i.z + vec4(0.0, i1.z, i2.z, 1.0))
+                               + i.y + vec4(0.0, i1.y, i2.y, 1.0)) 
+                               + i.x + vec4(0.0, i1.x, i2.x, 1.0));
+                               
+                        // Gradients
+                        float n_ = 0.142857142857;
+                        vec3 ns = n_ * D.wyz - D.xzx;
+                        
+                        vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
+                        
+                        vec4 x_ = floor(j * ns.z);
+                        vec4 y_ = floor(j - 7.0 * x_);
+                        
+                        vec4 x = x_ *ns.x + ns.yyyy;
+                        vec4 y = y_ *ns.x + ns.yyyy;
+                        vec4 h = 1.0 - abs(x) - abs(y);
+                        
+                        vec4 b0 = vec4(x.xy, y.xy);
+                        vec4 b1 = vec4(x.zw, y.zw);
+                        
+                        vec4 s0 = floor(b0)*2.0 + 1.0;
+                        vec4 s1 = floor(b1)*2.0 + 1.0;
+                        vec4 sh = -step(h, vec4(0.0));
+                        
+                        vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy;
+                        vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;
+                        
+                        vec3 p0 = vec3(a0.xy, h.x);
+                        vec3 p1 = vec3(a0.zw, h.y);
+                        vec3 p2 = vec3(a1.xy, h.z);
+                        vec3 p3 = vec3(a1.zw, h.w);
+                        
+                        // Normalise gradients
+                        vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
+                        p0 *= norm.x;
+                        p1 *= norm.y;
+                        p2 *= norm.z;
+                        p3 *= norm.w;
+                        
+                        // Mix final noise value
+                        vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+                        m = m * m;
+                        return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
+                    }
+                    
+                    void main() {
+                        vColor = color;
+                        vSize = size;
+                        
+                        // Create organic flowing movement using noise
+                        vec3 pos = position;
+                        
+                        // Flow field effect
+                        float noiseValue = snoise(vec3(pos.xy * 0.05, time * 0.1));
+                        float noiseValue2 = snoise(vec3(pos.yx * 0.05, time * 0.1 + 100.0));
+                        
+                        pos.x += sin(time * 0.2 + pos.y * 0.2) * 0.3;
+                        pos.y += cos(time * 0.2 + pos.x * 0.2) * 0.3;
+                        
+                        // Add noise-based displacement
+                        pos.x += noiseValue * 0.5;
+                        pos.y += noiseValue2 * 0.5;
+                        
+                        vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+                        gl_PointSize = size * (5.0 / -mvPosition.z) * pixelRatio;
+                        gl_Position = projectionMatrix * mvPosition;
+                    }
+                `,
+                fragmentShader: `
+                    varying vec3 vColor;
+                    varying float vSize;
+                    
+                    void main() {
+                        // Create a soft, glowing particle
+                        float dist = length(gl_PointCoord - vec2(0.5));
+                        if (dist > 0.5) discard;
+                        
+                        float glow = 0.5 - dist;
+                        vec3 finalColor = vColor * glow * 1.5;
+                        
+                        // Create subtle color variations
+                        gl_FragColor = vec4(finalColor, glow * 0.6);
+                    }
+                `,
+                transparent: true,
+                vertexColors: true,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+            
+            const flowField = new THREE.Points(flowFieldGeometry, flowFieldMaterial);
+            scene.add(flowField);
+            
+            // Add decorative elements
+            const decorativeElements = [];
+            
+            // Create glowing lines connecting some points
+            const lineCount = 12;
+            
+            for (let i = 0; i < lineCount; i++) {
+                const lineGeometry = new THREE.BufferGeometry();
+                const linePointCount = 10;
+                const linePositions = new Float32Array(linePointCount * 3);
+                
+                // Create curved line path
+                for (let j = 0; j < linePointCount; j++) {
+                    const t = j / (linePointCount - 1);
+                    const x = (i / lineCount * 2 - 1) * 15;
+                    const y = Math.sin(t * Math.PI * 2) * 4;
+                    const z = -5 - Math.random() * 5;
+                    
+                    linePositions[j * 3] = x;
+                    linePositions[j * 3 + 1] = y;
+                    linePositions[j * 3 + 2] = z;
+                }
+                
+                lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
+                
+                // Create glowing line material
+                const lineMaterial = new THREE.LineBasicMaterial({
+                    color: new THREE.Color(footerThemeColors[i % footerThemeColors.length]),
+                    transparent: true,
+                    opacity: 0.4,
+                    linewidth: 1
+                });
+                
+                const line = new THREE.Line(lineGeometry, lineMaterial);
+                line.userData = {
+                    initialPositions: linePositions.slice(),
+                    waveOffset: Math.random() * Math.PI * 2
+                };
+                
+                decorativeElements.push(line);
+                scene.add(line);
+            }
+            
+            // Add subtle ambient lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+            
+            camera.position.z = 15;
+            
+            // Animation loop
+            let time = 0;
+            function animate() {
+                requestAnimationFrame(animate);
+                time += 0.01;
+                
+                // Update shader uniforms
+                flowFieldMaterial.uniforms.time.value = time;
+                
+                // Animate decorative lines
+                decorativeElements.forEach((line, lineIndex) => {
+                    const positions = line.geometry.attributes.position.array;
+                    const initialPositions = line.userData.initialPositions;
+                    const waveOffset = line.userData.waveOffset;
+                    
+                    for (let i = 0; i < positions.length / 3; i++) {
+                        const pointIndex = i * 3;
+                        
+                        // Create flowing wave effect on lines
+                        positions[pointIndex + 1] = initialPositions[pointIndex + 1] * 
+                            (1 + Math.sin(time * 0.5 + waveOffset + i * 0.2) * 0.2);
+                    }
+                    
+                    line.geometry.attributes.position.needsUpdate = true;
+                });
+                
+                // Gentle rotation of the entire scene for an elegant effect
+                flowField.rotation.y = Math.sin(time * 0.1) * 0.1;
+                flowField.rotation.x = Math.cos(time * 0.15) * 0.05;
+                
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+            
+            // Handle resize with debouncing
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    camera.aspect = canvas.clientWidth / canvas.clientHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+                    flowFieldMaterial.uniforms.pixelRatio.value = renderer.getPixelRatio();
+                }, 250);
+            });
+        }
+
+        // Initialize animations when DOM is loaded with loading indicator
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add FontAwesome for icons if not already included
+            if (!document.querySelector('link[href*="font-awesome"]')) {
+                const fontAwesome = document.createElement('link');
+                fontAwesome.rel = 'stylesheet';
+                fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css';
+                document.head.appendChild(fontAwesome);
+            }
+            
+            // Initialize animations with graceful loading
+            const loadAnimations = async () => {
+                try {
+                    // Start animations
+                    initHeaderAnimation();
+                    initFooterAnimation();
+                    
+                    // Fade in the animations
+                    const headerCanvas = document.getElementById('header-3d-canvas');
+                    const footerCanvas = document.getElementById('footer-3d-canvas');
+                    if (headerCanvas) {
+                        headerCanvas.style.transition = 'opacity 1s ease-in-out';
+                        headerCanvas.style.opacity = '1';
+                    }
+                    if (footerCanvas) {
+                        footerCanvas.style.transition = 'opacity 1s ease-in-out';
+                        footerCanvas.style.opacity = '1';
+                    }
+                } catch (error) {
+                    console.error('Error initializing animations:', error);
+                }
+            };
+            
+            // Set initial opacity to 0 for smooth fade-in
+            const headerCanvas = document.getElementById('header-3d-canvas');
+            const footerCanvas = document.getElementById('footer-3d-canvas');
+            if (headerCanvas) headerCanvas.style.opacity = '0';
+            if (footerCanvas) footerCanvas.style.opacity = '0';
+            
+            // Load animations after a small delay for better perceived performance
+            setTimeout(loadAnimations, 100);
+        });
+        
+        // Reinitialize on window resize for better performance with debouncing
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(function() {
+                // Only reinitialize if window size changed significantly
+                const headerCanvas = document.getElementById('header-3d-canvas');
+                const footerCanvas = document.getElementById('footer-3d-canvas');
+                
+                if (headerCanvas && footerCanvas) {
+                    // Fade out
+                    headerCanvas.style.opacity = '0';
+                    footerCanvas.style.opacity = '0';
+                    
+                    // Reinitialize after fade out
+                    setTimeout(function() {
+                        initHeaderAnimation();
+                        initFooterAnimation();
+                        
+                        // Fade back in
+                        setTimeout(function() {
+                            headerCanvas.style.opacity = '1';
+                            footerCanvas.style.opacity = '1';
+                        }, 50);
+                    }, 300);
+                }
+            }, 500);
+        });
+    </script>
+</body>
+</html>

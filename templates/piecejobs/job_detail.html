@@ -1,0 +1,290 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Success messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-4" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    <!-- Navigation breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'piecejobs:job_list' %}">Piece Jobs</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ job.title }}</li>
+        </ol>
+    </nav>
+    
+    <div class="row">
+        <!-- Main job details -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 class="h3 mb-0">{{ job.title }}</h1>
+                        <div class="text-muted small">
+                            Posted {{ job.created_at|timesince }} ago
+                            {% if job.category %}
+                                in <span class="badge bg-info">{{ job.category }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <span class="badge bg-success">{{ job.get_status_display }}</span>
+                </div>
+                
+                <div class="card-body">
+                    <!-- Location -->
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                            <h5 class="mb-0">Location</h5>
+                        </div>
+                        <p class="ms-4">{{ job.location }}</p>
+                    </div>
+                    
+                    <!-- Job description -->
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-align-left text-primary me-2"></i>
+                            <h5 class="mb-0">Description</h5>
+                        </div>
+                        <div class="ms-4 job-description">
+                            {{ job.description|linebreaks }}
+                        </div>
+                    </div>
+                    
+                    <!-- Job details grid -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-clock text-primary me-2"></i>
+                                <h5 class="mb-0">Duration</h5>
+                            </div>
+                            <p class="ms-4">{{ job.duration }}</p>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-users text-primary me-2"></i>
+                                <h5 class="mb-0">People Needed</h5>
+                            </div>
+                            <p class="ms-4">{{ job.people_needed }}</p>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-money-bill-wave text-primary me-2"></i>
+                                <h5 class="mb-0">Offer Price</h5>
+                            </div>
+                            <p class="ms-4 price-tag">R{{ job.offer_price }}</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Media section -->
+                    {% if job.photo or job.pdf_document or job.video %}
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-images text-primary me-2"></i>
+                                <h5 class="mb-0">Attached Media</h5>
+                            </div>
+                            
+                            <div class="row ms-2">
+                                {% if job.photo %}
+                                    <div class="col-md-6 mb-3">
+                                        <div class="card">
+                                            <img src="{{ job.photo.url }}" alt="Job Photo" class="card-img-top img-fluid">
+                                            <div class="card-footer text-center p-2">
+                                                <a href="{{ job.photo.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                                    <i class="fas fa-expand-arrows-alt me-1"></i> View Full Size
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                
+                                <div class="col-md-6">
+                                    <div class="list-group">
+                                        {% if job.pdf_document %}
+                                            <a href="{{ job.pdf_document.url }}" target="_blank" class="list-group-item list-group-item-action d-flex align-items-center">
+                                                <i class="fas fa-file-pdf text-danger me-3 fa-lg"></i>
+                                                <div>
+                                                    <strong>PDF Document</strong><br>
+                                                    <span class="text-muted small">View or download</span>
+                                                </div>
+                                            </a>
+                                        {% endif %}
+                                        
+                                        {% if job.video %}
+                                            <a href="{{ job.video.url }}" target="_blank" class="list-group-item list-group-item-action d-flex align-items-center">
+                                                <i class="fas fa-file-video text-primary me-3 fa-lg"></i>
+                                                <div>
+                                                    <strong>Video</strong><br>
+                                                    <span class="text-muted small">View or download</span>
+                                                </div>
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Call to action buttons -->
+                <div class="card-footer bg-white">
+                    {% if user.is_authenticated %}
+                        {% if job.poster == user %}
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'piecejobs:edit_job' pk=job.pk %}" class="btn btn-outline-primary flex-grow-1">
+                                    <i class="fas fa-edit me-1"></i> Edit Job
+                                </a>
+                                <a href="{% url 'piecejobs:delete_job' pk=job.pk %}" class="btn btn-outline-danger">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                                <a href="{% url 'piecejobs:job_applications' pk=job.pk %}" class="btn btn-outline-info">
+                                    <i class="fas fa-users me-1"></i> View Applications
+                                </a>
+                            </div>
+                        {% else %}
+                            {% if job.status == 'OPEN' %}
+                                {% if user_has_applied %}
+                                    <button class="btn btn-success w-100" disabled>
+                                        <i class="fas fa-check me-1"></i> Application Submitted
+                                    </button>
+                                {% else %}
+                                    <a href="{% url 'piecejobs:apply_job' pk=job.pk %}" class="btn btn-primary w-100">
+                                        <i class="fas fa-paper-plane me-1"></i> Apply for this Job
+                                    </a>
+                                {% endif %}
+                            {% else %}
+                                <button class="btn btn-secondary w-100" disabled>
+                                    <i class="fas fa-ban me-1"></i> This job is no longer accepting applications
+                                </button>
+                            {% endif %}
+                        {% endif %}
+                    {% else %}
+                        <a href="{% url 'login' %}?next={% url 'piecejobs:job_detail' pk=job.pk %}" class="btn btn-primary w-100">
+                            <i class="fas fa-sign-in-alt me-1"></i> Login to Apply
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Contact information card -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-user me-2"></i> Contact Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="{% if job.poster.profile.profile_image %}{{ job.poster.profile.profile_image.url }}{% else %}https://via.placeholder.com/50{% endif %}" alt="{{ job.poster.get_full_name }}" class="rounded-circle me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                        <div>
+                            <h6 class="mb-0">{{ job.poster.get_full_name }}</h6>
+                            <p class="text-muted small mb-0">Member since {{ job.poster.date_joined|date:"F Y" }}</p>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    {% if job.whatsapp_number %}
+                        <div class="mb-3">
+                            <a href="https://wa.me/{{ job.whatsapp_number|slice:'1:' }}" target="_blank" class="btn btn-success w-100 d-flex align-items-center justify-content-center">
+                                <i class="fab fa-whatsapp me-2 fa-lg"></i> Contact via WhatsApp
+                            </a>
+                        </div>
+                    {% endif %}
+                    
+                    {% if job.contact_number %}
+                        <div class="mb-3">
+                            <a href="tel:{{ job.contact_number }}" class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center">
+                                <i class="fas fa-phone-alt me-2"></i> Call {{ job.contact_number }}
+                            </a>
+                        </div>
+                    {% endif %}
+                    
+                    {% if user.is_authenticated and job.poster != user %}
+                        <div class="alert alert-warning mb-0">
+                            <div class="d-flex">
+                                <i class="fas fa-exclamation-triangle me-2 mt-1"></i>
+                                <div>
+                                    <p class="mb-0 small">When contacting the job poster, mention that you found this job on the Community Police Forum website.</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Job safety tips -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">
+                        <i class="fas fa-shield-alt me-2"></i> Safety Tips
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2 d-flex">
+                            <i class="fas fa-check-circle text-success me-2 mt-1"></i>
+                            <span>Meet in public places when discussing job details</span>
+                        </li>
+                        <li class="mb-2 d-flex">
+                            <i class="fas fa-check-circle text-success me-2 mt-1"></i>
+                            <span>Don't make advance payments without a contract</span>
+                        </li>
+                        <li class="mb-2 d-flex">
+                            <i class="fas fa-check-circle text-success me-2 mt-1"></i>
+                            <span>Check the employer's reputation if possible</span>
+                        </li>
+                        <li class="mb-0 d-flex">
+                            <i class="fas fa-check-circle text-success me-2 mt-1"></i>
+                            <span>Report suspicious activities to the Community Police Forum</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Similar jobs -->
+    <div class="mt-5">
+        <h3 class="mb-4">Similar Jobs</h3>
+        
+        <div class="row">
+            <!-- This section would ideally be populated with actual similar jobs from the backend -->
+            <div class="col-12">
+                <div class="alert alert-info">
+                    <p class="mb-0">Similar jobs will appear here based on location and category.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .price-tag {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--kingsapark-green);
+    }
+    
+    .job-description {
+        white-space: pre-line;
+    }
+    
+    .list-group-item:hover {
+        background-color: rgba(var(--bs-primary-rgb), 0.05);
+    }
+</style>
+{% endblock %}

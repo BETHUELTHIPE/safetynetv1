@@ -1,0 +1,44 @@
+# Django core
+Django==4.2.9
+
+# Database
+psycopg2-binary==2.9.9
+
+# Redis
+redis==5.0.1
+django-redis==5.4.0
+hiredis==2.2.3
+
+# Celery
+celery==5.3.6
+django-celery-beat==2.5.0
+django-celery-results==2.5.1
+
+# Channels for WebSockets
+channels==4.0.0
+channels-redis==4.1.0
+daphne==4.0.0
+
+# Web server
+gunicorn==21.2.0
+
+# Security
+django-cors-headers==4.3.1
+pyjwt==2.8.0
+
+# Image processing
+Pillow==10.1.0
+
+# External services
+twilio==8.10.2
+requests==2.31.0
+
+# Utilities
+python-dotenv==1.0.0
+whitenoise==6.6.0
+
+# PDF Generation
+ReportLab==4.0.7
+WeasyPrint==60.2
+matplotlib==3.8.2
+pandas==2.1.3

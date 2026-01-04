@@ -1,0 +1,321 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ event.title }} - Kingspark Events{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-5">
+    <!-- Event Header -->
+    <div class="row mb-4">
+        <div class="col-lg-8 mx-auto">
+            <div class="card border-0 shadow-lg">
+                {% if event.image %}
+                <img src="{{ event.image.url }}" class="card-img-top" alt="{{ event.title }}" style="height: 300px; object-fit: cover;">
+                {% endif %}
+
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h1 class="display-5 mb-2">{{ event.title }}</h1>
+                            <p class="text-muted mb-3">{{ event.description }}</p>
+                        </div>
+                        {% if user.is_authenticated and user.is_staff %}
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-cog"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'kingspark_events:edit_event' event.id %}">
+                                    <i class="fas fa-edit me-2"></i>Edit Event
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="#" onclick="deleteEvent()">
+                                    <i class="fas fa-trash me-2"></i>Delete Event
+                                </a></li>
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Event Status and Badges -->
+                    <div class="d-flex gap-2 mb-4 flex-wrap">
+                        <span class="badge fs-6 px-3 py-2" style="background: var(--kingsapark-yellow); color: black;">
+                            {{ event.get_category_display }}
+                        </span>
+                        {% if event.is_featured %}
+                        <span class="badge bg-warning text-dark fs-6 px-3 py-2">
+                            <i class="fas fa-star me-1"></i>Featured Event
+                        </span>
+                        {% endif %}
+                        {% if event.is_upcoming %}
+                        <span class="badge bg-success fs-6 px-3 py-2">
+                            <i class="fas fa-clock me-1"></i>Upcoming
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Event Details -->
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="row g-4">
+                <!-- Event Information -->
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-light">
+                            <h4 class="mb-0"><i class="fas fa-info-circle me-2"></i>Event Details</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-calendar text-primary me-3" style="width: 20px;"></i>
+                                        <div>
+                                            <strong>Start Date</strong><br>
+                                            <span class="text-muted">{{ event.start_date|date:"l, F j, Y" }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-clock text-primary me-3" style="width: 20px;"></i>
+                                        <div>
+                                            <strong>Start Time</strong><br>
+                                            <span class="text-muted">{{ event.start_time|time:"g:i A" }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {% if event.end_date and event.end_time %}
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-calendar-check text-success me-3" style="width: 20px;"></i>
+                                        <div>
+                                            <strong>End Date</strong><br>
+                                            <span class="text-muted">{{ event.end_date|date:"l, F j, Y" }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-clock text-success me-3" style="width: 20px;"></i>
+                                        <div>
+                                            <strong>End Time</strong><br>
+                                            <span class="text-muted">{{ event.end_time|time:"g:i A" }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                <div class="col-12">
+                                    <div class="d-flex align-items-start">
+                                        <i class="fas fa-map-marker-alt text-danger me-3 mt-1" style="width: 20px;"></i>
+                                        <div>
+                                            <strong>Venue</strong><br>
+                                            <span class="text-muted">{{ event.venue }}</span>
+                                            {% if event.address %}
+                                            <br><small class="text-muted">{{ event.address }}</small>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {% if event.contact_person or event.contact_email or event.contact_phone %}
+                                <div class="col-12">
+                                    <div class="d-flex align-items-start">
+                                        <i class="fas fa-user text-info me-3 mt-1" style="width: 20px;"></i>
+                                        <div>
+                                            <strong>Contact Information</strong><br>
+                                            {% if event.contact_person %}
+                                            <span class="text-muted">{{ event.contact_person }}</span><br>
+                                            {% endif %}
+                                            {% if event.contact_email %}
+                                            <i class="fas fa-envelope me-1"></i>{{ event.contact_email }}<br>
+                                            {% endif %}
+                                            {% if event.contact_phone %}
+                                            <i class="fas fa-phone me-1"></i>{{ event.contact_phone }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Registration Information -->
+                            {% if event.registration_required %}
+                            <hr>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-users text-warning me-3" style="width: 20px;"></i>
+                                        <div>
+                                            <strong>Registration</strong><br>
+                                            <span class="text-muted">Required</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if event.max_attendees %}
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-user-check text-success me-3" style="width: 20px;"></i>
+                                        <div>
+                                            <strong>Capacity</strong><br>
+                                            <span class="text-muted">
+                                                {{ event.registrations.filter(status='registered').count }}/{{ event.max_attendees }} registered
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% if event.registration_deadline %}
+                                <div class="col-12">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-hourglass-half text-danger me-3" style="width: 20px;"></i>
+                                        <div>
+                                            <strong>Registration Deadline</strong><br>
+                                            <span class="text-muted">{{ event.registration_deadline|date:"l, F j, Y \a\t g:i A" }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+
+                            <!-- Event Description -->
+                            {% if event.description %}
+                            <hr>
+                            <div>
+                                <h5>About This Event</h5>
+                                <p class="mb-0">{{ event.description|linebreaks }}</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Registration/Organizer Sidebar -->
+                <div class="col-lg-4">
+                    <!-- Registration Card -->
+                    {% if event.registration_required %}
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="fas fa-user-plus me-2"></i>Registration</h5>
+                        </div>
+                        <div class="card-body">
+                            {% if user_registration %}
+                                <!-- Already Registered -->
+                                <div class="text-center mb-3">
+                                    <i class="fas fa-check-circle text-success fa-3x mb-3"></i>
+                                    <h6 class="text-success">You're Registered!</h6>
+                                    <p class="text-muted small mb-0">Status: {{ user_registration.get_status_display }}</p>
+                                </div>
+
+                                {% if event.is_upcoming %}
+                                <form method="post" action="{% url 'kingspark_events:unregister_from_event' event.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-outline-danger w-100" onclick="return confirm('Are you sure you want to unregister?')">
+                                        <i class="fas fa-times me-1"></i>Unregister
+                                    </button>
+                                </form>
+                                {% else %}
+                                <div class="alert alert-info small">
+                                    <i class="fas fa-info-circle me-1"></i>This event has already started or ended.
+                                </div>
+                                {% endif %}
+                            {% else %}
+                                <!-- Registration Form -->
+                                {% if event.is_upcoming %}
+                                <form method="post" action="{% url 'kingspark_events:register_for_event' event.id %}">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="{{ registration_form.number_of_attendees.id_for_label }}" class="form-label">
+                                            Number of Attendees
+                                        </label>
+                                        {{ registration_form.number_of_attendees }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="{{ registration_form.special_requirements.id_for_label }}" class="form-label">
+                                            Special Requirements (Optional)
+                                        </label>
+                                        {{ registration_form.special_requirements }}
+                                    </div>
+
+                                    {% if event.ticket_price and not event.is_free %}
+                                    <div class="alert alert-info small mb-3">
+                                        <strong>Ticket Price:</strong> R{{ event.ticket_price }} per person
+                                        <br><small>Total: R{{ event.ticket_price|mul:registration_form.number_of_attendees.value|default:1 }}</small>
+                                    </div>
+                                    {% endif %}
+
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="fas fa-user-plus me-1"></i>Register for Event
+                                    </button>
+                                </form>
+                                {% else %}
+                                <div class="alert alert-warning text-center">
+                                    <i class="fas fa-clock me-1"></i>This event has already started or the registration deadline has passed.
+                                </div>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Organizer Information -->
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0"><i class="fas fa-user-tie me-2"></i>Organizer</h5>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="mb-3">
+                                <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 60px; height: 60px;">
+                                    <span class="fw-bold text-primary">{{ event.organizer.first_name|first|default:event.organizer.username|first|upper }}</span>
+                                </div>
+                                <h6 class="mb-1">{{ event.organizer.get_full_name|default:event.organizer.username }}</h6>
+                                <small class="text-muted">Event Organizer</small>
+                            </div>
+
+                            <a href="{% url 'kingspark_events:my_events' %}" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-list me-1"></i>View My Events
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Event Modal -->
+<div class="modal fade" id="deleteEventModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Event</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this event? This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="post" action="{% url 'kingspark_events:delete_event' event.id %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete Event</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function deleteEvent() {
+    const modal = new bootstrap.Modal(document.getElementById('deleteEventModal'));
+    modal.show();
+}
+</script>
+
+{% endblock %}

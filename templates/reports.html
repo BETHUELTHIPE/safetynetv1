@@ -1,0 +1,335 @@
+{% extends 'base.html' %}
+{% block title %}Crime Reports - Kingsapark Community{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto text-center">
+            <h1 class="fw-bold mb-3">Crime Reports</h1>
+            <p class="lead text-muted">Track and monitor incidents reported in our community</p>
+        </div>
+    </div>
+    
+    <!-- Filters Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-3">
+                    <form method="get" class="row g-3">
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-text bg-transparent"><i class="fas fa-search"></i></span>
+                                <input type="text" name="search" class="form-control" placeholder="Search reports..." value="{{ request.GET.search|default:'' }}">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <select name="category" class="form-select">
+                                <option value="">All Categories</option>
+                                {% for code, name in crime_categories %}
+                                    <option value="{{ code }}" {% if request.GET.category == code %}selected{% endif %}>{{ name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select name="status" class="form-select">
+                                <option value="">All Statuses</option>
+                                {% for code, name in status_choices %}
+                                    <option value="{{ code }}" {% if request.GET.status == code %}selected{% endif %}>{{ name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-2 d-grid">
+                            <button type="submit" class="btn btn-primary">Filter</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if crime_reports %}
+        <!-- Statistics Summary -->
+        <div class="row mb-4">
+            <div class="col-lg-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="row text-center">
+                            <div class="col">
+                                <h3 class="mb-0 fw-bold text-primary">{{ total_reports }}</h3>
+                                <p class="text-muted mb-0">Total Reports</p>
+                            </div>
+                            <div class="col">
+                                <h3 class="mb-0 fw-bold text-warning">{{ pending_reports }}</h3>
+                                <p class="text-muted mb-0">Pending</p>
+                            </div>
+                            <div class="col">
+                                <h3 class="mb-0 fw-bold text-info">{{ investigating_reports }}</h3>
+                                <p class="text-muted mb-0">Investigating</p>
+                            </div>
+                            <div class="col">
+                                <h3 class="mb-0 fw-bold text-success">{{ resolved_reports }}</h3>
+                                <p class="text-muted mb-0">Resolved</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Crime Reports Table with Progress Indicators -->
+        <div class="card border-0 shadow-sm mb-5">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0">Recent Crime Reports</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Crime Type</th>
+                            <th>Date Reported</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                            <th>Progress</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for report in crime_reports|slice:":10" %}
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="crime-icon rounded-circle me-2 {% if report.category == 'THEFT' %}bg-danger-subtle{% elif report.category == 'ASSAULT' %}bg-warning-subtle{% elif report.category == 'VANDALISM' %}bg-info-subtle{% elif report.category == 'BURGLARY' %}bg-danger-subtle{% elif report.category == 'HOMICIDE' %}bg-dark-subtle{% elif report.category == 'ROBBERY' %}bg-danger-subtle{% elif report.category == 'DRUG_OFFENSE' %}bg-warning-subtle{% elif report.category == 'CYBERCRIME' %}bg-info-subtle{% else %}bg-secondary-subtle{% endif %} d-flex align-items-center justify-content-center">
+                                            {% if report.category == 'THEFT' %}
+                                                <i class="fas fa-shopping-bag"></i>
+                                            {% elif report.category == 'ASSAULT' %}
+                                                <i class="fas fa-user-injured"></i>
+                                            {% elif report.category == 'VANDALISM' %}
+                                                <i class="fas fa-hammer"></i>
+                                            {% elif report.category == 'BURGLARY' %}
+                                                <i class="fas fa-home"></i>
+                                            {% elif report.category == 'HOMICIDE' %}
+                                                <i class="fas fa-skull"></i>
+                                            {% elif report.category == 'ROBBERY' %}
+                                                <i class="fas fa-mask"></i>
+                                            {% elif report.category == 'DRUG_OFFENSE' %}
+                                                <i class="fas fa-pills"></i>
+                                            {% elif report.category == 'CYBERCRIME' %}
+                                                <i class="fas fa-laptop"></i>
+                                            {% else %}
+                                                <i class="fas fa-exclamation-triangle"></i>
+                                            {% endif %}
+                                        </div>
+                                        <div>
+                                            <span class="d-block fw-medium">{{ report.title|truncatechars:25 }}</span>
+                                            <span class="d-block text-muted small">{{ report.get_category_display }}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="d-block">{{ report.date_reported|date:"M d, Y" }}</span>
+                                    <span class="d-block text-muted small">{{ report.date_reported|time:"H:i" }}</span>
+                                </td>
+                                <td>{{ report.location|truncatechars:25 }}</td>
+                                <td>
+                                    <span class="badge rounded-pill {% if report.status == 'PENDING' %}bg-warning{% elif report.status == 'UNDER_INVESTIGATION' %}bg-info{% elif report.status == 'RESOLVED' %}bg-success{% elif report.status == 'CLOSED' %}bg-secondary{% elif report.status == 'REJECTED' %}bg-danger{% endif %}">
+                                        {{ report.get_status_display }}
+                                    </span>
+                                </td>
+                                <td class="progress-column" style="width: 25%;">
+                                    <div class="progress" style="height: 8px;">
+                                        {% if report.status == 'PENDING' %}
+                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 20%" 
+                                                aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                            </div>
+                                        {% elif report.status == 'UNDER_INVESTIGATION' %}
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: 60%" 
+                                                aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
+                                            </div>
+                                        {% elif report.status == 'RESOLVED' or report.status == 'CLOSED' %}
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 100%" 
+                                                aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                            </div>
+                                        {% elif report.status == 'REJECTED' %}
+                                            <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" 
+                                                aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-1">
+                                        <span class="text-muted small">Reported</span>
+                                        <span class="text-muted small">In Progress</span>
+                                        <span class="text-muted small">Resolved</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="{% url 'reports:report_detail' report.id %}" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye"></i> View
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Card Grid View -->
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for report in crime_reports %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm report-card position-relative">
+                        <div class="card-body d-flex flex-column">
+                            <!-- Status Badge -->
+                            <div class="position-absolute end-0 top-0 m-2">
+                                <span class="badge rounded-pill {% if report.status == 'PENDING' %}bg-warning{% elif report.status == 'UNDER_INVESTIGATION' %}bg-info{% elif report.status == 'RESOLVED' %}bg-success{% elif report.status == 'CLOSED' %}bg-secondary{% elif report.status == 'REJECTED' %}bg-danger{% endif %}">
+                                    {{ report.get_status_display }}
+                                </span>
+                            </div>
+                            
+                            <!-- Category Icon -->
+                            <div class="crime-category-icon mb-3 {% if report.category == 'THEFT' %}bg-danger-subtle{% elif report.category == 'ASSAULT' %}bg-warning-subtle{% elif report.category == 'VANDALISM' %}bg-info-subtle{% elif report.category == 'BURGLARY' %}bg-danger-subtle{% elif report.category == 'HOMICIDE' %}bg-dark-subtle{% elif report.category == 'ROBBERY' %}bg-danger-subtle{% elif report.category == 'DRUG_OFFENSE' %}bg-warning-subtle{% elif report.category == 'CYBERCRIME' %}bg-info-subtle{% else %}bg-secondary-subtle{% endif %}">
+                                {% if report.category == 'THEFT' %}
+                                    <i class="fas fa-shopping-bag"></i>
+                                {% elif report.category == 'ASSAULT' %}
+                                    <i class="fas fa-user-injured"></i>
+                                {% elif report.category == 'VANDALISM' %}
+                                    <i class="fas fa-hammer"></i>
+                                {% elif report.category == 'BURGLARY' %}
+                                    <i class="fas fa-home"></i>
+                                {% elif report.category == 'HOMICIDE' %}
+                                    <i class="fas fa-skull"></i>
+                                {% elif report.category == 'ROBBERY' %}
+                                    <i class="fas fa-mask"></i>
+                                {% elif report.category == 'DRUG_OFFENSE' %}
+                                    <i class="fas fa-pills"></i>
+                                {% elif report.category == 'CYBERCRIME' %}
+                                    <i class="fas fa-laptop"></i>
+                                {% else %}
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Title and Category -->
+                            <h4 class="card-title text-primary mb-2">{{ report.title }}</h4>
+                            <span class="badge bg-dark mb-2">{{ report.get_category_display }}</span>
+                            
+                            <!-- Date and Location -->
+                            <div class="report-meta mb-3">
+                                <div class="d-flex align-items-center mb-1">
+                                    <i class="fas fa-map-marker-alt text-muted me-2"></i>
+                                    <span class="text-muted">{{ report.location }}</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-calendar-alt text-muted me-2"></i>
+                                    <span class="text-muted">{{ report.date_reported|date:"M d, Y" }} at {{ report.date_reported|time:"H:i" }}</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Description -->
+                            <p class="card-text flex-grow-1">{{ report.description|truncatechars:150 }}</p>
+                            
+                            <!-- Progress Bar -->
+                            <div class="progress-tracker mb-3">
+                                <div class="progress" style="height: 6px;">
+                                    {% if report.status == 'PENDING' %}
+                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 20%" 
+                                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                        </div>
+                                    {% elif report.status == 'UNDER_INVESTIGATION' %}
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: 60%" 
+                                            aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
+                                        </div>
+                                    {% elif report.status == 'RESOLVED' or report.status == 'CLOSED' %}
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%" 
+                                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        </div>
+                                    {% elif report.status == 'REJECTED' %}
+                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" 
+                                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="d-flex justify-content-between mt-1">
+                                    <span class="badge bg-light text-dark">Reported</span>
+                                    <span class="badge bg-light text-dark">In Progress</span>
+                                    <span class="badge bg-light text-dark">Resolved</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Action Button -->
+                            <div class="mt-auto">
+                                <a href="{% url 'reports:report_detail' report.id %}" class="btn btn-outline-primary btn-sm w-100">
+                                    <i class="fas fa-eye me-1"></i> View Report Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center mt-5" role="alert">
+            <p class="lead mb-3">No crime reports have been submitted yet.</p>
+            <p><a href="{% url 'reports:submit_report' %}" class="btn btn-primary btn-lg">Submit the first report!</a></p>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    /* Crime report styling */
+    .crime-icon {
+        width: 40px;
+        height: 40px;
+        color: var(--kingsapark-navy);
+    }
+    
+    .crime-category-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: var(--kingsapark-navy);
+        margin-bottom: 1rem;
+    }
+    
+    .report-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        border: none;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+    .report-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08) !important;
+    }
+    
+    .progress {
+        border-radius: 10px;
+        background-color: #f5f5f5;
+    }
+    
+    .progress-bar {
+        border-radius: 10px;
+    }
+    
+    .progress-column .progress {
+        margin-top: 8px;
+    }
+    
+    .report-meta i {
+        width: 16px;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 767px) {
+        .progress-column {
+            min-width: 200px;
+        }
+    }
+</style>
+
+{% endblock %}

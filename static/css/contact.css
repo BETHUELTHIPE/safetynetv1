@@ -1,0 +1,324 @@
+/* Contact Page Styling and Animations */
+
+/* Animated page elements */
+.animate-fade-in {
+    opacity: 0;
+    animation: fadeIn 0.8s ease forwards;
+}
+
+.animate-slide-up {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: slideUp 0.8s ease forwards;
+}
+
+.animate-slide-in-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    animation: slideInLeft 0.8s ease forwards;
+}
+
+.animate-slide-in-right {
+    opacity: 0;
+    transform: translateX(50px);
+    animation: slideInRight 0.8s ease forwards;
+}
+
+/* Animation delay classes */
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+.delay-600 { animation-delay: 0.6s; }
+.delay-700 { animation-delay: 0.7s; }
+.delay-800 { animation-delay: 0.8s; }
+
+/* Keyframes definitions */
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes slideUp {
+    0% { 
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    0% { 
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    100% { 
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    0% { 
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    100% { 
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Modern card styling */
+.contact-card {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-radius: 15px;
+    overflow: hidden;
+    border: none;
+    position: relative;
+    z-index: 1;
+}
+
+.contact-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15) !important;
+}
+
+.contact-card:hover .contact-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.contact-icon {
+    transition: all 0.4s ease;
+    height: 80px;
+    width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+}
+
+.contact-icon i {
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
+}
+
+.contact-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.contact-card:hover::before {
+    opacity: 1;
+}
+
+/* Form styling */
+.contact-form {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.contact-form .form-control {
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(0,0,0,0.1);
+}
+
+.contact-form .form-control:focus {
+    box-shadow: 0 0 0 0.25rem rgba(244, 208, 63, 0.25);
+    border-color: var(--kingsapark-yellow);
+}
+
+.contact-form .form-label {
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+/* Submit button animation */
+.btn-submit {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    z-index: 1;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.btn-submit:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+
+.btn-submit::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    transform: scale(0);
+    z-index: -1;
+}
+
+.btn-submit:hover::after {
+    transform: scale(1);
+    border-radius: 8px;
+}
+
+/* Header animation */
+.page-header {
+    position: relative;
+}
+
+.page-header h1 {
+    position: relative;
+}
+
+.page-header h1::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: var(--kingsapark-yellow);
+}
+
+.page-header h1::before {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 4px;
+    background: var(--kingsapark-green);
+    animation: lineGrow 2s ease-out infinite;
+    z-index: 1;
+}
+
+@keyframes lineGrow {
+    0% {
+        width: 0;
+        opacity: 1;
+    }
+    50% {
+        width: 80px;
+        opacity: 1;
+    }
+    100% {
+        width: 80px;
+        opacity: 0;
+    }
+}
+
+/* Map container styling */
+.map-container {
+    border-radius: 15px;
+    overflow: hidden;
+    height: 350px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.map-container:hover {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Animated notification badge */
+.notification-badge {
+    position: relative;
+}
+
+.notification-badge::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 12px;
+    height: 12px;
+    background-color: var(--kingsapark-red);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(217, 30, 24, 0.7);
+    }
+    
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(217, 30, 24, 0);
+    }
+    
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(217, 30, 24, 0);
+    }
+}
+
+/* Emergency alert styling */
+.emergency-alert {
+    border-left: 5px solid var(--kingsapark-red);
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(217, 30, 24, 0.1) 0%, rgba(217, 30, 24, 0.05) 100%);
+    transition: all 0.3s ease;
+}
+
+.emergency-alert:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(217, 30, 24, 0.1);
+}
+
+/* Success message animation */
+.success-message {
+    display: none;
+    animation: fadeInZoom 0.5s ease forwards;
+    transform-origin: center;
+}
+
+@keyframes fadeInZoom {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Loading indicator for form submission */
+.loading-spinner {
+    display: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: white;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

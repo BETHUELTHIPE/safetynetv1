@@ -1,0 +1,448 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'services:service_list' %}">Services</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ button_text }}</li>
+        </ol>
+    </nav>
+    
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-lg rounded-3 overflow-hidden">
+                <div class="card-header bg-gradient-primary text-white">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-tools fa-2x me-3"></i>
+                        <div>
+                            <h2 class="mb-0 fw-bold">{{ title }}</h2>
+                            <p class="mb-0 fw-light">Share your professional services with the community</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-body p-4 p-md-5">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-4" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <!-- Basic Service Information Section -->
+                        <div class="mb-4">
+                            <h4 class="border-start border-3 border-primary ps-2 mb-3">Service Information</h4>
+                            
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <label for="{{ form.title.id_for_label }}" class="form-label">Service Title*</label>
+                                    {{ form.title }}
+                                    {% if form.title.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.title.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-12 mb-3">
+                                    <label for="{{ form.description.id_for_label }}" class="form-label">Description*</label>
+                                    {{ form.description }}
+                                    {% if form.description.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.description.errors.0 }}</div>
+                                    {% endif %}
+                                    <div class="form-text">Describe your service in detail, including what you offer, benefits, etc.</div>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.category.id_for_label }}" class="form-label">Category*</label>
+                                    {{ form.category }}
+                                    {% if form.category.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.category.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.subcategories.id_for_label }}" class="form-label">Subcategories (Optional)</label>
+                                    {{ form.subcategories }}
+                                    {% if form.subcategories.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.subcategories.errors.0 }}</div>
+                                    {% endif %}
+                                    <div class="form-text">E.g., "Residential, Commercial, Emergency"</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Pricing Section -->
+                        <div class="mb-4">
+                            <h4 class="border-start border-3 border-primary ps-2 mb-3">Pricing</h4>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.price_type.id_for_label }}" class="form-label">Price Type*</label>
+                                    {{ form.price_type }}
+                                    {% if form.price_type.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.price_type.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.price_amount.id_for_label }}" class="form-label">Amount (ZAR)</label>
+                                    {{ form.price_amount }}
+                                    {% if form.price_amount.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.price_amount.errors.0 }}</div>
+                                    {% endif %}
+                                    <div class="form-text">Required for Fixed Price or Hourly Rate services</div>
+                                </div>
+                                
+                                <div class="col-12 mb-3">
+                                    <label for="{{ form.price_description.id_for_label }}" class="form-label">Price Description (Optional)</label>
+                                    {{ form.price_description }}
+                                    {% if form.price_description.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.price_description.errors.0 }}</div>
+                                    {% endif %}
+                                    <div class="form-text">E.g., "Starting from" or "Per hour" or "Depends on complexity"</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Experience and Qualifications Section -->
+                        <div class="mb-4">
+                            <h4 class="border-start border-3 border-primary ps-2 mb-3">Experience & Qualifications</h4>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.experience_years.id_for_label }}" class="form-label">Years of Experience</label>
+                                    {{ form.experience_years }}
+                                    {% if form.experience_years.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.experience_years.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.availability.id_for_label }}" class="form-label">Availability*</label>
+                                    {{ form.availability }}
+                                    {% if form.availability.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.availability.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-12 mb-3">
+                                    <label for="{{ form.qualifications.id_for_label }}" class="form-label">Qualifications & Certifications</label>
+                                    {{ form.qualifications }}
+                                    {% if form.qualifications.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.qualifications.errors.0 }}</div>
+                                    {% endif %}
+                                    <div class="form-text">List any relevant qualifications, certifications, or credentials</div>
+                                </div>
+                                
+                                <div class="col-12 mb-3">
+                                    <label for="{{ form.service_areas.id_for_label }}" class="form-label">Service Areas*</label>
+                                    {{ form.service_areas }}
+                                    {% if form.service_areas.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.service_areas.errors.0 }}</div>
+                                    {% endif %}
+                                    <div class="form-text">Areas where you provide your service (e.g., "Kings Park, Kwamhlanga, etc.")</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Contact Information Section -->
+                        <div class="mb-4">
+                            <h4 class="border-start border-3 border-primary ps-2 mb-3">Contact Information</h4>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.contact_number.id_for_label }}" class="form-label">Contact Number*</label>
+                                    {{ form.contact_number }}
+                                    {% if form.contact_number.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.contact_number.errors.0 }}</div>
+                                    {% endif %}
+                                    <div class="form-text">Format: +27812345678</div>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.whatsapp_number.id_for_label }}" class="form-label">WhatsApp Number (Optional)</label>
+                                    {{ form.whatsapp_number }}
+                                    {% if form.whatsapp_number.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.whatsapp_number.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-check mt-4">
+                                        {{ form.show_email }}
+                                        <label class="form-check-label" for="{{ form.show_email.id_for_label }}">
+                                            Show my email ({{ user.email }}) to potential clients
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.website.id_for_label }}" class="form-label">Website (Optional)</label>
+                                    {{ form.website }}
+                                    {% if form.website.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.website.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Media Section -->
+                        <div class="mb-4">
+                            <h4 class="border-start border-3 border-primary ps-2 mb-3">Media</h4>
+                            
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <label for="{{ form.profile_image.id_for_label }}" class="form-label">Profile Image</label>
+                                    {{ form.profile_image }}
+                                    {% if form.profile_image.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.profile_image.errors.0 }}</div>
+                                    {% endif %}
+                                    <div class="form-text">Upload a professional image representing your service (max 5MB)</div>
+                                    
+                                    {% if is_edit and form.instance.profile_image %}
+                                        <div class="mt-2">
+                                            <img src="{{ form.instance.profile_image.url }}" alt="Profile image" class="img-thumbnail" style="max-height: 100px;">
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-4 mb-3">
+                                    <label for="{{ form.gallery_image1.id_for_label }}" class="form-label">Gallery Image 1</label>
+                                    {{ form.gallery_image1 }}
+                                    {% if form.gallery_image1.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.gallery_image1.errors.0 }}</div>
+                                    {% endif %}
+                                    
+                                    {% if is_edit and form.instance.gallery_image1 %}
+                                        <div class="mt-2">
+                                            <img src="{{ form.instance.gallery_image1.url }}" alt="Gallery image 1" class="img-thumbnail" style="max-height: 100px;">
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-4 mb-3">
+                                    <label for="{{ form.gallery_image2.id_for_label }}" class="form-label">Gallery Image 2</label>
+                                    {{ form.gallery_image2 }}
+                                    {% if form.gallery_image2.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.gallery_image2.errors.0 }}</div>
+                                    {% endif %}
+                                    
+                                    {% if is_edit and form.instance.gallery_image2 %}
+                                        <div class="mt-2">
+                                            <img src="{{ form.instance.gallery_image2.url }}" alt="Gallery image 2" class="img-thumbnail" style="max-height: 100px;">
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-4 mb-3">
+                                    <label for="{{ form.gallery_image3.id_for_label }}" class="form-label">Gallery Image 3</label>
+                                    {{ form.gallery_image3 }}
+                                    {% if form.gallery_image3.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.gallery_image3.errors.0 }}</div>
+                                    {% endif %}
+                                    
+                                    {% if is_edit and form.instance.gallery_image3 %}
+                                        <div class="mt-2">
+                                            <img src="{{ form.instance.gallery_image3.url }}" alt="Gallery image 3" class="img-thumbnail" style="max-height: 100px;">
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-12 mb-3">
+                                    <label for="{{ form.portfolio_pdf.id_for_label }}" class="form-label">Portfolio PDF (Optional)</label>
+                                    {{ form.portfolio_pdf }}
+                                    {% if form.portfolio_pdf.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.portfolio_pdf.errors.0 }}</div>
+                                    {% endif %}
+                                    <div class="form-text">Upload a PDF showcasing your work (max 10MB)</div>
+                                    
+                                    {% if is_edit and form.instance.portfolio_pdf %}
+                                        <div class="mt-2">
+                                            <p>Current portfolio: <a href="{{ form.instance.portfolio_pdf.url }}" target="_blank">View PDF</a></p>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-12 mb-3">
+                                    <label for="{{ form.tags.id_for_label }}" class="form-label">Tags (Optional)</label>
+                                    {{ form.tags }}
+                                    {% if form.tags.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.tags.errors.0 }}</div>
+                                    {% endif %}
+                                    <div class="form-text">Add tags separated by commas to help clients find your service</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Guidelines and Submit -->
+                        <div class="alert alert-info mb-4">
+                            <div class="d-flex">
+                                <i class="fas fa-info-circle fa-lg me-3 mt-1"></i>
+                                <div>
+                                    <h5 class="mb-1">Service Listing Guidelines</h5>
+                                    <ul class="mb-0">
+                                        <li>Be accurate and honest about your services and qualifications</li>
+                                        <li>Use high-quality images that showcase your work</li>
+                                        <li>Set fair and competitive pricing</li>
+                                        <li>Clearly specify the areas you serve</li>
+                                        <li>Respond promptly to client inquiries</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'services:service_list' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-1"></i> Back to Services
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg px-4">
+                                {{ button_text }}
+                                <i class="fas fa-paper-plane ms-2"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, var(--kingsapark-navy) 0%, var(--kingsapark-green) 100%);
+    }
+    
+    .border-primary {
+        border-color: var(--kingsapark-yellow) !important;
+    }
+    
+    h4 {
+        color: var(--kingsapark-navy);
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Form validation
+        const form = document.querySelector('.needs-validation');
+        const priceTypeSelect = document.getElementById('{{ form.price_type.id_for_label }}');
+        const priceAmountInput = document.getElementById('{{ form.price_amount.id_for_label }}');
+        
+        // Price type and amount dependency
+        if (priceTypeSelect && priceAmountInput) {
+            priceTypeSelect.addEventListener('change', function() {
+                if (this.value === 'FIXED' || this.value === 'HOURLY') {
+                    priceAmountInput.setAttribute('required', 'required');
+                    priceAmountInput.parentNode.querySelector('label').innerHTML += '*';
+                } else {
+                    priceAmountInput.removeAttribute('required');
+                    const label = priceAmountInput.parentNode.querySelector('label');
+                    if (label.innerHTML.endsWith('*')) {
+                        label.innerHTML = label.innerHTML.slice(0, -1);
+                    }
+                }
+            });
+            
+            // Trigger on page load to set initial state
+            if (priceTypeSelect.value === 'FIXED' || priceTypeSelect.value === 'HOURLY') {
+                priceAmountInput.setAttribute('required', 'required');
+                priceAmountInput.parentNode.querySelector('label').innerHTML += '*';
+            }
+        }
+        
+        // Form submission validation
+        if (form) {
+            form.addEventListener('submit', function(event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                
+                // Check if price is required based on price type
+                if ((priceTypeSelect.value === 'FIXED' || priceTypeSelect.value === 'HOURLY') && !priceAmountInput.value) {
+                    event.preventDefault();
+                    alert('Price amount is required for fixed price or hourly rate services.');
+                    priceAmountInput.focus();
+                    return false;
+                }
+                
+                form.classList.add('was-validated');
+            });
+        }
+        
+        // Image preview and validation for all image inputs
+        function setupImagePreview(input) {
+            if (!input) return;
+            
+            input.addEventListener('change', function() {
+                // Remove any existing preview
+                const previewContainer = this.parentNode.querySelector('.preview-container');
+                if (previewContainer) {
+                    previewContainer.remove();
+                }
+                
+                if (this.files && this.files[0]) {
+                    // Check file size
+                    const fileSize = this.files[0].size / (1024 * 1024); // Convert to MB
+                    if (fileSize > 5) {
+                        this.value = '';
+                        alert('Image file size cannot exceed 5MB');
+                        return;
+                    }
+                    
+                    // Create preview
+                    const reader = new FileReader();
+                    const container = document.createElement('div');
+                    container.className = 'preview-container mt-2';
+                    
+                    reader.onload = function(e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.className = 'img-thumbnail preview-image';
+                        img.style.maxHeight = '100px';
+                        container.appendChild(img);
+                    }
+                    
+                    reader.readAsDataURL(this.files[0]);
+                    this.parentNode.appendChild(container);
+                }
+            });
+        }
+        
+        // Set up previews for all image inputs
+        setupImagePreview(document.getElementById('{{ form.profile_image.id_for_label }}'));
+        setupImagePreview(document.getElementById('{{ form.gallery_image1.id_for_label }}'));
+        setupImagePreview(document.getElementById('{{ form.gallery_image2.id_for_label }}'));
+        setupImagePreview(document.getElementById('{{ form.gallery_image3.id_for_label }}'));
+        
+        // PDF validation
+        const pdfInput = document.getElementById('{{ form.portfolio_pdf.id_for_label }}');
+        if (pdfInput) {
+            pdfInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    // Check file type
+                    const fileType = this.files[0].name.split('.').pop().toLowerCase();
+                    if (fileType !== 'pdf') {
+                        this.value = '';
+                        alert('Only PDF files are allowed');
+                        return;
+                    }
+                    
+                    // Check file size
+                    const fileSize = this.files[0].size / (1024 * 1024); // Convert to MB
+                    if (fileSize > 10) {
+                        this.value = '';
+                        alert('PDF file size cannot exceed 10MB');
+                    }
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

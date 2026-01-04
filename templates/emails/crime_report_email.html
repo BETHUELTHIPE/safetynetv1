@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bi-Weekly Crime Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333; margin: 0; padding: 20px; }
+        .container { background-color: #ffffff; padding: 20px; border-radius: 8px; max-width: 600px; margin: 0 auto; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h1 { color: #007bff; }
+        ul { list-style: none; padding: 0; }
+        li { background-color: #e9ecef; margin-bottom: 10px; padding: 15px; border-radius: 5px; border-left: 5px solid #007bff; }
+        .footer { margin-top: 20px; font-size: 0.8em; color: #777; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bi-Weekly Crime Report</h1>
+        <p>Dear {{ user.username }},</p>
+        <p>Here is your bi-weekly crime report for the period from {{ report_data.start_date }} to {{ report_data.end_date }}.</p>
+        
+        {% if report_data.report_count > 0 %}
+            <p>We found {{ report_data.report_count }} new report(s) during this period:</p>
+            <ul>
+                {% for report in report_data.reports %}
+                    <li>
+                        <strong>{{ report.title }}</strong> - {{ report.location }} ({{ report.date_reported|date:"M d, Y H:i" }})
+                        <p>{{ report.description|truncatechars:100 }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>There were no new crime reports submitted during this period.</p>
+        {% endif %}
+
+        <p>Thank you for staying informed.</p>
+        <div class="footer">
+            <p>This is an automated email. Please do not reply.</p>
+            <p>&copy; 2025 CPF Crime Reporting System</p>
+        </div>
+    </div>
+</body>
+</html>

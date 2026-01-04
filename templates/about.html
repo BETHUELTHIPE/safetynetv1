@@ -1,0 +1,504 @@
+{% extends 'base.html' %}
+
+{% block title %}About Us - Kings Park, Kwamhlanga Community Police Forum{% endblock %}
+
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/about.css' %}">
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/about-animations.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-5">
+    <!-- Hero Section with Advanced Animation -->
+    <div class="about-hero" id="about-hero-section">
+        <!-- Particle background will be injected here by JavaScript -->
+        <div class="about-hero-content">
+            <div class="row">
+                <div class="col-12 text-center sequence-parent">
+                    <h1 class="display-4 fw-bold animate-fade-in sequence-child">About Kings Park, Kwamhlanga CPF</h1>
+                    <p class="lead animate-slide-up delay-200 sequence-child">Building safer communities through partnership, transparency, and accountability</p>
+                    <div class="mt-4 animate-scale-in delay-400 sequence-child">
+                        <span class="badge established-badge fs-6 px-4 py-2">
+                            <i class="fas fa-shield-alt me-2"></i>Est. 2025 - Serving Kings Park Community
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Community Impact Stats with Counter Animation -->
+    <div class="row justify-content-center text-center stats-container">
+        <div class="col-lg-10">
+            <div class="row justify-content-between">
+                <div class="col-md-3 mb-4 animate-slide-in-left delay-300">
+                    <div class="stat-simple">
+                        <div class="stat-icon mb-2" style="color: var(--kingsapark-green);">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-number fw-bold" data-value="15000">15,000+</div>
+                        <div class="stat-label">Community Members</div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4 animate-fade-in delay-400">
+                    <div class="stat-simple">
+                        <div class="stat-icon mb-2" style="color: var(--kingsapark-light-blue);">
+                            <i class="fas fa-clipboard-check"></i>
+                        </div>
+                        <div class="stat-number fw-bold" data-value="250">250+</div>
+                        <div class="stat-label">Cases Resolved</div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4 animate-fade-in delay-500">
+                    <div class="stat-simple">
+                        <div class="stat-icon mb-2" style="color: var(--kingsapark-navy);">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <div class="stat-number fw-bold" data-value="12">12</div>
+                        <div class="stat-label">Community Partnerships</div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4 animate-slide-in-right delay-600">
+                    <div class="stat-simple">
+                        <div class="stat-icon mb-2" style="color: var(--kingsapark-yellow);">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-number fw-bold" data-value="48">48</div>
+                        <div class="stat-label">Annual Events</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Animated Wave Divider -->
+    <div class="wave-divider-container">
+        <div class="wave-divider">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                <path fill="rgba(10, 26, 92, 0.03)" fill-opacity="1" d="M0,192L48,197.3C96,203,192,213,288,213.3C384,213,480,203,576,176C672,149,768,107,864,112C960,117,1056,171,1152,176C1248,181,1344,139,1392,117.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Mission Statement with Advanced Animation -->
+    <div class="row mb-5">
+        <div class="col-lg-10 mx-auto animate-fade-in delay-700">
+            <div class="card mission-card border-0 parallax-container" data-parallax="scroll" data-image-src="{% static 'images/texture-bg.jpg' %}">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8 animate-slide-in-left delay-800">
+                            <h2 class="fw-bold mb-4 text-gradient">Our Mission</h2>
+                            <p class="lead mb-4 mission-text sequence-parent">
+                                <span class="sequence-child">Our primary role is to act as a bridge between the community and the South African Police Services</span>
+                                <span class="sequence-child">to improve transparency, accountability and the delivery of policing services in Kings Park, Kwamhlanga.</span>
+                            </p>
+                            <p class="mb-4 mission-text sequence-parent">
+                                <span class="sequence-child">Beyond this overarching responsibility, we have several key roles in our objective</span>
+                                <span class="sequence-child">of creating a safer community where all residents can thrive without fear of crime.</span>
+                            </p>
+                            <div class="mt-4 d-flex align-items-center flex-wrap">
+                                <div class="me-3 mb-3 mb-lg-0">
+                                    <span class="badge pulse-badge px-3 py-2">
+                                        <i class="fas fa-shield-alt me-2"></i>Established 2025
+                                    </span>
+                                </div>
+                                <div class="me-3 mb-3 mb-lg-0">
+                                    <a href="#roles" class="btn btn-hover-effect px-4 py-2">
+                                        <span><i class="fas fa-chevron-down me-2"></i>Learn More</span>
+                                        <i class="hover-icon fas fa-arrow-down"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mt-5 mt-lg-0 animate-slide-in-right delay-900">
+                            <div class="position-relative h-100 d-flex align-items-center justify-content-center">
+                                <div class="mission-visual text-center floating-element">
+                                    <div class="logo-container">
+                                        <!-- Actual CPF Logo -->
+                                        <img src="{% static 'images/kingspark logo.jpg' %}" alt="Kings Park, Kwamhlanga CPF Logo" class="mission-logo img-fluid" style="max-width: 220px; border-radius: 50%; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);">
+                                    </div>
+                                    <h5 class="mt-3 fw-bold">Protecting Our Community</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Core Values Section with Animation -->
+    <div class="row mb-5">
+        <div class="col-12 text-center mb-4 animate-fade-in delay-800">
+            <h2 class="fw-bold mb-2">Our Core Values</h2>
+            <p class="lead text-muted">Guiding principles that drive our community service</p>
+        </div>
+        
+        <!-- Core Value Cards with Animations -->
+        <div class="row justify-content-center g-4">
+            <div class="col-md-6 col-lg-3 animate-scale-in delay-400">
+                <div class="text-center">
+                    <div class="mission-icon" style="background: rgba(50, 205, 50, 0.1); color: var(--kingsapark-green);">
+                        <i class="fas fa-shield-alt fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold" style="color: var(--kingsapark-green);">Crime Prevention</h5>
+                    <p class="text-muted">Proactively working to prevent criminal activity through education and community engagement</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 animate-scale-in delay-500">
+                <div class="text-center">
+                    <div class="mission-icon" style="background: rgba(135, 206, 235, 0.1); color: var(--kingsapark-light-blue);">
+                        <i class="fas fa-chart-line fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold" style="color: var(--kingsapark-light-blue);">Crime Analysis</h5>
+                    <p class="text-muted">Using data and intelligence to understand crime patterns and develop effective responses</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 animate-scale-in delay-600">
+                <div class="text-center">
+                    <div class="mission-icon" style="background: rgba(220, 20, 60, 0.1); color: var(--kingsapark-red);">
+                        <i class="fas fa-hands-helping fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold" style="color: var(--kingsapark-red);">Victim Support</h5>
+                    <p class="text-muted">Providing compassionate assistance and resources to those affected by crime</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 animate-scale-in delay-700">
+                <div class="text-center">
+                    <div class="mission-icon" style="background: rgba(255, 215, 0, 0.1); color: var(--kingsapark-yellow);">
+                        <i class="fas fa-comments fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold" style="color: var(--kingsapark-yellow);">Communication</h5>
+                    <p class="text-muted">Maintaining open channels between police, community members, and local organizations</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detailed Roles Section with Animations -->
+    <div class="row mb-5" id="roles">
+        <div class="col-lg-10 mx-auto">
+            <div class="text-center animate-fade-in delay-800">
+                <h2 class="fw-bold mb-4 roles-title">Our Key Roles</h2>
+                <p class="lead text-muted mb-5">Comprehensive services we provide to enhance community safety</p>
+            </div>
+
+            <div class="custom-accordion animate-slide-up delay-900" id="rolesAccordion">
+                <!-- Crime Prevention -->
+                <div class="accordion-item animate-slide-in-left delay-500">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#crimePrevention" aria-expanded="true" aria-controls="crimePrevention">
+                            <i class="fas fa-shield-alt me-2" style="color: var(--kingsapark-green);"></i>Crime Prevention Initiatives
+                        </button>
+                    </h2>
+                    <div id="crimePrevention" class="accordion-collapse collapse show" data-bs-parent="#rolesAccordion">
+                        <div class="accordion-body">
+                            <div class="row align-items-center">
+                                <div class="col-lg-4 mb-3 mb-lg-0 text-center">
+                                    <div class="mission-icon mx-auto" style="background: rgba(50, 205, 50, 0.1); color: var(--kingsapark-green);">
+                                        <i class="fas fa-shield-alt fa-3x"></i>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8">
+                                    <p>We organize community-based crime prevention projects that strengthen our community's resilience:</p>
+                                    <ul class="role-list">
+                                        <li><strong>Neighborhood Watch Programs:</strong> Establishing and supporting community watch initiatives</li>
+                                        <li><strong>Crime Awareness Campaigns:</strong> Educating residents about crime prevention strategies</li>
+                                        <li><strong>Youth Engagement Initiatives:</strong> Involving young people in positive community activities</li>
+                                        <li><strong>Community Safety Workshops:</strong> Providing training on personal safety and crime prevention</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Crime Reporting -->
+                <div class="accordion-item animate-slide-in-right delay-600">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#crimeReporting" aria-expanded="false" aria-controls="crimeReporting">
+                            <i class="fas fa-chart-line me-2" style="color: var(--kingsapark-light-blue);"></i>Crime Pattern Analysis & Reporting
+                        </button>
+                    </h2>
+                    <div id="crimeReporting" class="accordion-collapse collapse" data-bs-parent="#rolesAccordion">
+                        <div class="accordion-body">
+                            <div class="row align-items-center">
+                                <div class="col-lg-4 mb-3 mb-lg-0 text-center">
+                                    <div class="mission-icon mx-auto" style="background: rgba(135, 206, 235, 0.1); color: var(--kingsapark-light-blue);">
+                                        <i class="fas fa-chart-line fa-3x"></i>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8">
+                                    <p>We collect and analyze crime data to help police make informed decisions:</p>
+                                    <ul class="role-list">
+                                        <li><strong>Data Collection:</strong> Gathering information on local crime patterns and trends</li>
+                                        <li><strong>Pattern Analysis:</strong> Identifying hotspots and recurring crime types</li>
+                                        <li><strong>Police Collaboration:</strong> Sharing insights for better resource allocation</li>
+                                        <li><strong>Trend Monitoring:</strong> Tracking crime statistics over time</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Victim Support -->
+                <div class="accordion-item animate-slide-in-left delay-700">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#victimSupport" aria-expanded="false" aria-controls="victimSupport">
+                            <i class="fas fa-hands-helping me-2" style="color: var(--kingsapark-red);"></i>Victim Support Services
+                        </button>
+                    </h2>
+                    <div id="victimSupport" class="accordion-collapse collapse" data-bs-parent="#rolesAccordion">
+                        <div class="accordion-body">
+                            <div class="row align-items-center">
+                                <div class="col-lg-4 mb-3 mb-lg-0 text-center">
+                                    <div class="mission-icon mx-auto" style="background: rgba(220, 20, 60, 0.1); color: var(--kingsapark-red);">
+                                        <i class="fas fa-hands-helping fa-3x"></i>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8">
+                                    <p>We provide comprehensive support to victims of crime:</p>
+                                    <ul class="role-list">
+                                        <li><strong>Referral Services:</strong> Connecting victims with counseling and support organizations</li>
+                                        <li><strong>Justice System Navigation:</strong> Guiding victims through legal processes</li>
+                                        <li><strong>Emotional Support:</strong> Providing compassionate assistance during difficult times</li>
+                                        <li><strong>Resource Information:</strong> Sharing information about available support services</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Communication -->
+                <div class="accordion-item animate-slide-in-right delay-800">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#communication" aria-expanded="false" aria-controls="communication">
+                            <i class="fas fa-comments me-2" style="color: var(--kingsapark-yellow);"></i>Communication Bridge
+                        </button>
+                    </h2>
+                    <div id="communication" class="accordion-collapse collapse" data-bs-parent="#rolesAccordion">
+                        <div class="accordion-body">
+                            <div class="row align-items-center">
+                                <div class="col-lg-4 mb-3 mb-lg-0 text-center">
+                                    <div class="mission-icon mx-auto" style="background: rgba(255, 215, 0, 0.1); color: var(--kingsapark-yellow);">
+                                        <i class="fas fa-comments fa-3x"></i>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8">
+                                    <p>We facilitate open communication between police and community:</p>
+                                    <ul class="role-list">
+                                        <li><strong>Regular Meetings:</strong> Organizing community-police liaison meetings</li>
+                                        <li><strong>Information Sharing:</strong> Keeping residents informed about policing activities</li>
+                                        <li><strong>Feedback Channels:</strong> Collecting community concerns and suggestions</li>
+                                        <li><strong>Trust Building:</strong> Fostering positive relationships between police and residents</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Partnership Section with Clean Design -->
+    <div class="row mb-5">
+        <div class="col-lg-10 mx-auto">
+            <div class="partnership-clean">
+                <div class="row align-items-center">
+                    <div class="col-lg-7">
+                        <h3 class="fw-bold mb-4">
+                            <i class="fas fa-handshake me-2" style="color: var(--kingsapark-yellow);"></i>
+                            <span style="color: var(--kingsapark-navy);">Partnership with Tribal Office</span>
+                        </h3>
+                        
+                        <p class="mb-4">
+                            We believe that a partnership with the Tribal Office of Kings Park would be mutually beneficial, aligning with your
+                            role of development and service delivery to your community.
+                        </p>
+                        
+                        <p class="mb-4">
+                            As custodians of culture and traditions and promoters of social cohesion within the community of Kings Park, the Tribal Office plays
+                            a crucial role as a symbol of authority on matters of concern and as administrators of our Kings Park Communal land.
+                        </p>
+                        
+                        <div class="partnership-features mt-4">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-users me-2" style="color: var(--kingsapark-navy);"></i>
+                                        <span>Cultural Preservation</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-home me-2" style="color: var(--kingsapark-navy);"></i>
+                                        <span>Land Administration</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-heart me-2" style="color: var(--kingsapark-navy);"></i>
+                                        <span>Social Cohesion</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-gavel me-2" style="color: var(--kingsapark-navy);"></i>
+                                        <span>Community Authority</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-5 text-center">
+                        <div class="d-flex flex-column align-items-center">
+                            <i class="fas fa-university fa-5x mb-3" style="color: var(--kingsapark-navy);"></i>
+                            <h4 class="fw-bold" style="color: var(--kingsapark-navy);">Together for Kings Park</h4>
+                            <p>Building stronger communities through collaboration</p>
+                            <a href="{% url 'contact' %}" class="btn btn-primary mt-3">
+                                <i class="fas fa-envelope me-2"></i>Discuss Partnership
+                            </a>
+                            
+                            <!-- Manala Emblem with SVG Fallback -->
+                            <div class="mt-4">
+                                <div class="manala-emblem-container">
+                                    <!-- Primary image attempt -->
+                                    <img src="{% static 'images/manala_emblem.png' %}" 
+                                         alt="Manala Tribal Emblem" 
+                                         class="img-fluid tribal-emblem"
+                                         onerror="this.style.display='none'; document.getElementById('manala-fallback').style.display='block';"
+                                         style="max-width: 150px;">
+                                    
+                                    <!-- SVG Fallback that will show if image fails to load -->
+                                    <div id="manala-fallback" style="display: none; width: 150px; height: 180px;" class="mx-auto">
+                                        <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" class="tribal-emblem">
+                                            <!-- Oval shape -->
+                                            <ellipse cx="100" cy="120" rx="70" ry="100" fill="#f9e076" stroke="#000" stroke-width="2"/>
+                                            
+                                            <!-- Spears/decorations on sides -->
+                                            <line x1="30" y1="120" x2="10" y2="70" stroke="#444" stroke-width="3"/>
+                                            <line x1="170" y1="120" x2="190" y2="70" stroke="#444" stroke-width="3"/>
+                                            
+                                            <!-- Animal silhouette -->
+                                            <path d="M70,120 Q85,90 110,110 Q125,115 140,110 Q145,105 150,120" fill="#444" />
+                                            
+                                            <!-- Color bands -->
+                                            <rect x="60" y="140" width="80" height="10" fill="#d12" />
+                                            <rect x="60" y="150" width="80" height="10" fill="#fb0" />
+                                            <rect x="60" y="160" width="80" height="10" fill="#04b" />
+                                            
+                                            <!-- Text -->
+                                            <text x="100" y="200" text-anchor="middle" font-family="Arial" font-size="12" fill="#000">MANALA</text>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <p class="small mt-2 text-muted">Traditional Manala Tribal Emblem</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action Section with Animation -->
+    <div class="row">
+        <div class="col-12 animate-slide-up delay-1000">
+            <div class="cta-section">
+                <div class="cta-content text-center">
+                    <h3 class="display-5 fw-bold text-white mb-3 animate-fade-in delay-1000">Join Our Mission</h3>
+                    <p class="lead text-white mb-5 animate-fade-in delay-1100">Help us make Kings Park, Kwamhlanga a safer, more united community</p>
+                    
+                    <div class="d-flex justify-content-center gap-3 flex-wrap">
+                        <a href="{% url 'reports:submit_report' %}" class="btn cta-btn cta-btn-primary animate-scale-in delay-1200">
+                            <i class="fas fa-exclamation-triangle me-2"></i>Report a Crime
+                        </a>
+                        <a href="{% url 'community_chat:chatboard' %}" class="btn cta-btn cta-btn-outline animate-scale-in delay-1300">
+                            <i class="fas fa-comments me-2"></i>Join Community Chat
+                        </a>
+                        <a href="{% url 'register' %}" class="btn cta-btn cta-btn-outline animate-scale-in delay-1400">
+                            <i class="fas fa-user-plus me-2"></i>Get Involved
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Animation Script -->
+<script>
+// Animation on scroll for About Us page
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all elements with animation classes
+    const animatedElements = document.querySelectorAll('.animate-fade-in, .animate-slide-up, .animate-slide-in-left, .animate-slide-in-right, .animate-scale-in');
+    
+    // Optional: Add intersection observer for scroll-based animations
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = entry.target.classList.contains('animate-slide-up') ? 'translateY(0)' : 
+                                             entry.target.classList.contains('animate-slide-in-left') ? 'translateX(0)' : 
+                                             entry.target.classList.contains('animate-slide-in-right') ? 'translateX(0)' : 
+                                             entry.target.classList.contains('animate-scale-in') ? 'scale(1)' : 'translate(0, 0)';
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.2 });
+    
+    animatedElements.forEach(element => {
+        observer.observe(element);
+    });
+    
+    // Accordion animation
+    const accordionButtons = document.querySelectorAll('.accordion-button');
+    
+    accordionButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const icon = this.querySelector('i');
+            if (icon) {
+                icon.classList.add('fa-pulse');
+                setTimeout(() => {
+                    icon.classList.remove('fa-pulse');
+                }, 500);
+            }
+        });
+    });
+});
+</script>
+
+<style>
+.partnership-visual {
+    animation: gentle-float 4s ease-in-out infinite;
+}
+
+@keyframes gentle-float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: rgba(0, 123, 255, 0.1);
+    color: #0056b3;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: rgba(0, 123, 255, 0.25);
+}
+</style>
+{% endblock %}

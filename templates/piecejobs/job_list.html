@@ -1,0 +1,244 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="mb-0 fw-bold">Piece Jobs</h1>
+            <p class="lead text-muted">Find temporary work opportunities in your area</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <a href="{% url 'piecejobs:create_job' %}" class="btn btn-primary btn-lg">
+                <i class="fas fa-plus me-1"></i> Post a Job
+            </a>
+        </div>
+    </div>
+    
+    <!-- Search and Filter Options -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form method="get" action="{% url 'piecejobs:job_list' %}" class="row g-3">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control" placeholder="Search jobs..." value="{{ query|default:'' }}">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <select name="category" class="form-select" onchange="this.form.submit()">
+                        <option value="">All Categories</option>
+                        {% for category in categories %}
+                            {% if category %}
+                                <option value="{{ category }}" {% if selected_category == category %}selected{% endif %}>
+                                    {{ category }}
+                                </option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="col-md-2 text-end">
+                    {% if query or selected_category %}
+                        <a href="{% url 'piecejobs:job_list' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times me-1"></i> Clear
+                        </a>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Job Listings -->
+    <div class="row">
+        {% if page_obj %}
+            {% for job in page_obj %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 shadow-sm border-0 hover-card">
+                        <div class="card-header bg-light py-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-success">{{ job.get_status_display }}</span>
+                                <span class="text-muted small">{{ job.created_at|date:"j M Y" }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-body">
+                            <h5 class="card-title mb-1">{{ job.title }}</h5>
+                            <p class="text-muted small mb-3">
+                                <i class="fas fa-map-marker-alt me-1"></i> {{ job.location }}
+                            </p>
+                            
+                            <div class="mb-3">
+                                <p class="card-text text-truncate-3">{{ job.description }}</p>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between small mb-3">
+                                <span><i class="fas fa-clock me-1"></i> {{ job.duration }}</span>
+                                <span><i class="fas fa-users me-1"></i> {{ job.people_needed }} people</span>
+                            </div>
+                            
+                            <div class="price-tag mb-3">
+                                <span class="fw-bold">R{{ job.offer_price }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-footer bg-white border-0 pt-0">
+                            <div class="d-grid">
+                                <a href="{% url 'piecejobs:job_detail' pk=job.pk %}" class="btn btn-outline-primary">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                        
+                        {% if job.photo %}
+                            <div class="job-image-indicator">
+                                <i class="fas fa-image" title="Has image"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-info-circle fa-2x me-3"></i>
+                        <div>
+                            <h5 class="mb-1">No Jobs Found</h5>
+                            <p class="mb-0">
+                                {% if query or selected_category %}
+                                    No jobs match your search criteria. Try adjusting your search or filter options.
+                                {% else %}
+                                    There are currently no piece jobs available. Check back later or post a job yourself.
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}" aria-label="First">
+                            <span aria-hidden="true">&laquo;&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">&laquo;&laquo;</span>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link">&laquo;</span>
+                    </li>
+                {% endif %}
+                
+                {% for i in page_obj.paginator.page_range %}
+                    {% if page_obj.number == i %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ i }}</span>
+                        </li>
+                    {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ i }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">{{ i }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}" aria-label="Last">
+                            <span aria-hidden="true">&raquo;&raquo;</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">&raquo;</span>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link">&raquo;&raquo;</span>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+    
+    <!-- Job Posting Promotion -->
+    <div class="card mt-5 border-0 bg-gradient-primary text-white shadow">
+        <div class="card-body p-4">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h3 class="mb-2">Need to get work done?</h3>
+                    <p class="mb-md-0">Post a job and find qualified people in your area.</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <a href="{% url 'piecejobs:create_job' %}" class="btn btn-light text-primary fw-bold px-4">
+                        Post a Job Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .text-truncate-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        min-height: 4.5rem;
+    }
+    
+    .hover-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .hover-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    .price-tag {
+        font-size: 1.2rem;
+        color: var(--kingsapark-green);
+    }
+    
+    .job-image-indicator {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: rgba(255, 255, 255, 0.7);
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--kingsapark-navy);
+    }
+    
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, var(--kingsapark-navy) 0%, var(--kingsapark-green) 100%);
+    }
+</style>
+{% endblock %}

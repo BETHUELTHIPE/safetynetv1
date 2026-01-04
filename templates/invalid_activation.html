@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}Invalid Activation Link{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="card border-0 shadow-lg rounded-3 overflow-hidden">
+                <div class="card-header bg-gradient-warning text-white text-center py-4">
+                    <i class="fas fa-exclamation-triangle fa-3x mb-3"></i>
+                    <h2 class="mb-0 fw-bold">Invalid Activation Link</h2>
+                </div>
+                
+                <div class="card-body p-4 p-md-5 text-center">
+                    <div class="mb-4">
+                        <div class="verification-icon mb-4">
+                            <i class="fas fa-link-slash fa-4x text-warning"></i>
+                        </div>
+                        
+                        <h3>Activation Failed</h3>
+                        <p class="lead mb-4">The activation link you used is invalid or has expired.</p>
+                        <p class="mb-4">This could be because:</p>
+                        
+                        <ul class="list-group list-group-flush mb-4 text-start">
+                            <li class="list-group-item bg-light">
+                                <i class="fas fa-clock text-warning me-2"></i> The link has expired (valid for 24 hours only)
+                            </li>
+                            <li class="list-group-item bg-light">
+                                <i class="fas fa-check-double text-warning me-2"></i> Your account is already activated
+                            </li>
+                            <li class="list-group-item bg-light">
+                                <i class="fas fa-link text-warning me-2"></i> The link was modified or incomplete
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="d-grid gap-3">
+                        <a href="{% url 'register' %}" class="btn btn-primary">
+                            <i class="fas fa-user-plus me-2"></i> Register Again
+                        </a>
+                        <a href="{% url 'login' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-sign-in-alt me-2"></i> Try Logging In
+                        </a>
+                        <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-home me-2"></i> Return to Home
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="card-footer py-3 text-center">
+                    <p class="mb-0">Need help? <a href="{% url 'contact' %}">Contact Support</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .verification-icon {
+        color: var(--kingsapark-red);
+    }
+    
+    .bg-gradient-warning {
+        background: linear-gradient(135deg, var(--kingsapark-red) 0%, var(--kingsapark-yellow) 100%);
+    }
+</style>
+{% endblock %}

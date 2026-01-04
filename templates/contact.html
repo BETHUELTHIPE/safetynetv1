@@ -1,0 +1,514 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact Us - Kingsapark Community Police Forum{% endblock %}
+
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/contact.css' %}">
+<style>
+    /* Emergency Contacts Section Styles */
+    .emergency-contacts-section {
+        background: linear-gradient(135deg, rgba(220, 20, 60, 0.05) 0%, rgba(255, 0, 0, 0.05) 100%);
+        border: 2px solid rgba(220, 20, 60, 0.1);
+    }
+    
+    .emergency-number-card {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        height: 100%;
+        border: 1px solid rgba(0,0,0,0.05);
+    }
+    
+    .emergency-number-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+    
+    .emergency-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        font-size: 1.5rem;
+        color: white;
+    }
+    
+    .police-icon { background: linear-gradient(135deg, #1a237e, #3949ab); }
+    .medical-icon { background: linear-gradient(135deg, #f44336, #e91e63); }
+    .fire-icon { background: linear-gradient(135deg, #ff6f00, #ff8f00); }
+    .universal-icon { background: linear-gradient(135deg, #4caf50, #8bc34a); }
+    .child-icon { background: linear-gradient(135deg, #4caf50, #8bc34a); }
+    .women-icon { background: linear-gradient(135deg, #e91e63, #f06292); }
+    .mental-icon { background: linear-gradient(135deg, #9c27b0, #ba68c8); }
+    .crime-icon { background: linear-gradient(135deg, #795548, #a1887f); }
+    .poison-icon { background: linear-gradient(135deg, #009688, #4db6ac); }
+    .water-icon { background: linear-gradient(135deg, #2196f3, #64b5f6); }
+    .electricity-icon { background: linear-gradient(135deg, #ffc107, #ffca28); color: #333; }
+    .disaster-icon { background: linear-gradient(135deg, #607d8b, #90a4ae); }
+    
+    .emergency-number {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: #dc143c;
+        text-decoration: none;
+        display: block;
+        transition: all 0.3s ease;
+        margin: 0.5rem 0;
+    }
+    
+    .emergency-number:hover {
+        color: #ff0000;
+        transform: scale(1.05);
+    }
+    
+    .emergency-number-card h5 {
+        color: var(--kingsapark-navy);
+        margin-bottom: 0.5rem;
+    }
+    
+    @media (max-width: 768px) {
+        .emergency-number {
+            font-size: 1.5rem;
+        }
+        
+        .emergency-icon {
+            width: 50px;
+            height: 50px;
+            font-size: 1.2rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-5">
+    <!-- Animated Header -->
+    <div class="row mb-5">
+        <div class="col-12 text-center page-header animate-fade-in">
+            <h1 class="display-4 fw-bold mb-4" style="color: var(--kingsapark-navy);">Contact Us</h1>
+            <p class="lead animate-slide-up delay-200">Get in touch with the Kings Park, Kwamhlanga Community Police Forum</p>
+        </div>
+    </div>
+
+    <!-- Contact Information Cards with Animations -->
+    <div class="row g-4 mb-5">
+        <!-- Secretary Contact -->
+        <div class="col-lg-4 col-md-6 animate-slide-in-left delay-100">
+            <div class="card h-100 contact-card shadow-lg" style="background: linear-gradient(135deg, rgba(50, 205, 50, 0.05) 0%, rgba(255, 215, 0, 0.05) 100%);">
+                <div class="card-body text-center p-4">
+                    <div class="contact-icon" style="background-color: rgba(50, 205, 50, 0.1);">
+                        <i class="fas fa-user-tie fa-3x" style="color: var(--kingsapark-green);"></i>
+                    </div>
+                    <h4 class="card-title mb-3 fw-bold" style="color: var(--kingsapark-green);">Secretary</h4>
+                    <div class="contact-details">
+                        <p class="mb-2">
+                            <i class="fas fa-phone-alt me-2" style="color: var(--kingsapark-green);"></i>
+                            <strong>082 590 3149</strong>
+                        </p>
+                        <p class="mb-2">
+                            <i class="fas fa-envelope me-2" style="color: var(--kingsapark-green);"></i>
+                            inquiries@cpfkingspark.co.za
+                        </p>
+                    </div>
+                    <div class="mt-3 pt-2 border-top">
+                        <small class="text-muted d-block">For general inquiries and information</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chairperson Contact -->
+        <div class="col-lg-4 col-md-6 animate-fade-in delay-200">
+            <div class="card h-100 contact-card shadow-lg" style="background: linear-gradient(135deg, rgba(135, 206, 235, 0.05) 0%, rgba(220, 20, 60, 0.05) 100%);">
+                <div class="card-body text-center p-4">
+                    <div class="contact-icon" style="background-color: rgba(135, 206, 235, 0.1);">
+                        <i class="fas fa-crown fa-3x" style="color: var(--kingsapark-light-blue);"></i>
+                    </div>
+                    <h4 class="card-title mb-3 fw-bold" style="color: var(--kingsapark-light-blue);">Chairperson</h4>
+                    <div class="contact-details">
+                        <p class="mb-2">
+                            <i class="fas fa-phone-alt me-2 notification-badge" style="color: var(--kingsapark-light-blue);"></i>
+                            <strong>Available upon request</strong>
+                        </p>
+                        <p class="mb-2">
+                            <i class="fas fa-envelope me-2" style="color: var(--kingsapark-light-blue);"></i>
+                            chairperson@cpfkingspark.co.za
+                        </p>
+                    </div>
+                    <div class="mt-3 pt-2 border-top">
+                        <small class="text-muted d-block">For official matters and partnerships</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Physical Address -->
+        <div class="col-lg-4 col-md-12 animate-slide-in-right delay-300">
+            <div class="card h-100 contact-card shadow-lg" style="background: linear-gradient(135deg, rgba(220, 20, 60, 0.05) 0%, rgba(255, 215, 0, 0.05) 100%);">
+                <div class="card-body text-center p-4">
+                    <div class="contact-icon" style="background-color: rgba(220, 20, 60, 0.1);">
+                        <i class="fas fa-map-marker-alt fa-3x" style="color: var(--kingsapark-red);"></i>
+                    </div>
+                    <h4 class="card-title mb-3 fw-bold" style="color: var(--kingsapark-red);">Visit Our Office</h4>
+                    <div class="contact-details">
+                        <p class="mb-2">
+                            <i class="fas fa-building me-2" style="color: var(--kingsapark-red);"></i>
+                            <strong>Kings Park, Kwamhlanga CPF</strong>
+                        </p>
+                        <p class="mb-2">
+                            <i class="fas fa-address-card me-2" style="color: var(--kingsapark-red);"></i>
+                            B107 Kings Park Village
+                        </p>
+                        <p class="mb-2">
+                            <i class="fas fa-city me-2" style="color: var(--kingsapark-red);"></i>
+                            KwaMhlanga, 1022
+                        </p>
+                        <p class="mb-0">
+                            <i class="fas fa-globe-africa me-2" style="color: var(--kingsapark-red);"></i>
+                            South Africa
+                        </p>
+                    </div>
+                    <div class="mt-3 pt-2 border-top">
+                        <small class="text-muted d-block">Office hours: Monday - Friday, 8:00 AM - 4:30 PM</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Form Section with Animation -->
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto animate-slide-up delay-400">
+            <div class="card border-0 shadow-lg contact-form">
+                <div class="card-header text-center py-4" style="background: linear-gradient(135deg, var(--kingsapark-yellow) 0%, var(--kingsapark-green) 100%); color: white;">
+                    <h3 class="mb-0 fw-bold"><i class="fas fa-envelope-open-text me-2"></i>Send Us a Message</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form id="contactForm" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="contactName" class="form-label">Full Name</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    <input type="text" class="form-control" id="contactName" placeholder="Your name" required>
+                                    <div class="invalid-feedback">Please provide your name.</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="contactEmail" class="form-label">Email Address</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                    <input type="email" class="form-control" id="contactEmail" placeholder="your.email@example.com" required>
+                                    <div class="invalid-feedback">Please provide a valid email address.</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="contactPhone" class="form-label">Phone Number</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-phone-alt"></i></span>
+                                    <input type="tel" class="form-control" id="contactPhone" placeholder="Optional">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="contactType" class="form-label">Inquiry Type</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                                    <select class="form-select" id="contactType" required>
+                                        <option value="" selected disabled>Select an option</option>
+                                        <option value="general">General Information</option>
+                                        <option value="partnership">Partnership Opportunity</option>
+                                        <option value="volunteering">Volunteering</option>
+                                        <option value="feedback">Feedback</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select an inquiry type.</div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label for="contactSubject" class="form-label">Subject</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-heading"></i></span>
+                                    <input type="text" class="form-control" id="contactSubject" placeholder="Brief subject of your message" required>
+                                    <div class="invalid-feedback">Please provide a subject.</div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label for="contactMessage" class="form-label">Message</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-comment-alt"></i></span>
+                                    <textarea class="form-control" id="contactMessage" rows="5" placeholder="Your detailed message..." required></textarea>
+                                    <div class="invalid-feedback">Please provide your message.</div>
+                                </div>
+                            </div>
+                            <div class="col-12 mt-4 d-flex justify-content-between align-items-center">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="contactConsent" required>
+                                    <label class="form-check-label" for="contactConsent">
+                                        I consent to my data being stored for the purpose of responding to my inquiry.
+                                    </label>
+                                    <div class="invalid-feedback">You must agree before submitting.</div>
+                                </div>
+                                <button type="submit" class="btn btn-submit px-4 py-2" style="background: linear-gradient(135deg, var(--kingsapark-yellow) 0%, var(--kingsapark-green) 100%); color: white; border: none;">
+                                    <span>Send Message</span>
+                                    <i class="fas fa-paper-plane ms-2"></i>
+                                    <div class="loading-spinner ms-2"></div>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- Success Message (Initially hidden) -->
+                    <div id="successMessage" class="success-message alert alert-success text-center mt-4" role="alert">
+                        <i class="fas fa-check-circle fa-2x mb-2"></i>
+                        <h5>Thank you for your message!</h5>
+                        <p class="mb-0">We'll get back to you as soon as possible.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comprehensive Emergency Contacts Section with Animation -->
+    <div class="row mb-5">
+        <div class="col-12 animate-fade-in delay-500">
+            <div class="card border-0 shadow-lg emergency-contacts-section">
+                <div class="card-header py-4" style="background: linear-gradient(135deg, #dc143c 0%, #ff0000 100%); color: white;">
+                    <h3 class="mb-0 fw-bold text-center">
+                        <i class="fas fa-phone-alt me-2"></i>South African Emergency Numbers
+                    </h3>
+                </div>
+                <div class="card-body p-4">
+                    <!-- Critical Emergency Numbers -->
+                    <div class="row text-center mb-4">
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="emergency-number-card">
+                                <div class="emergency-icon police-icon">
+                                    <i class="fas fa-police-badge"></i>
+                                </div>
+                                <h5 class="fw-bold">Police Emergency</h5>
+                                <a href="tel:10111" class="emergency-number">10111</a>
+                                <p class="small text-muted">For all police emergencies</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="emergency-number-card">
+                                <div class="emergency-icon medical-icon">
+                                    <i class="fas fa-ambulance"></i>
+                                </div>
+                                <h5 class="fw-bold">Ambulance</h5>
+                                <a href="tel:10177" class="emergency-number">10177</a>
+                                <p class="small text-muted">Medical emergencies</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="emergency-number-card">
+                                <div class="emergency-icon fire-icon">
+                                    <i class="fas fa-fire-extinguisher"></i>
+                                </div>
+                                <h5 class="fw-bold">Fire Brigade</h5>
+                                <a href="tel:10177" class="emergency-number">10177</a>
+                                <p class="small text-muted">Fire emergencies</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="emergency-number-card">
+                                <div class="emergency-icon universal-icon">
+                                    <i class="fas fa-globe-africa"></i>
+                                </div>
+                                <h5 class="fw-bold">Universal Emergency</h5>
+                                <a href="tel:112" class="emergency-number">112</a>
+                                <p class="small text-muted">Mobile only (no airtime needed)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Specialized Emergency Services -->
+                    <div class="row text-center mb-4">
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="emergency-number-card">
+                                <div class="emergency-icon child-icon">
+                                    <i class="fas fa-child"></i>
+                                </div>
+                                <h5 class="fw-bold">Childline</h5>
+                                <a href="tel:0800055555" class="emergency-number">08000 555 55</a>
+                                <p class="small text-muted">24-hour child helpline</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="emergency-number-card">
+                                <div class="emergency-icon women-icon">
+                                    <i class="fas fa-hands-helping"></i>
+                                </div>
+                                <h5 class="fw-bold">GBV Command Centre</h5>
+                                <a href="tel:0800428428" class="emergency-number">0800 428 428</a>
+                                <p class="small text-muted">Gender-Based Violence</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="emergency-number-card">
+                                <div class="emergency-icon mental-icon">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <h5 class="fw-bold">Mental Health Crisis</h5>
+                                <a href="tel:0800212223" class="emergency-number">0800 21 22 23</a>
+                                <p class="small text-muted">24-hour crisis line</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="emergency-number-card">
+                                <div class="emergency-icon crime-icon">
+                                    <i class="fas fa-user-secret"></i>
+                                </div>
+                                <h5 class="fw-bold">Crime Stop</h5>
+                                <a href="tel:0860011011" class="emergency-number">08600 11011</a>
+                                <p class="small text-muted">Anonymous crime reporting</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Utility Emergency Services -->
+                    <div class="row text-center mb-4">
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="emergency-number-card">
+                                <div class="emergency-icon poison-icon">
+                                    <i class="fas fa-flask"></i>
+                                </div>
+                                <h5 class="fw-bold">Poison Emergency</h5>
+                                <a href="tel:0861555777" class="emergency-number">0861 555 777</a>
+                                <p class="small text-muted">24-hour poison helpline</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="emergency-number-card">
+                                <div class="emergency-icon water-icon">
+                                    <i class="fas fa-tint"></i>
+                                </div>
+                                <h5 class="fw-bold">Water Emergency</h5>
+                                <a href="tel:0800200200" class="emergency-number">0800 200 200</a>
+                                <p class="small text-muted">Water supply emergencies</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="emergency-number-card">
+                                <div class="emergency-icon electricity-icon">
+                                    <i class="fas fa-bolt"></i>
+                                </div>
+                                <h5 class="fw-bold">Electricity Emergency</h5>
+                                <a href="tel:0860037566" class="emergency-number">0860 037 566</a>
+                                <p class="small text-muted">Power outages & emergencies</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="emergency-number-card">
+                                <div class="emergency-icon disaster-icon">
+                                    <i class="fas fa-hurricane"></i>
+                                </div>
+                                <h5 class="fw-bold">Disaster Management</h5>
+                                <a href="tel:0800622440" class="emergency-number">0800 622 440</a>
+                                <p class="small text-muted">National disaster center</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Important Notice -->
+                    <div class="alert alert-warning mt-4" role="alert">
+                        <h6 class="alert-heading fw-bold">
+                            <i class="fas fa-exclamation-triangle me-2"></i>Important Emergency Information
+                        </h6>
+                        <ul class="mb-0 small">
+                            <li><strong>112</strong> works from mobile phones even without airtime or signal</li>
+                            <li><strong>10111</strong> is for all serious crimes and police emergencies</li>
+                            <li><strong>10177</strong> connects to both ambulance and fire services</li>
+                            <li>Save these numbers in your phone for quick access</li>
+                            <li>Stay calm and clearly state your location and emergency type</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Map Section with Animation -->
+    <div class="row mb-5">
+        <div class="col-12 animate-slide-up delay-600">
+            <div class="card border-0 shadow-lg">
+                <div class="card-header py-3" style="background: linear-gradient(135deg, var(--kingsapark-navy) 0%, var(--kingsapark-light-blue) 100%); color: white;">
+                    <h3 class="mb-0 fw-bold text-center"><i class="fas fa-map-marked-alt me-2"></i>Find Us</h3>
+                </div>
+                <div class="card-body p-0">
+                    <div class="map-container">
+                        <!-- Replace with actual Google Maps embed code for your location -->
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14369.176501276115!2d29.044827137158196!3d-25.53237!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1eecb02b491cc927%3A0x9283f61251afee58!2sKwaMhlanga!5e0!3m2!1sen!2sza!4v1649236289693!5m2!1sen!2sza" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    </div>
+
+<script>
+// Form validation using Bootstrap 5 validation
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const form = this;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const submitText = submitBtn.querySelector('span');
+    const spinner = submitBtn.querySelector('.loading-spinner');
+    const successMessage = document.getElementById('successMessage');
+    
+    // Add validation styles to form
+    form.classList.add('was-validated');
+    
+    // If form is valid
+    if (form.checkValidity()) {
+        // Disable button and show loading spinner
+        submitBtn.disabled = true;
+        submitText.style.opacity = '0.5';
+        spinner.style.display = 'inline-block';
+        
+        // Simulate form submission with timeout (replace with actual AJAX in production)
+        setTimeout(function() {
+            // Hide the form
+            form.style.display = 'none';
+            
+            // Show success message with animation
+            successMessage.style.display = 'block';
+            
+            // Reset the form for future submissions
+            form.reset();
+            form.classList.remove('was-validated');
+        }, 1500);
+    }
+});
+
+// Animation on scroll
+document.addEventListener('DOMContentLoaded', function() {
+    const animatedElements = document.querySelectorAll('.animate-fade-in, .animate-slide-up, .animate-slide-in-left, .animate-slide-in-right');
+    
+    // Optional: Add intersection observer for scroll-based animations
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translate(0, 0)';
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.2 });
+    
+    animatedElements.forEach(element => {
+        observer.observe(element);
+    });
+});
+</script>
+{% endblock %}

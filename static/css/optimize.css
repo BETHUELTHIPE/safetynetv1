@@ -1,0 +1,129 @@
+/* Performance Optimizations CSS */
+
+/* Critical CSS to prevent layout shifts */
+:root {
+  --content-width: 1200px;
+  --header-height: 70px;
+  --footer-height: 300px;
+}
+
+/* Container presets to avoid CLS */
+.container {
+  width: 100%;
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 0 15px;
+  box-sizing: border-box;
+}
+
+/* Efficient image handling */
+img, video, iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Lazy-loaded image placeholders */
+img.lazy {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+img:not(.lazy) {
+  opacity: 1;
+}
+
+/* Image placeholders */
+.img-placeholder {
+  background-color: #f0f0f0;
+  position: relative;
+  overflow: hidden;
+}
+
+.img-placeholder::before {
+  content: "";
+  display: block;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+}
+
+/* Optimize header on scroll */
+header.compact {
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+header.compact .header-logo {
+  height: 40px;
+  transition: height 0.3s ease-in-out;
+}
+
+/* Font display optimization */
+@font-face {
+  font-family: 'CustomFont';
+  src: local('Arial'), url('/static/fonts/custom-font.woff2') format('woff2'), url('/static/fonts/custom-font.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap; /* Show fallback font until custom font loads */
+}
+
+/* Content-visibility for offscreen content */
+.defer-offscreen {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 1000px; /* Approximate dimensions to avoid layout shifts */
+}
+
+/* Print styles to save ink and improve readability */
+@media print {
+  body {
+    font-size: 12pt;
+    line-height: 1.5;
+    color: #000;
+    background: #fff;
+  }
+  
+  nav, footer, video, audio, button, input, .no-print {
+    display: none !important;
+  }
+  
+  a {
+    text-decoration: none;
+    color: #000;
+  }
+  
+  a[href]:after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    font-weight: normal;
+  }
+  
+  img {
+    max-width: 100% !important;
+    page-break-inside: avoid;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+  
+  table, figure {
+    page-break-inside: avoid;
+  }
+}
+
+/* Responsive tables for better mobile experience */
+.responsive-table {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 1rem;
+}
+
+/* Reduce motion for users with vestibular disorders */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

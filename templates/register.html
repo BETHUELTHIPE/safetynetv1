@@ -1,0 +1,314 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8">
+            <!-- Registration Card -->
+            <div class="card border-0 shadow-lg rounded-3 overflow-hidden">
+                <!-- Card Header -->
+                <div class="card-header bg-gradient-primary text-white text-center py-4">
+                    <h2 class="mb-0 fw-bold">Join Kings Park CPF</h2>
+                    <p class="mb-0 fw-light">Create your account to report crimes and connect with your community</p>
+                </div>
+                
+                <!-- Community Motto -->
+                <div class="motto-banner text-center py-3" style="background: linear-gradient(to right, #f8f9fa, #e9ecef, #f8f9fa); border-bottom: 1px solid #dee2e6;">
+                    <p class="h5 mb-0 fw-bold" style="color: var(--kingsapark-navy);">Stand Up, Speak Out Against Crime!</p>
+                    <p class="fw-medium" style="color: var(--kingsapark-green);">We Crush Crime With Unity.</p>
+                </div>
+                
+                <!-- Card Body with Form -->
+                <div class="card-body p-4 p-md-5">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <!-- Registration Progress Steps -->
+                    <div class="registration-steps d-flex justify-content-between mb-4 position-relative">
+                        <div class="progress position-absolute" style="width: 80%; height: 2px; top: 12px; left: 10%;">
+                            <div class="progress-bar" role="progressbar" style="width: 33%"></div>
+                        </div>
+                        <div class="step active text-center">
+                            <div class="step-icon"><i class="fas fa-user"></i></div>
+                            <small>Account</small>
+                        </div>
+                        <div class="step text-center">
+                            <div class="step-icon"><i class="fas fa-check"></i></div>
+                            <small>Verification</small>
+                        </div>
+                        <div class="step text-center">
+                            <div class="step-icon"><i class="fas fa-shield-alt"></i></div>
+                            <small>Complete</small>
+                        </div>
+                    </div>
+                    
+                    <p class="text-center text-muted mb-4">Please fill in your details to create your account.</p>
+                    
+                    <form method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+                        
+                        <!-- Form Sections -->
+                        <div class="row">
+                            <!-- Account Information -->
+                            <div class="col-12">
+                                <h5 class="border-start border-3 border-primary ps-2 mb-3">Account Information</h5>
+                            </div>
+                            
+                            <!-- Username Field -->
+                            <div class="col-12 col-md-6 mb-3">
+                                <label for="{{ form.username.id_for_label }}" class="form-label">{{ form.username.label }}</label>
+                                {{ form.username }}
+                                {% if form.username.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.username.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Email Field -->
+                            <div class="col-12 col-md-6 mb-3">
+                                <label for="{{ form.email.id_for_label }}" class="form-label">{{ form.email.label }}</label>
+                                {{ form.email }}
+                                {% if form.email.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.email.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Personal Information -->
+                            <div class="col-12 mt-2">
+                                <h5 class="border-start border-3 border-primary ps-2 mb-3">Personal Information</h5>
+                            </div>
+                            
+                            <!-- First Name Field -->
+                            <div class="col-12 col-md-6 mb-3">
+                                <label for="{{ form.first_name.id_for_label }}" class="form-label">{{ form.first_name.label }}</label>
+                                {{ form.first_name }}
+                                {% if form.first_name.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.first_name.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Last Name Field -->
+                            <div class="col-12 col-md-6 mb-3">
+                                <label for="{{ form.last_name.id_for_label }}" class="form-label">{{ form.last_name.label }}</label>
+                                {{ form.last_name }}
+                                {% if form.last_name.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.last_name.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- ID Number Field -->
+                            <div class="col-12 col-md-6 mb-3">
+                                <label for="{{ form.id_number.id_for_label }}" class="form-label">{{ form.id_number.label }}</label>
+                                {{ form.id_number }}
+                                {% if form.id_number.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.id_number.errors.0 }}</div>
+                                {% endif %}
+                                <div class="form-text">Your ID number is used for verification purposes only.</div>
+                            </div>
+                            
+                            <!-- Phone Number Field -->
+                            <div class="col-12 col-md-6 mb-3">
+                                <label for="{{ form.phone_number.id_for_label }}" class="form-label">{{ form.phone_number.label }}</label>
+                                {{ form.phone_number }}
+                                {% if form.phone_number.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.phone_number.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Address Field -->
+                            <div class="col-12 mb-3">
+                                <label for="{{ form.address.id_for_label }}" class="form-label">{{ form.address.label }}</label>
+                                {{ form.address }}
+                                {% if form.address.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.address.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- User Role Field -->
+                            <div class="col-12 mb-3">
+                                <label for="{{ form.role.id_for_label }}" class="form-label">{{ form.role.label }}</label>
+                                {{ form.role }}
+                                {% if form.role.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.role.errors.0 }}</div>
+                                {% endif %}
+                                <div class="form-text">Some roles may require additional verification.</div>
+                            </div>
+                            
+                            <!-- Security Section -->
+                            <div class="col-12 mt-2">
+                                <h5 class="border-start border-3 border-primary ps-2 mb-3">Security</h5>
+                            </div>
+                            
+                            <!-- Password Field -->
+                            <div class="col-12 col-md-6 mb-3">
+                                <label for="{{ form.password1.id_for_label }}" class="form-label">{{ form.password1.label }}</label>
+                                {{ form.password1 }}
+                                {% if form.password1.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.password1.errors.0 }}</div>
+                                {% endif %}
+                                <div class="password-strength mt-1 progress" style="height: 5px;">
+                                    <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                                </div>
+                                <div class="form-text password-feedback">
+                                    <small>Password must be at least 8 characters long and contain letters and numbers.</small>
+                                </div>
+                            </div>
+                            
+                            <!-- Confirm Password Field -->
+                            <div class="col-12 col-md-6 mb-3">
+                                <label for="{{ form.password2.id_for_label }}" class="form-label">{{ form.password2.label }}</label>
+                                {{ form.password2 }}
+                                {% if form.password2.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.password2.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Terms Agreement -->
+                            <div class="col-12 mb-3">
+                                <div class="form-check">
+                                    {{ form.terms_agreement }}
+                                    <label class="form-check-label" for="{{ form.terms_agreement.id_for_label }}">
+                                        I agree to the <a href="{% url 'terms_and_conditions' %}" target="_blank">Terms and Conditions</a> and <a href="{% url 'privacy_policy' %}" target="_blank">Privacy Policy</a>
+                                    </label>
+                                    {% if form.terms_agreement.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.terms_agreement.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <!-- Submit Button -->
+                            <div class="col-12 text-center mt-3">
+                                <button type="submit" class="btn btn-primary btn-lg px-5 py-2">
+                                    {{ button_text }}
+                                    <i class="fas fa-user-plus ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Card Footer with Login Link -->
+                <div class="card-footer py-3 text-center">
+                    <p class="mb-0">Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Password strength meter script -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const passwordField = document.getElementById('{{ form.password1.id_for_label }}');
+        const confirmField = document.getElementById('{{ form.password2.id_for_label }}');
+        const progressBar = document.querySelector('.password-strength .progress-bar');
+        const feedback = document.querySelector('.password-feedback small');
+        
+        passwordField.addEventListener('input', function() {
+            const value = passwordField.value;
+            let strength = 0;
+            let message = '';
+            
+            // Length check
+            if (value.length >= 8) {
+                strength += 20;
+            }
+            
+            // Lowercase letter check
+            if (/[a-z]/.test(value)) {
+                strength += 20;
+            }
+            
+            // Uppercase letter check
+            if (/[A-Z]/.test(value)) {
+                strength += 20;
+            }
+            
+            // Number check
+            if (/\d/.test(value)) {
+                strength += 20;
+            }
+            
+            // Special character check
+            if (/[^A-Za-z0-9]/.test(value)) {
+                strength += 20;
+            }
+            
+            // Update progress bar
+            progressBar.style.width = strength + '%';
+            
+            // Update progress bar color
+            if (strength < 40) {
+                progressBar.className = 'progress-bar bg-danger';
+                message = 'Weak password. Try adding more types of characters.';
+            } else if (strength < 80) {
+                progressBar.className = 'progress-bar bg-warning';
+                message = 'Moderate password. Add more character types for better security.';
+            } else {
+                progressBar.className = 'progress-bar bg-success';
+                message = 'Strong password!';
+            }
+            
+            // Update feedback message
+            feedback.textContent = message;
+        });
+        
+        // Check password match
+        confirmField.addEventListener('input', function() {
+            if (passwordField.value === confirmField.value) {
+                confirmField.classList.add('is-valid');
+                confirmField.classList.remove('is-invalid');
+            } else {
+                confirmField.classList.add('is-invalid');
+                confirmField.classList.remove('is-valid');
+            }
+        });
+    });
+</script>
+
+<style>
+    /* Registration page styling */
+    .registration-steps .step {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .registration-steps .step-icon {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background-color: #e9ecef;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 5px;
+        color: #6c757d;
+        transition: all 0.3s ease;
+    }
+    
+    .registration-steps .step.active .step-icon {
+        background-color: var(--bs-primary);
+        color: white;
+        box-shadow: 0 0 0 3px rgba(var(--bs-primary-rgb), 0.2);
+    }
+    
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, var(--kingsapark-navy) 0%, var(--kingsapark-green) 100%);
+    }
+    
+    .border-primary {
+        border-color: var(--kingsapark-yellow) !important;
+    }
+    
+    /* Password strength meter */
+    .password-strength {
+        transition: all 0.3s ease;
+    }
+</style>
+{% endblock %}

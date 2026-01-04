@@ -1,0 +1,634 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Community Events - Kings Park CPF{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section position-relative">
+    <div class="hero-bg"></div>
+    <div class="container position-relative">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center text-white py-5">
+                <h1 class="display-4 fw-bold mb-3">Community Events</h1>
+                <p class="lead mb-4">Connect with your neighbors and strengthen our community through local events and activities</p>
+                <div class="d-flex flex-wrap justify-content-center gap-3">
+                    <a href="#upcoming-events" class="btn btn-light btn-lg px-4">
+                        <i class="fas fa-calendar-alt me-2"></i>Browse Events
+                    </a>
+                    {% if user.is_authenticated and user.is_staff %}
+                    <a href="{% url 'kingspark_events:create_event' %}" class="btn btn-primary btn-lg px-4">
+                        <i class="fas fa-plus me-2"></i>Host an Event
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5" id="upcoming-events">
+    <!-- Featured Event (if any) -->
+    {% with featured=page_obj|dictsort:"is_featured"|last %}
+    {% if featured.is_featured %}
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="h3 mb-4 fw-bold">Featured Event</h2>
+            <div class="card featured-event">
+                <div class="row g-0">
+                    <div class="col-md-6">
+                        {% if featured.image %}
+                        <img src="{{ featured.image.url }}" alt="{{ featured.title }}" class="img-fluid h-100 w-100 featured-image">
+                        {% else %}
+                        <div class="featured-placeholder h-100 d-flex align-items-center justify-content-center bg-light">
+                            <i class="fas fa-calendar-alt fa-4x text-muted"></i>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body h-100 d-flex flex-column">
+                            <div class="mb-3">
+                                <span class="badge 
+                                    {% if featured.category == 'COMMUNITY_MEETING' %}badge-navy
+                                    {% elif featured.category == 'SAFETY_WORKSHOP' %}badge-green
+                                    {% elif featured.category == 'SOCIAL_GATHERING' %}badge-red
+                                    {% elif featured.category == 'VOLUNTEER_OPPORTUNITY' %}badge-yellow
+                                    {% else %}badge-navy{% endif %}">
+                                    {{ featured.get_category_display }}
+                                </span>
+                                <span class="badge bg-warning text-dark ms-2">
+                                    <i class="fas fa-star me-1"></i>Featured
+                                </span>
+                            </div>
+                            
+                            <h3 class="card-title">{{ featured.title }}</h3>
+                            <p class="card-text">{{ featured.description|truncatechars:200 }}</p>
+                            
+                            <div class="event-details mt-auto">
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="event-icon-wrap">
+                                        <i class="far fa-calendar-alt"></i>
+                                    </div>
+                                    <div>{{ featured.start_date|date:"l, F j, Y" }}</div>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="event-icon-wrap">
+                                        <i class="far fa-clock"></i>
+                                    </div>
+                                    <div>{{ featured.start_time|time:"g:i A" }}</div>
+                                </div>
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="event-icon-wrap">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </div>
+                                    <div>{{ featured.venue }}</div>
+                                </div>
+                                
+                                <div class="d-grid">
+                                    <a href="{% url 'kingspark_events:event_detail' featured.id %}" class="btn btn-primary btn-lg">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endwith %}
+    
+    <!-- Search and Filter -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <form method="get" class="row g-3">
+                        <div class="col-lg-5 col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-text bg-transparent">
+                                    <i class="fas fa-search text-muted"></i>
+                                </span>
+                                <input type="text" name="q" class="form-control border-start-0" placeholder="Search events..." value="{{ request.GET.q|default:'' }}">
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-3 col-md-4">
+                            <select name="category" id="categoryFilter" class="form-select">
+                                <option value="">All Categories</option>
+                                {% for value, label in categories %}
+                                <option value="{{ value }}" {% if selected_category == value %}selected{% endif %}>
+                                    {{ label }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="col-lg-2 col-md-2">
+                            <select name="month" id="monthFilter" class="form-select">
+                                <option value="">All Dates</option>
+                                <option value="current" {% if selected_month == 'current' %}selected{% endif %}>This Month</option>
+                                <option value="next" {% if selected_month == 'next' %}selected{% endif %}>Next Month</option>
+                                <option value="future" {% if selected_month == 'future' %}selected{% endif %}>Future Events</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-lg-2 col-md-2 d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-filter me-1"></i>Apply Filters
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Events Heading -->
+    <div class="row mb-4">
+        <div class="col-12 d-flex justify-content-between align-items-center">
+            <h2 class="h3 fw-bold mb-0">Upcoming Events</h2>
+            
+            <div class="view-toggle btn-group">
+                <button type="button" class="btn btn-outline-secondary active" data-view="grid">
+                    <i class="fas fa-th-large"></i>
+                </button>
+                <button type="button" class="btn btn-outline-secondary" data-view="list">
+                    <i class="fas fa-list"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Events Grid View (default) -->
+    <div class="row g-4 events-grid">
+        {% for event in page_obj %}
+        {% if forloop.counter0 < page_obj|length %}
+        <div class="col-xl-4 col-lg-6 col-md-6 mb-4">
+            <div class="card h-100 event-card border-0 shadow-sm hover-lift">
+                <div class="card-top-indicator position-absolute top-0 start-0 w-100 d-flex justify-content-between p-3">
+                    <span class="badge rounded-pill 
+                        {% if event.category == 'COMMUNITY_MEETING' %}badge-navy
+                        {% elif event.category == 'SAFETY_WORKSHOP' %}badge-green
+                        {% elif event.category == 'SOCIAL_GATHERING' %}badge-red
+                        {% elif event.category == 'VOLUNTEER_OPPORTUNITY' %}badge-yellow
+                        {% else %}badge-navy{% endif %}">
+                        {{ event.get_category_display }}
+                    </span>
+                    
+                    {% if event.is_featured %}
+                    <span class="badge rounded-pill bg-warning text-dark">
+                        <i class="fas fa-star me-1"></i>Featured
+                    </span>
+                    {% endif %}
+                </div>
+                
+                <!-- Event Image -->
+                <div class="event-image-container">
+                    {% if event.image %}
+                    <img src="{{ event.image.url }}" class="card-img-top event-image" alt="{{ event.title }}">
+                    {% else %}
+                    <div class="event-placeholder d-flex align-items-center justify-content-center">
+                        <i class="fas fa-calendar-alt fa-3x text-muted"></i>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Date Overlay -->
+                    <div class="event-date">
+                        <div class="month">{{ event.start_date|date:"M" }}</div>
+                        <div class="day">{{ event.start_date|date:"d" }}</div>
+                    </div>
+                </div>
+                
+                <div class="card-body">
+                    <h5 class="card-title fw-bold mb-2">{{ event.title }}</h5>
+                    
+                    <p class="card-text text-muted mb-3">{{ event.description|truncatechars:120 }}</p>
+                    
+                    <div class="event-meta">
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="event-icon-sm">
+                                <i class="far fa-clock"></i>
+                            </div>
+                            <div class="text-muted">{{ event.start_time|time:"g:i A" }}</div>
+                        </div>
+                        
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="event-icon-sm">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="text-muted text-truncate">{{ event.venue }}</div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            {% if event.registration_required %}
+                                {% if not event.is_free %}
+                                <span class="ticket-price fw-bold">R{{ event.ticket_price }}</span>
+                                {% else %}
+                                <span class="free-tag">Free</span>
+                                {% endif %}
+                                 
+                                <div class="registration-count">
+                                    <i class="fas fa-users me-1 text-primary"></i>
+                                    <span class="text-muted small">
+                                    {% if event.max_attendees %}
+                                        {{ event.registrations.filter(status='registered').count }}/{{ event.max_attendees }}
+                                    {% else %}
+                                        {{ event.registrations.filter(status='registered').count }}
+                                    {% endif %}
+                                    </span>
+                                </div>
+                            {% else %}
+                                <span class="open-tag">Open Event</span>
+                                <span></span> <!-- Empty span for flexbox spacing -->
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-footer bg-white border-0 pt-0">
+                    <a href="{% url 'kingspark_events:event_detail' event.id %}" class="btn btn-outline-primary w-100">
+                        View Details
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    
+    <!-- Events List View (hidden by default) -->
+    <div class="events-list" style="display: none;">
+        <div class="card border-0 shadow-sm">
+            <div class="list-group list-group-flush">
+                {% for event in page_obj %}
+                <div class="list-group-item list-group-item-action p-0">
+                    <div class="row g-0 align-items-center">
+                        <!-- Date Column -->
+                        <div class="col-md-2 col-sm-3 text-center py-3 border-end">
+                            <div class="event-date-list">
+                                <div class="month">{{ event.start_date|date:"M" }}</div>
+                                <div class="day">{{ event.start_date|date:"d" }}</div>
+                                <div class="year">{{ event.start_date|date:"Y" }}</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Details Column -->
+                        <div class="col-md-8 col-sm-6 py-3 px-4">
+                            <div class="d-flex align-items-center mb-1">
+                                <span class="badge rounded-pill me-2 
+                                      {% if event.category == 'COMMUNITY_MEETING' %}badge-navy
+                                      {% elif event.category == 'SAFETY_WORKSHOP' %}badge-green
+                                      {% elif event.category == 'SOCIAL_GATHERING' %}badge-red
+                                      {% elif event.category == 'VOLUNTEER_OPPORTUNITY' %}badge-yellow
+                                      {% else %}badge-navy{% endif %}">
+                                    {{ event.get_category_display }}
+                                </span>
+                                
+                                {% if event.is_featured %}
+                                <span class="badge rounded-pill bg-warning text-dark">
+                                    <i class="fas fa-star me-1"></i>Featured
+                                </span>
+                                {% endif %}
+                            </div>
+                             
+                            <h5 class="mb-1">{{ event.title }}</h5>
+                             
+                            <div class="d-flex flex-wrap text-muted small mt-2">
+                                <div class="me-3">
+                                    <i class="far fa-clock me-1"></i>
+                                    {{ event.start_time|time:"g:i A" }}
+                                </div>
+                                <div>
+                                    <i class="fas fa-map-marker-alt me-1"></i>
+                                    {{ event.venue }}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Column -->
+                        <div class="col-md-2 col-sm-3 py-3 text-center border-start">
+                            <a href="{% url 'kingspark_events:event_detail' event.id %}" class="btn btn-sm btn-outline-primary">
+                                View Details
+                            </a>
+                             
+                            <div class="mt-2 small">
+                                {% if not event.is_free and event.registration_required %}
+                                <span class="text-success fw-bold">R{{ event.ticket_price }}</span>
+                                {% elif event.registration_required %}
+                                <span class="text-muted">Free Entry</span>
+                                {% else %}
+                                <span class="text-muted">Open Event</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <div class="row mt-5">
+        <div class="col-12">
+            <nav aria-label="Event pagination">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}">
+                            <i class="fas fa-chevron-left me-1"></i>Previous
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <li class="page-item active">
+                        <a class="page-link" href="?page={{ num }}{% if selected_category %}&category={{ selected_category }}{% endif %}">{{ num }}</a>
+                    </li>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}{% if selected_category %}&category={{ selected_category }}{% endif %}">{{ num }}</a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}">
+                            Next<i class="fas fa-chevron-right ms-1"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Empty State -->
+    {% if not page_obj %}
+    <div class="row mt-5">
+        <div class="col-12 text-center">
+            <div class="empty-state">
+                <i class="fas fa-calendar-times fa-5x text-muted mb-4"></i>
+                <h3 class="text-muted mb-3">No Events Found</h3>
+                <p class="text-muted mb-4">
+                    {% if selected_category %}
+                    No events found in the "{{ selected_category }}" category.
+                    {% else %}
+                    There are no upcoming events at the moment.
+                    {% endif %}
+                </p>
+                <div class="d-flex justify-content-center gap-3">
+                    {% if selected_category %}
+                    <a href="{% url 'kingspark_events:event_list' %}" class="btn btn-outline-primary">
+                        <i class="fas fa-list me-1"></i>View All Events
+                    </a>
+                    {% endif %}
+                    {% if user.is_authenticated and user.is_staff %}
+                    <a href="{% url 'kingspark_events:create_event' %}" class="btn btn-primary">
+                        <i class="fas fa-plus me-1"></i>Create First Event
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+/* Card Styling */
+.event-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.empty-state {
+    padding: 3rem 0;
+}
+
+/* Featured Event */
+.featured-event {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    border: none;
+}
+
+.featured-image {
+    object-fit: cover;
+    height: 100%;
+}
+
+.featured-placeholder {
+    background-color: #f8f9fa;
+    min-height: 300px;
+}
+
+/* Event Icons */
+.event-icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+    color: var(--bs-primary);
+    margin-right: 12px;
+}
+
+.event-icon-sm {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: rgba(var(--bs-primary-rgb), 0.05);
+    color: var(--bs-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+/* Event Date Display */
+.event-image-container {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.event-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.event-card:hover .event-image {
+    transform: scale(1.05);
+}
+
+.event-placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: #f8f9fa;
+}
+
+.event-date {
+    position: absolute;
+    bottom: 0;
+    right: 15px;
+    background-color: var(--kingsapark-navy);
+    color: white;
+    padding: 10px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    text-align: center;
+    min-width: 70px;
+}
+
+.event-date .month {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.event-date .day {
+    font-size: 1.5rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+/* List View Date */
+.event-date-list {
+    text-align: center;
+}
+
+.event-date-list .month {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    color: var(--kingsapark-navy);
+    font-weight: 500;
+}
+
+.event-date-list .day {
+    font-size: 1.8rem;
+    font-weight: bold;
+    line-height: 1.1;
+    color: var(--kingsapark-green);
+}
+
+.event-date-list .year {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+/* Event Pricing Tags */
+.ticket-price {
+    color: var(--kingsapark-green);
+    font-size: 1.1rem;
+}
+
+.free-tag {
+    color: var(--kingsapark-navy);
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.open-tag {
+    color: var(--kingsapark-green);
+    background-color: rgba(var(--bs-success-rgb), 0.1);
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* Hero Section */
+.hero-section {
+    margin-bottom: 2rem;
+}
+
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 350px;
+    background: linear-gradient(135deg, var(--kingsapark-navy) 0%, var(--kingsapark-green) 100%);
+    opacity: 0.9;
+}
+
+/* View Toggle Button */
+.view-toggle .btn.active {
+    background-color: var(--kingsapark-navy);
+    color: white;
+    border-color: var(--kingsapark-navy);
+}
+
+/* Category Badges */
+.badge-navy {
+    background-color: var(--kingsapark-navy);
+    color: white;
+}
+
+.badge-green {
+    background-color: var(--kingsapark-green);
+    color: white;
+}
+
+.badge-red {
+    background-color: var(--kingsapark-red);
+    color: white;
+}
+
+.badge-yellow {
+    background-color: var(--kingsapark-yellow);
+    color: #212529;
+}
+</style>
+
+<!-- JavaScript for View Toggle -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // View toggle functionality
+        const gridView = document.querySelector('.events-grid');
+        const listView = document.querySelector('.events-list');
+        const gridBtn = document.querySelector('[data-view="grid"]');
+        const listBtn = document.querySelector('[data-view="list"]');
+        
+        if (gridBtn && listBtn && gridView && listView) {
+            gridBtn.addEventListener('click', function() {
+                gridView.style.display = 'flex';
+                listView.style.display = 'none';
+                
+                gridBtn.classList.add('active');
+                listBtn.classList.remove('active');
+            });
+            
+            listBtn.addEventListener('click', function() {
+                gridView.style.display = 'none';
+                listView.style.display = 'block';
+                
+                listBtn.classList.add('active');
+                gridBtn.classList.remove('active');
+            });
+        }
+    });
+</script>
+{% endblock %}

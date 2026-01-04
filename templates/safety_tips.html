@@ -1,0 +1,254 @@
+{% extends 'base.html' %}
+
+{% block title %}Safety Tips - Kings Park CPF{% endblock %}
+
+{% load static %}
+
+{% block extra_css %}
+<style>
+    .safety-tip-card {
+        border-left: 4px solid var(--kingsapark-navy);
+        border-radius: 0 8px 8px 0;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .safety-tip-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .emergency-card {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border: 1px solid rgba(0,0,0,0.1);
+    }
+    .section-divider {
+        border-top: 2px dashed #dee2e6;
+        margin: 2rem 0;
+    }
+    .tip-number {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        background-color: var(--kingsapark-navy);
+        color: white;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 30px;
+        margin-right: 10px;
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="display-4 fw-bold text-kingsapark-navy">Festive Season Safety Tips</h1>
+            <p class="lead">Stay safe this holiday season with these important safety guidelines from Kings Park CPF</p>
+        </div>
+    </div>
+
+    <!-- Introduction -->
+    <div class="row mb-5">
+        <div class="col-lg-10 mx-auto">
+            <div class="alert alert-warning">
+                <h4 class="alert-heading"><i class="fas fa-exclamation-triangle me-2"></i>Important Notice</h4>
+                <p class="mb-0">With the festive season underway, crime typically increases and the Kings Park Community Policing Forum (CPF) is urging residents to stay vigilant. Your awareness is your best protection.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Safety Tips Sections -->
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <!-- Home Safety -->
+            <div class="card safety-tip-card mb-4">
+                <div class="card-body">
+                    <h3 class="h4 mb-4">
+                        <span class="tip-number">1</span>
+                        Home Safety
+                    </h3>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong>Test your systems:</strong> Ensure your alarm, outdoor lights, especially motion sensors and gate motors are fully operational before the holidays.
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong>Maintain a "lived-in" look:</strong> If you are travelling, ask a neighbor to collect your mail and use timers for indoor lights.
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong>Social media silence:</strong> Avoid posting your holiday plans online. Share photos only after you return.
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong>Dispose of gift packaging carefully:</strong> Boxes for expensive items should be torn up and placed in refuse bags. Do not leave them intact on the pavement.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Shopping and Malls -->
+            <div class="card safety-tip-card mb-4">
+                <div class="card-body">
+                    <h3 class="h4 mb-4">
+                        <span class="tip-number">2</span>
+                        Shopping and Malls
+                    </h3>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong>Be alert to car-jamming:</strong> Always physically check that your car has locked after using your remote.
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong>Park smart:</strong> Choose well-lit areas with guards or cameras, and keep valuables out of sight, preferably locked in the boot before you arrive.
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong>Secure your handbag or wallet:</strong> Carry handbags in front of you and avoid keeping wallets in back pockets.
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong>Limit cash:</strong> Use bank cards instead of carrying large sums of money.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ATM Safety -->
+            <div class="card safety-tip-card mb-4">
+                <div class="card-body">
+                    <h3 class="h4 mb-4">
+                        <span class="tip-number">3</span>
+                        ATM Safety
+                    </h3>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong>Do not accept help:</strong> Never take assistance from strangers at an ATM.
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong>Cover your PIN:</strong> Shield the keypad with your hand.
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong>Trust your instincts:</strong> If someone stands too close or you feel uneasy, cancel the transaction and leave.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- On the Road -->
+            <div class="card safety-tip-card mb-4">
+                <div class="card-body">
+                    <h3 class="h4 mb-4">
+                        <span class="tip-number">4</span>
+                        On the Road
+                    </h3>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong>Check your vehicle:</strong> Make sure tyres, including the spare, oil, water, and lights are in good condition before long trips.
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong>Stay alert at intersections:</strong> Keep enough space between you and the car ahead to escape if necessary.
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong>Do not drink and drive:</strong> Arrange a designated driver or use an e-hailing service.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Parties and Socializing -->
+            <div class="card safety-tip-card mb-5">
+                <div class="card-body">
+                    <h3 class="h4 mb-4">
+                        <span class="tip-number">5</span>
+                        Parties and Socializing
+                    </h3>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong>Watch your drink:</strong> Drink-spiking is a real risk, never leave beverages unattended.
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <strong>Stay in groups:</strong> Avoid walking alone at night, especially in poorly lit areas.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- How to Report Crime -->
+            <div class="card emergency-card mb-5">
+                <div class="card-header bg-kingsapark-red text-white">
+                    <h3 class="h4 mb-0"><i class="fas fa-exclamation-triangle me-2"></i>How to Report Crime</h3>
+                </div>
+                <div class="card-body">
+                    <p>Reporting crime, even minor incidents, helps SAPS identify patterns and deploy resources effectively.</p>
+                    
+                    <h4 class="mt-4 mb-3">Emergency Numbers</h4>
+                    <p>For crimes in progress or life-threatening situations:</p>
+                    <ul class="list-group mb-4">
+                        <li class="list-group-item">
+                            <i class="fas fa-phone-volume text-kingsapark-red me-2"></i>
+                            <strong>SAPS Emergency Line (Flying Squad):</strong> 10111
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-mobile-alt text-kingsapark-red me-2"></i>
+                            <strong>Mobile Emergency Number:</strong> 112 (Works on all mobile networks, even without airtime)
+                        </li>
+                    </ul>
+
+                    <h4 class="mt-4 mb-3">Non-emergency Reporting</h4>
+                    <p>For crimes already committed, such as break-ins discovered after returning home or theft that occurred the previous day:</p>
+                    <ul class="list-group mb-4">
+                        <li class="list-group-item">
+                            <i class="fas fa-building text-kingsapark-navy me-2"></i>
+                            Visit your nearest police station to report the incident
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-clipboard-check text-kingsapark-navy me-2"></i>
+                            <strong>Important:</strong> Insist on an OB number or CAS number for insurance claims and follow-up
+                        </li>
+                    </ul>
+
+                    <h4 class="mt-4 mb-3">Additional Reporting Options</h4>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <i class="fas fa-phone text-kingsapark-navy me-2"></i>
+                            <strong>Crime Stop:</strong> 08600 10111 (Anonymous reporting)
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-comment-dots text-kingsapark-navy me-2"></i>
+                            <strong>Kings Park CPF WhatsApp:</strong> 082 590 3149
+                        </li>
+                    </ul>
+
+                    <div class="alert alert-info mt-4">
+                        <h5><i class="fas fa-lightbulb me-2"></i>What to say when calling for help</h5>
+                        <ul class="mb-0">
+                            <li>Stay as calm as possible</li>
+                            <li>Provide your exact location (street name, house number, nearest landmark)</li>
+                            <li>State the nature of the emergency</li>
+                            <li>Give descriptions of suspects, clothing, vehicles, and direction of travel</li>
+                            <li>Provide your contact details for follow-up if needed</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final Message -->
+            <div class="text-center py-4">
+                <h3 class="h4 text-kingsapark-navy mb-3">Stay Safe This Festive Season</h3>
+                <p class="lead">Kings Park CPF urges the community to remain safe, aware, and prepared throughout the festive season and to enjoy the holiday break responsibly.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

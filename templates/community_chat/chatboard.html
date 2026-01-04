@@ -1,0 +1,286 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Kingsapark Community Chat - The Place of Love and Respect{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- Header -->
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="h4 mb-0">
+                        <i class="fas fa-comments me-2"></i>
+                        Kingsapark Community Chatboard
+                    </h2>
+                    <small class="text-light">Share your thoughts, sell goods, advertise events, and connect with your community</small>
+                </div>
+            </div>
+
+            <!-- Post Message Form -->
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data" id="messageForm">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="{{ message_form.content.id_for_label }}" class="form-label">Share your message</label>
+                            {{ message_form.content }}
+                        </div>
+
+                        <!-- File Upload Options -->
+                        <div class="mb-3">
+                            <label class="form-label">Attach files (optional)</label>
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label for="{{ message_form.image.id_for_label }}" class="form-label small text-muted">
+                                        <i class="fas fa-image text-success me-1"></i>Photo
+                                    </label>
+                                    {{ message_form.image }}
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="{{ message_form.pdf.id_for_label }}" class="form-label small text-muted">
+                                        <i class="fas fa-file-pdf text-danger me-1"></i>PDF Document
+                                    </label>
+                                    {{ message_form.pdf }}
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="{{ message_form.video.id_for_label }}" class="form-label small text-muted">
+                                        <i class="fas fa-video text-info me-1"></i>Video
+                                    </label>
+                                    {{ message_form.video }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Max sizes: Images 5MB, PDFs 10MB, Videos 50MB
+                            </small>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane me-1"></i>Post Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Messages List -->
+            <div id="messagesContainer">
+                {% for message in page_obj %}
+                <div class="card mb-3 shadow-sm message-card" data-message-id="{{ message.id }}">
+                    <div class="card-body">
+                        <!-- Message Header -->
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-circle me-2">
+                                    <span class="avatar-text">{{ message.author.first_name|first|default:message.author.username|first|upper }}</span>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">{{ message.author.get_full_name|default:message.author.username }}</h6>
+                                    <small class="text-muted">{{ message.timestamp|date:"M j, Y g:i A" }}</small>
+                                </div>
+                            </div>
+                            {% if message.author == user %}
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="dropdown">
+                                    <i class="fas fa-ellipsis-h"></i>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item text-danger delete-message" href="#" data-message-id="{{ message.id }}">
+                                        <i class="fas fa-trash me-1"></i>Delete
+                                    </a></li>
+                                </ul>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Message Content -->
+                        {% if message.content %}
+                        <div class="message-content mb-3">
+                            {{ message.content|linebreaks }}
+                        </div>
+                        {% endif %}
+
+                        <!-- Attachments -->
+                        {% if message.image %}
+                        <div class="attachment mb-3">
+                            <img src="{{ message.image.url }}" class="img-fluid rounded" alt="Shared image" style="max-height: 400px;">
+                        </div>
+                        {% endif %}
+
+                        {% if message.pdf %}
+                        <div class="attachment mb-3">
+                            <div class="d-flex align-items-center p-3 border rounded">
+                                <i class="fas fa-file-pdf text-danger me-3 fa-2x"></i>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1">{{ message.pdf.name }}</h6>
+                                    <a href="{{ message.pdf.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-download me-1"></i>View PDF
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {% if message.video %}
+                        <div class="attachment mb-3">
+                            <video controls class="w-100 rounded" style="max-height: 400px;">
+                                <source src="{{ message.video.url }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                        {% endif %}
+
+                        <!-- Message Actions -->
+                        <div class="d-flex justify-content-between align-items-center">
+                            <button class="btn btn-sm btn-outline-primary reaction-btn" data-message-id="{{ message.id }}">
+                                <i class="fas fa-heart me-1"></i>
+                                <span class="reaction-count">{{ message.reactions.count }}</span>
+                                {% if message.reactions.filter(user=user).exists %}
+                                    <span class="text-danger">Liked</span>
+                                {% else %}
+                                    Like
+                                {% endif %}
+                            </button>
+                            <small class="text-muted">{{ message.timestamp|timesince }} ago</small>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if page_obj.has_other_pages %}
+            <nav aria-label="Messages pagination">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                    </li>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <li class="page-item active">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+
+            {% if not page_obj %}
+            <div class="text-center py-5">
+                <i class="fas fa-comments fa-3x text-muted mb-3"></i>
+                <h5 class="text-muted">No messages yet</h5>
+                <p class="text-muted">Be the first to share something with the Kingsapark community!</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Google Meet Integration Section -->
+<div class="container-fluid bg-light py-4">
+    <div class="row">
+        <div class="col-lg-8 mx-auto text-center">
+            <h3 class="mb-3">Connect Face-to-Face</h3>
+            <p class="text-muted mb-4">Start a Google Meet session for online meetings and community discussions</p>
+            <a href="https://meet.google.com/new" target="_blank" class="btn btn-success btn-lg">
+                <i class="fab fa-google me-2"></i>Start Google Meet
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle message reactions
+    document.querySelectorAll('.reaction-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const messageId = this.dataset.messageId;
+            const reactionCountEl = this.querySelector('.reaction-count');
+
+            fetch(`/chat/message/${messageId}/react/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    reactionCountEl.textContent = data.reaction_count;
+                    const likedText = this.querySelector('.text-danger');
+                    if (data.liked) {
+                        if (!likedText) {
+                            this.innerHTML += ' <span class="text-danger">Liked</span>';
+                        }
+                    } else {
+                        if (likedText) {
+                            likedText.remove();
+                        }
+                    }
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+
+    // Handle message deletion
+    document.querySelectorAll('.delete-message').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (confirm('Are you sure you want to delete this message?')) {
+                const messageId = this.dataset.messageId;
+                const messageCard = this.closest('.message-card');
+
+                fetch(`/chat/message/${messageId}/delete/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        messageCard.style.opacity = '0.5';
+                        messageCard.style.pointerEvents = 'none';
+                        setTimeout(() => messageCard.remove(), 500);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        });
+    });
+
+    // Auto-refresh messages every 30 seconds
+    setInterval(function() {
+        fetch('/chat/api/messages/')
+        .then(response => response.json())
+        .then(data => {
+            // Update message counts and new messages if needed
+            console.log('Messages updated:', data.messages.length);
+        })
+        .catch(error => console.error('Error fetching messages:', error));
+    }, 30000);
+});
+</script>
+{% endblock %}

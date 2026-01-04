@@ -1,0 +1,98 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:14-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: safetynet_db
+      POSTGRES_USER: safetynet_user
+      POSTGRES_PASSWORD: safetynet_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U safetynet_user -d safetynet_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - app_network
+
+  # Redis for Caching and Celery Broker
+  redis:
+    image: redis:alpine
+    restart: always
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # SafetyNet Web Application
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: safetynet_reporting_web
+    restart: always
+    volumes:
+      - ./static:/app/static
+      - ./media:/app/media
+      - ./templates:/app/templates
+      - ./reports:/app/reports
+      - ./accounts:/app/accounts
+      - ./cpfcrimereportingsystem:/app/cpfcrimereportingsystem
+    environment:
+      - DJANGO_SETTINGS_MODULE=cpfcrimereportingsystem.settings
+      - DEBUG=True
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=safetynet_db
+      - POSTGRES_USER=safetynet_user
+      - POSTGRES_PASSWORD=safetynet_password
+      - REDIS_URL=redis://redis:6379/0
+      - DJANGO_SUPERUSER_USERNAME=admin
+      - DJANGO_SUPERUSER_EMAIL=admin@safetynet.com
+      - DJANGO_SUPERUSER_PASSWORD=SafeAdmin123
+    depends_on:
+      db:
+        condition: service_healthy
+      redis: 
+        condition: service_healthy
+    networks:
+      - app_network
+
+  # Nginx for Reverse Proxy and Static/Media Files
+  nginx:
+    image: nginx:alpine
+    restart: always
+    ports:
+      - "8081:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./static:/app/static:ro
+      - ./media:/app/media:ro
+    depends_on:
+      - web
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  static_volume:
+  media_volume:

@@ -1,0 +1,242 @@
+/* Custom Styles for Kingsapark Community Crime Reporting System */
+
+/* Kingsapark Logo Color Palette */
+:root {
+  --kingsapark-yellow: #FFD700;
+  --kingsapark-green: #32CD32;
+  --kingsapark-light-blue: #87CEEB;
+  --kingsapark-red: #DC143C;
+
+  /* Bootstrap color overrides */
+  --bs-primary: var(--kingsapark-yellow);
+  --bs-secondary: var(--kingsapark-green);
+  --bs-info: var(--kingsapark-light-blue);
+  --bs-danger: var(--kingsapark-red);
+}
+
+/* Header & Navigation */
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px; /* Space between logo and text */
+}
+
+.header-logo {
+    height: 60px; /* Adjusted size for better integration with Bootstrap navbar */
+    width: auto;
+    transition: transform 0.3s ease-in-out; /* Smooth transition for 3D effect */
+}
+
+.logo-container:hover .header-logo {
+    transform: rotateY(15deg) rotateX(5deg) scale(1.05); /* Subtle 3D tilt and slight scale on hover */
+}
+
+.tagline {
+    font-size: 0.9em;
+    color: #ccc;
+    margin-top: 0;
+    margin-bottom: 0; /* Bootstrap handles margins on p tags in navbar */
+}
+
+/* General Content Area */
+main.container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Hero Section (Home Page) */
+.hero {
+    position: relative;
+    overflow: hidden;
+    min-height: 450px; /* Ensure enough space for the 3D canvas */
+    background: linear-gradient(135deg, var(--kingsapark-yellow) 0%, var(--kingsapark-green) 100%);
+}
+
+.hero-overlay {
+    position: relative;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent background for readability */
+}
+
+/* Feature Items on Home Page */
+.feature-item {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.feature-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Report Cards (Reports List) */
+.report-card {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.report-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Status Badges */
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.status-pending {
+    background-color: #ffc107; /* Yellow for pending */
+}
+
+.status-under_investigation {
+    background-color: #17a2b8; /* Cyan for under investigation */
+}
+
+.status-resolved {
+    background-color: #28a745; /* Green for resolved */
+}
+
+.status-closed {
+    background-color: #6c757d; /* Grey for closed */
+}
+
+.status-rejected {
+    background-color: #dc3545; /* Red for rejected */
+}
+
+/* Forms */
+.form-text.text-muted {
+    font-size: 0.85em; /* Smaller help text */
+}
+
+/* Crime Map */
+#crime-map {
+    height: 600px; /* Ensure map has a defined height */
+}
+
+/* Back to Top Button */
+#back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none; /* Hidden by default */
+    padding: 10px 15px;
+    font-size: 1.5rem;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+#back-to-top.show {
+    opacity: 1;
+}
+
+/* General Animations (can be expanded) */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fade-in-element {
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes slideInUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.slide-in-up {
+    animation: slideInUp 0.6s ease-out;
+}
+
+/* Mission Section */
+.mission-section {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(50, 205, 50, 0.1) 100%);
+}
+
+.mission-card {
+    transition: all 0.3s ease;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.mission-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(255, 215, 0, 0.3);
+    border-color: var(--kingsapark-yellow);
+}
+
+.mission-icon {
+    transition: transform 0.3s ease;
+}
+
+.mission-card:hover .mission-icon {
+    transform: scale(1.1);
+}
+
+/* Partnership Section */
+.partnership-section {
+    background: linear-gradient(135deg, rgba(135, 206, 235, 0.1) 0%, rgba(220, 20, 60, 0.1) 100%);
+    border-top: 2px solid var(--kingsapark-yellow);
+}
+
+.partnership-icon {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Responsive adjustments for mission cards */
+@media (max-width: 768px) {
+    .mission-card {
+        margin-bottom: 20px;
+    }
+}
+
+/* 3D Animation Styles */
+#header-3d-canvas, #footer-3d-canvas {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 0;
+}
+
+/* Ensure header content stays above canvas */
+header .container {
+    position: relative;
+    z-index: 1;
+}
+
+/* Ensure footer content stays above canvas */
+footer .container {
+    position: relative;
+    z-index: 1;
+}
+
+/* Subtle opacity for 3D background animations */
+header canvas {
+    opacity: 0.15;
+}
+
+footer canvas {
+    opacity: 0.2;
+}

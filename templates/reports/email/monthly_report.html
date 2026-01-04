@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KingsPark Crime Report - {{ month }} {{ year }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            color: #00387b;
+            margin-bottom: 10px;
+        }
+        .content {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            margin-top: 30px;
+        }
+        .button {
+            display: inline-block;
+            background-color: #00387b;
+            color: white !important;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        .highlight {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>KingsPark Crime Report</h1>
+        <p><strong>{{ month }} {{ year }}</strong></p>
+    </div>
+    
+    <div class="content">
+        <p>Dear {{ user.first_name|default:user.username }},</p>
+        
+        <p>We are committed to keeping our community informed and safe. Attached is the monthly crime report for <strong>{{ month }} {{ year }}</strong> in the Kings Park area.</p>
+        
+        <p>This report includes:</p>
+        <ul>
+            <li>Crime statistics and trends</li>
+            <li>Breakdown by crime categories</li>
+            <li>Status updates on reported incidents</li>
+            <li>Identified hotspots in our community</li>
+            <li>Daily crime pattern analysis</li>
+        </ul>
+        
+        <div class="highlight">
+            <p><strong>Our motto:</strong> Stand Up, Speak Out Against Crime! We Crush Crime With Unity.</p>
+        </div>
+        
+        <p>Please take a moment to review this report. Knowledge and awareness are key to maintaining a safe community.</p>
+        
+        <p>For the latest updates and to report incidents, please visit our website or use our mobile app.</p>
+        
+        <p style="text-align: center;">
+            <a href="https://kingsparkcpf.co.za/reports/crime_map" class="button">View Crime Map</a>
+        </p>
+    </div>
+    
+    <div class="footer">
+        <p>This email was sent to you because you're a registered member of the Kings Park Community Police Forum.</p>
+        <p>If you wish to unsubscribe from these reports, please <a href="https://kingsparkcpf.co.za/accounts/profile">update your notification settings</a> in your profile.</p>
+        <p>&copy; {{ year }} Kings Park, Kwamhlanga Community Police Forum - The place of love and respect</p>
+    </div>
+</body>
+</html>

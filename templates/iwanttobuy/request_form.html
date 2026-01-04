@@ -1,0 +1,320 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'iwanttobuy:request_list' %}">I Want to Buy</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ button_text }}</li>
+        </ol>
+    </nav>
+    
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-lg rounded-3 overflow-hidden">
+                <div class="card-header bg-gradient-primary text-white">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-shopping-cart fa-2x me-3"></i>
+                        <div>
+                            <h2 class="mb-0 fw-bold">{{ title }}</h2>
+                            <p class="mb-0 fw-light">Tell us what you're looking to buy</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-body p-4 p-md-5">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-4" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <!-- Basic Information Section -->
+                        <div class="mb-4">
+                            <h4 class="border-start border-3 border-primary ps-2 mb-3">What are you looking for?</h4>
+                            
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <label for="{{ form.title.id_for_label }}" class="form-label">Title*</label>
+                                    {{ form.title }}
+                                    {% if form.title.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.title.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-12 mb-3">
+                                    <label for="{{ form.description.id_for_label }}" class="form-label">Description*</label>
+                                    {{ form.description }}
+                                    {% if form.description.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.description.errors.0 }}</div>
+                                    {% endif %}
+                                    <div class="form-text">Be specific about what you're looking for, including brand, model, condition, etc.</div>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.category.id_for_label }}" class="form-label">Category*</label>
+                                    {{ form.category }}
+                                    {% if form.category.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.category.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.urgency.id_for_label }}" class="form-label">Urgency Level*</label>
+                                    {{ form.urgency }}
+                                    {% if form.urgency.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.urgency.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Price Range Section -->
+                        <div class="mb-4">
+                            <h4 class="border-start border-3 border-primary ps-2 mb-3">Budget (Optional)</h4>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.price_range_min.id_for_label }}" class="form-label">Minimum Price (ZAR)</label>
+                                    {{ form.price_range_min }}
+                                    {% if form.price_range_min.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.price_range_min.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.price_range_max.id_for_label }}" class="form-label">Maximum Price (ZAR)</label>
+                                    {{ form.price_range_max }}
+                                    {% if form.price_range_max.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.price_range_max.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Contact Information Section -->
+                        <div class="mb-4">
+                            <h4 class="border-start border-3 border-primary ps-2 mb-3">Your Information</h4>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.location.id_for_label }}" class="form-label">Location*</label>
+                                    {{ form.location }}
+                                    {% if form.location.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.location.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.contact_number.id_for_label }}" class="form-label">Contact Number*</label>
+                                    {{ form.contact_number }}
+                                    {% if form.contact_number.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.contact_number.errors.0 }}</div>
+                                    {% endif %}
+                                    <div class="form-text">Format: +27812345678</div>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.whatsapp_number.id_for_label }}" class="form-label">WhatsApp Number (Optional)</label>
+                                    {{ form.whatsapp_number }}
+                                    {% if form.whatsapp_number.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.whatsapp_number.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-12 mb-3">
+                                    <div class="form-check">
+                                        {{ form.show_email }}
+                                        <label class="form-check-label" for="{{ form.show_email.id_for_label }}">
+                                            Show my email ({{ user.email }}) to potential sellers
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Reference Material Section -->
+                        <div class="mb-4">
+                            <h4 class="border-start border-3 border-primary ps-2 mb-3">Reference Material (Optional)</h4>
+                            
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <label for="{{ form.reference_image.id_for_label }}" class="form-label">Reference Image</label>
+                                    {{ form.reference_image }}
+                                    {% if form.reference_image.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.reference_image.errors.0 }}</div>
+                                    {% endif %}
+                                    <div class="form-text">Upload an image of what you're looking for (max 5MB)</div>
+                                    
+                                    {% if is_edit and form.instance.reference_image %}
+                                        <div class="mt-2">
+                                            <p class="mb-1">Current image:</p>
+                                            <img src="{{ form.instance.reference_image.url }}" alt="Current reference image" class="img-thumbnail" style="max-height: 100px;">
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-12 mb-3">
+                                    <label for="{{ form.pdf_document.id_for_label }}" class="form-label">PDF Document</label>
+                                    {{ form.pdf_document }}
+                                    {% if form.pdf_document.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.pdf_document.errors.0 }}</div>
+                                    {% endif %}
+                                    <div class="form-text">Upload a PDF with additional details (max 10MB)</div>
+                                    
+                                    {% if is_edit and form.instance.pdf_document %}
+                                        <div class="mt-2">
+                                            <p>Current PDF: <a href="{{ form.instance.pdf_document.url }}" target="_blank">View</a></p>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-12 mb-3">
+                                    <label for="{{ form.tags.id_for_label }}" class="form-label">Tags (Optional)</label>
+                                    {{ form.tags }}
+                                    {% if form.tags.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.tags.errors.0 }}</div>
+                                    {% endif %}
+                                    <div class="form-text">Add tags separated by commas to help sellers find your request</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Guidelines and Submit -->
+                        <div class="alert alert-info mb-4">
+                            <div class="d-flex">
+                                <i class="fas fa-info-circle fa-lg me-3 mt-1"></i>
+                                <div>
+                                    <h5 class="mb-1">Posting Tips</h5>
+                                    <ul class="mb-0">
+                                        <li>Be specific about what you're looking for</li>
+                                        <li>Include brand names, model numbers, and condition preferences</li>
+                                        <li>Set a realistic budget based on market prices</li>
+                                        <li>Choose the appropriate urgency level</li>
+                                        <li>Respond promptly to sellers who contact you</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'iwanttobuy:request_list' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-1"></i> Back to Buy Requests
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg px-4">
+                                {{ button_text }}
+                                <i class="fas fa-paper-plane ms-2"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, var(--kingsapark-navy) 0%, var(--kingsapark-green) 100%);
+    }
+    
+    .border-primary {
+        border-color: var(--kingsapark-yellow) !important;
+    }
+    
+    h4 {
+        color: var(--kingsapark-navy);
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Form validation
+        const form = document.querySelector('.needs-validation');
+        
+        form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            
+            // Check if min price > max price
+            const minPrice = parseFloat(document.getElementById('{{ form.price_range_min.id_for_label }}').value) || 0;
+            const maxPrice = parseFloat(document.getElementById('{{ form.price_range_max.id_for_label }}').value) || 0;
+            
+            if (maxPrice > 0 && minPrice > maxPrice) {
+                event.preventDefault();
+                alert('Minimum price cannot be greater than maximum price.');
+                return false;
+            }
+            
+            form.classList.add('was-validated');
+        });
+        
+        // Image preview
+        const imageInput = document.getElementById('{{ form.reference_image.id_for_label }}');
+        
+        if (imageInput) {
+            imageInput.addEventListener('change', function() {
+                // Remove any existing preview
+                const oldPreview = this.parentNode.querySelector('.preview-image');
+                if (oldPreview) {
+                    oldPreview.remove();
+                }
+                
+                if (this.files && this.files[0]) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.className = 'img-thumbnail mt-2 preview-image';
+                        img.style.maxHeight = '150px';
+                        imageInput.parentNode.appendChild(img);
+                    }
+                    
+                    reader.readAsDataURL(this.files[0]);
+                    
+                    // Validate file size
+                    const fileSize = this.files[0].size / (1024 * 1024); // Convert to MB
+                    if (fileSize > 5) {
+                        this.value = '';
+                        alert('Image file size cannot exceed 5MB');
+                    }
+                }
+            });
+        }
+        
+        // PDF validation
+        const pdfInput = document.getElementById('{{ form.pdf_document.id_for_label }}');
+        
+        if (pdfInput) {
+            pdfInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    // Check file type
+                    const fileType = this.files[0].name.split('.').pop().toLowerCase();
+                    if (fileType !== 'pdf') {
+                        this.value = '';
+                        alert('Only PDF files are allowed');
+                        return;
+                    }
+                    
+                    // Check file size
+                    const fileSize = this.files[0].size / (1024 * 1024); // Convert to MB
+                    if (fileSize > 10) {
+                        this.value = '';
+                        alert('PDF file size cannot exceed 10MB');
+                    }
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}Activation Email Sent{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="card border-0 shadow-lg rounded-3 overflow-hidden">
+                <div class="card-header bg-gradient-primary text-white text-center py-4">
+                    <i class="fas fa-envelope fa-3x mb-3"></i>
+                    <h2 class="mb-0 fw-bold">Activation Email Sent</h2>
+                </div>
+                
+                <div class="card-body p-4 p-md-5 text-center">
+                    <div class="mb-4">
+                        <div class="verification-icon mb-4">
+                            <i class="fas fa-paper-plane fa-4x text-primary"></i>
+                        </div>
+                        
+                        <h3>Check Your Email</h3>
+                        <p class="lead mb-4">We've sent an activation link to your email address.</p>
+                        <p class="mb-4">Please check your inbox and click on the link to activate your account. If you don't see the email, please check your spam folder.</p>
+                    </div>
+                    
+                    <div class="alert alert-info mb-4">
+                        <div class="d-flex">
+                            <div class="me-3">
+                                <i class="fas fa-info-circle fa-2x"></i>
+                            </div>
+                            <div class="text-start">
+                                <h5>Important Information</h5>
+                                <p class="mb-0">The activation link will expire in 24 hours. If you don't activate your account within this time, you'll need to register again.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="{% url 'home' %}" class="btn btn-primary btn-lg px-4">
+                        Return to Home
+                        <i class="fas fa-home ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .verification-icon {
+        color: var(--kingsapark-navy);
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+    }
+    
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, var(--kingsapark-navy) 0%, var(--kingsapark-green) 100%);
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block title %}Apply for {{ job.title }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'piecejobs:job_list' %}">Piece Jobs</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'piecejobs:job_detail' pk=job.pk %}">{{ job.title }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Apply</li>
+        </ol>
+    </nav>
+    
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-lg rounded-3 overflow-hidden">
+                <div class="card-header bg-gradient-primary text-white">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-paper-plane fa-2x me-3"></i>
+                        <div>
+                            <h2 class="mb-0 fw-bold">Apply for Job</h2>
+                            <p class="mb-0 fw-light">{{ job.title }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-body p-4 p-md-5">
+                    <div class="mb-4">
+                        <div class="job-summary card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Job Summary</h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p class="mb-1"><strong>Location:</strong> {{ job.location }}</p>
+                                        <p class="mb-1"><strong>Duration:</strong> {{ job.duration }}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="mb-1"><strong>People Needed:</strong> {{ job.people_needed }}</p>
+                                        <p class="mb-1"><strong>Offer Price:</strong> R{{ job.offer_price }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <form method="post" class="needs-validation" novalidate>
+                            {% csrf_token %}
+                            
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Your Message to the Employer*</label>
+                                <textarea id="message" name="message" class="form-control" rows="5" placeholder="Explain why you're suitable for this job..." required></textarea>
+                                <div class="invalid-feedback">Please provide a message to the employer.</div>
+                                <div class="form-text">Tell the employer about your skills, experience, and why you're interested in this job.</div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="contact_number" class="form-label">Your Contact Number*</label>
+                                <input type="tel" id="contact_number" name="contact_number" class="form-control" placeholder="+27812345678" value="{{ user.profile.phone_number|default:'' }}" required>
+                                <div class="invalid-feedback">Please provide a valid contact number.</div>
+                            </div>
+                            
+                            <div class="alert alert-info mb-4">
+                                <div class="d-flex">
+                                    <i class="fas fa-info-circle fa-lg me-3 mt-1"></i>
+                                    <div>
+                                        <h5 class="mb-1">Before You Apply</h5>
+                                        <p class="mb-0">Your profile information will be shared with the employer. Make sure you're comfortable with this before proceeding.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <a href="{% url 'piecejobs:job_detail' pk=job.pk %}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-arrow-left me-1"></i> Back to Job
+                                </a>
+                                <button type="submit" class="btn btn-primary px-4">
+                                    Submit Application
+                                    <i class="fas fa-paper-plane ms-2"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, var(--kingsapark-navy) 0%, var(--kingsapark-green) 100%);
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Form validation
+        const form = document.querySelector('.needs-validation');
+        
+        form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            
+            form.classList.add('was-validated');
+        });
+    });
+</script>
+{% endblock %}

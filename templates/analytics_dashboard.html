@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+{% block title %}Crime Analytics Dashboard{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h2 class="text-center mb-3">Crime Analytics Report</h2>
+    <p class="text-center text-muted mb-4">Visualize crime data with interactive charts for Kingsapark Community.</p>
+
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-primary text-white">Crime Categories Distribution (Pie Chart)</div>
+                <div class="card-body">
+                    <canvas id="categoryPieChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-primary text-white">Crime Trends Over Time (Line Chart - Monthly)</div>
+                <div class="card-body">
+                    <canvas id="monthlyLineChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-primary text-white">Crime Trends Over Time (Line Chart - Daily)</div>
+                <div class="card-body">
+                    <canvas id="dailyLineChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-primary text-white">Crime Hotspots (Bar Chart - by Category)</div>
+                <div class="card-body">
+                    <canvas id="locationHistogram"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% load static %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Function to fetch data and render charts
+        async function fetchAndRenderCharts() {
+            const headers = {'X-CSRFToken': getCookie('csrftoken')};
+
+            // Fetch Category Distribution Data (Pie Chart)
+            const categoryResponse = await fetch('{% url 'analytics:category_distribution' %}', {headers});
+            const categoryData = await categoryResponse.json();
+            renderPieChart('categoryPieChart', categoryData.labels, categoryData.data);
+
+            // Fetch Monthly Trends Data (Line Chart)
+            const monthlyResponse = await fetch('{% url 'analytics:trends_monthly' %}', {headers});
+            const monthlyData = await monthlyResponse.json();
+            renderLineChart('monthlyLineChart', monthlyData.labels, monthlyData.data, 'Crimes per Month');
+
+            // Fetch Daily Trends Data (Line Chart)
+            const dailyResponse = await fetch('{% url 'analytics:trends_daily' %}', {headers});
+            const dailyData = await dailyResponse.json();
+            renderLineChart('dailyLineChart', dailyData.labels, dailyData.data, 'Crimes per Day');
+
+            // Fetch Location Data (Histogram - for simplicity, we'll use categories for now)
+            // For a true histogram by location, more backend processing would be needed
+            renderHistogram('locationHistogram', categoryData.labels, categoryData.data, 'Crimes by Category (Placeholder for Location)');
+        }
+
+        // Helper function to get CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Chart.js Render Functions
+        function renderPieChart(canvasId, labels, data) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#5AD3D1', '#FF66CC', '#C9CBCE'
+                        ],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Crime Categories'
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderLineChart(canvasId, labels, data, title) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: title,
+                        data: data,
+                        borderColor: '#007bff',
+                        tension: 0.1,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: title
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderHistogram(canvasId, labels, data, title) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: title,
+                        data: data,
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: title
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        fetchAndRenderCharts();
+    });
+</script>
+{% endblock %}

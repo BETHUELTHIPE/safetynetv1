@@ -1,0 +1,1 @@
+# I Sell app initialization

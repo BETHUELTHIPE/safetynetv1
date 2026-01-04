@@ -1,0 +1,334 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-4 align-items-center">
+        <div class="col-lg-6">
+            <h1 class="mb-1 fw-bold display-5">I Sell Marketplace</h1>
+            <p class="lead text-muted">Find great deals or sell your items in the community</p>
+        </div>
+        <div class="col-lg-6 text-lg-end">
+            <a href="{% url 'isell:create_item' %}" class="btn btn-primary btn-lg">
+                <i class="fas fa-plus-circle me-2"></i> Sell an Item
+            </a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'isell:my_items' %}" class="btn btn-outline-secondary ms-2">
+                    <i class="fas fa-list me-2"></i> My Listings
+                </a>
+                <a href="{% url 'isell:saved_items' %}" class="btn btn-outline-secondary ms-2">
+                    <i class="fas fa-bookmark me-2"></i> Saved Items
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Search and Filter Card -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <form method="get" action="{% url 'isell:item_list' %}" class="row g-3">
+                <div class="col-lg-4">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control" placeholder="Search items..." value="{{ query|default:'' }}">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2">
+                    <select name="category" class="form-select" onchange="this.form.submit()">
+                        <option value="">All Categories</option>
+                        {% for category in categories %}
+                            {% if category %}
+                                <option value="{{ category }}" {% if selected_category == category %}selected{% endif %}>
+                                    {{ category }}
+                                </option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="col-lg-2">
+                    <input type="number" name="min_price" class="form-control" placeholder="Min Price" value="{{ min_price|default:'' }}">
+                </div>
+                
+                <div class="col-lg-2">
+                    <input type="number" name="max_price" class="form-control" placeholder="Max Price" value="{{ max_price|default:'' }}">
+                </div>
+                
+                <div class="col-lg-2">
+                    <select name="sort" class="form-select">
+                        <option value="newest" {% if sort == 'newest' %}selected{% endif %}>Newest First</option>
+                        <option value="price_low" {% if sort == 'price_low' %}selected{% endif %}>Price: Low to High</option>
+                        <option value="price_high" {% if sort == 'price_high' %}selected{% endif %}>Price: High to Low</option>
+                        <option value="oldest" {% if sort == 'oldest' %}selected{% endif %}>Oldest First</option>
+                    </select>
+                </div>
+                
+                <div class="col-12 d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="fas fa-filter me-1"></i> Apply Filters
+                    </button>
+                    {% if query or selected_category or min_price or max_price %}
+                        <a href="{% url 'isell:item_list' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times me-1"></i> Clear Filters
+                        </a>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Items Grid -->
+    <div class="row">
+        {% if page_obj %}
+            {% for item in page_obj %}
+                <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
+                    <div class="card h-100 item-card border-0 shadow-sm">
+                        {% if item.is_new %}
+                            <div class="badge bg-success position-absolute top-0 start-0 m-2">NEW</div>
+                        {% endif %}
+                        
+                        {% if item.pk in saved_items %}
+                            <button class="btn-save position-absolute top-0 end-0 m-2 btn btn-sm btn-light rounded-circle shadow-sm save-btn" data-id="{{ item.pk }}">
+                                <i class="fas fa-bookmark text-warning"></i>
+                            </button>
+                        {% elif user.is_authenticated %}
+                            <button class="btn-save position-absolute top-0 end-0 m-2 btn btn-sm btn-light rounded-circle shadow-sm save-btn" data-id="{{ item.pk }}">
+                                <i class="far fa-bookmark"></i>
+                            </button>
+                        {% endif %}
+                        
+                        <!-- Item Image -->
+                        <div class="item-image-container">
+                            {% if item.main_image %}
+                                <img src="{{ item.main_image.url }}" class="card-img-top item-image" alt="{{ item.title }}">
+                            {% else %}
+                                <div class="no-image-placeholder">
+                                    <i class="fas fa-image"></i>
+                                    <span>No Image</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="card-body">
+                            <h5 class="card-title text-truncate">{{ item.title }}</h5>
+                            <p class="price-tag mb-1">R{{ item.price }}</p>
+                            <p class="text-muted mb-2 small">
+                                <i class="fas fa-map-marker-alt me-1"></i> {{ item.location }}
+                            </p>
+                            <p class="card-text text-truncate-3">{{ item.description }}</p>
+                        </div>
+                        
+                        <div class="card-footer bg-white border-top-0 pt-0">
+                            <div class="d-grid">
+                                <a href="{% url 'isell:item_detail' pk=item.pk %}" class="btn btn-outline-primary stretched-link">View Item</a>
+                            </div>
+                            <p class="text-muted text-end small mt-2 mb-0">
+                                <i class="far fa-clock me-1"></i> {{ item.created_at|timesince }} ago
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-info-circle fa-2x me-3"></i>
+                        <div>
+                            <h5 class="mb-1">No Items Found</h5>
+                            <p class="mb-0">
+                                {% if query or selected_category or min_price or max_price %}
+                                    No items match your search criteria. Try adjusting your filters or search terms.
+                                {% else %}
+                                    There are currently no items listed for sale. Why not be the first to sell something?
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" aria-label="First">
+                            <span aria-hidden="true">&laquo;&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">&laquo;&laquo;</span>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link">&laquo;</span>
+                    </li>
+                {% endif %}
+                
+                {% for i in page_obj.paginator.page_range %}
+                    {% if page_obj.number == i %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ i }}</span>
+                        </li>
+                    {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ i }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}">{{ i }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" aria-label="Last">
+                            <span aria-hidden="true">&raquo;&raquo;</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">&raquo;</span>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link">&raquo;&raquo;</span>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+    
+    <!-- Sell Your Item Banner -->
+    <div class="card mt-5 border-0 bg-gradient-primary text-white shadow">
+        <div class="card-body p-4 p-md-5 text-center">
+            <h2 class="mb-3 fw-bold">Want to sell something?</h2>
+            <p class="lead mb-4">It's quick, easy and free to list your items in our community marketplace.</p>
+            <a href="{% url 'isell:create_item' %}" class="btn btn-light btn-lg px-5 fw-bold">
+                <i class="fas fa-tag me-2"></i> Sell Now
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .item-image-container {
+        height: 200px;
+        overflow: hidden;
+        position: relative;
+        background-color: #f8f9fa;
+    }
+    
+    .item-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+    
+    .item-card:hover .item-image {
+        transform: scale(1.05);
+    }
+    
+    .no-image-placeholder {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #adb5bd;
+    }
+    
+    .no-image-placeholder i {
+        font-size: 3rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .text-truncate-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        min-height: 4.5rem;
+    }
+    
+    .price-tag {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: var(--kingsapark-green);
+    }
+    
+    .item-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .item-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+    
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, var(--kingsapark-navy) 0%, var(--kingsapark-green) 100%);
+    }
+    
+    .btn-save {
+        z-index: 10;
+        width: 36px;
+        height: 36px;
+        padding: 6px;
+    }
+</style>
+
+{% if user.is_authenticated %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Save/unsave functionality
+        const saveButtons = document.querySelectorAll('.save-btn');
+        
+        saveButtons.forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+                
+                const itemId = this.dataset.id;
+                
+                // Send AJAX request to toggle save status
+                fetch(`/isell/${itemId}/save/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'same-origin'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const icon = this.querySelector('i');
+                    
+                    if (data.saved) {
+                        icon.className = 'fas fa-bookmark text-warning';
+                    } else {
+                        icon.className = 'far fa-bookmark';
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    });
+</script>
+{% endif %}
+{% endblock %}

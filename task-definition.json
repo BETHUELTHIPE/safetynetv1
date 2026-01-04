@@ -1,0 +1,54 @@
+{
+  "family": "safetynet-task",
+  "taskRoleArn": "arn:aws:iam::981814817456:role/ecsTaskExecutionRole",
+  "executionRoleArn": "arn:aws:iam::981814817456:role/ecsTaskExecutionRole",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "containerDefinitions": [
+    {
+      "name": "safetynet-reporting",
+      "image": "981814817456.dkr.ecr.eu-west-1.amazonaws.com/safetynet-reporting:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 8081,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        {"name": "DJANGO_SETTINGS_MODULE", "value": "cpfcrimereportingsystem.settings"},
+        {"name": "DEBUG", "value": "False"},
+        {"name": "POSTGRES_HOST", "value": "portfolio-20251204201612-ztnicd-postgres.cfcqsamuevoq.eu-west-1.rds.amazonaws.com"},
+        {"name": "POSTGRES_PORT", "value": "5432"},
+        {"name": "POSTGRES_DB", "value": "safetynet_db"},
+        {"name": "POSTGRES_USER", "value": "safetynet_user"},
+        {"name": "POSTGRES_PASSWORD", "value": "23498812"},
+        {"name": "REDIS_URL", "value": "redis://safetynet-redis.xxxxx.ng.0001.eu-west-1.cache.amazonaws.com:6379/0"},
+        {"name": "DJANGO_SUPERUSER_USERNAME", "value": "admin"},
+        {"name": "DJANGO_SUPERUSER_EMAIL", "value": "admin@safetynet.com"},
+        {"name": "DJANGO_SUPERUSER_PASSWORD", "value": "SafeAdmin123"}
+      ],
+      "command": [
+        "gunicorn",
+        "cpfcrimereportingsystem.wsgi:application",
+        "--bind",
+        "0.0.0.0:8081",
+        "--workers",
+        "3",
+        "--timeout",
+        "120",
+        "--log-level=info"
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/safetynet-web",
+          "awslogs-region": "eu-west-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ]
+}
