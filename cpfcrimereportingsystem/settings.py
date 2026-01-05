@@ -50,10 +50,6 @@ INSTALLED_APPS = [
     'community_chat',
     'kingspark_events',
     'community_alerts',
-    'business_services',
-    'isell',
-    'iwanttobuy',
-    'services',
     
     # Third-party apps
     'channels',  # For real-time features
@@ -127,6 +123,7 @@ DATABASES = {
         'CONN_MAX_AGE': 600,  # Connection pooling
         'OPTIONS': {
             'connect_timeout': 10,
+            'sslmode': 'disable',
         }
     }
 }
