@@ -30,8 +30,8 @@ done
 >&2 echo 'PostgreSQL is available'
 
 # Apply database migrations
-echo "Applying database migrations..."
-python manage.py migrate --noinput
+# echo "Applying database migrations..."
+# python manage.py migrate --noinput
 
 # Create superuser if specified in environment
 if [ "${DJANGO_SUPERUSER_USERNAME:-}" ] && [ "${DJANGO_SUPERUSER_EMAIL:-}" ] && [ "${DJANGO_SUPERUSER_PASSWORD:-}" ]; then
