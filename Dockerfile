@@ -67,7 +67,7 @@ COPY --chown=django:django entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # Expose the port Gunicorn will run on
-EXPOSE 8000
+EXPOSE 8081
 
 # Switch to non-root user
 USER django

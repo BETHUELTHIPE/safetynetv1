@@ -60,4 +60,4 @@ USER django
 
 # Set entrypoint
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["gunicorn", "crimeanalytics.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "2", "--timeout", "120"]
+CMD ["gunicorn", "cpfcrimereportingsystem.wsgi:application", "--bind", "0.0.0.0:8081", "--workers", "2", "--timeout", "120"]
